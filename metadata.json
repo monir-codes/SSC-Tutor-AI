@@ -1,0 +1,6 @@
+{
+  "name": "SSC Tutor AI",
+  "description": "AI-powered educational platform for SSC students in Bangladesh, featuring practice tests, chat tutoring, and model exams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

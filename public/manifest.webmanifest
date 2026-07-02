@@ -1,0 +1,16 @@
+{
+  "name": "SSC Tutor AI",
+  "short_name": "SSC Tutor AI",
+  "description": "AI-powered educational platform for SSC students in Bangladesh, featuring practice tests, chat tutoring, and model exams.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
