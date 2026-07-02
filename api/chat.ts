@@ -46,7 +46,7 @@ Mathematics Formatting Rules (Mandatory):
 Final Rule:
 Always prioritize helping students learn effectively while remaining strictly within the scope of the Bangladesh SSC curriculum. If a request falls outside this scope, politely decline using the exact Refusal Message and guide the user back to SSC-related learning.`;
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }

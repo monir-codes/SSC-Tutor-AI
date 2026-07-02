@@ -48,7 +48,12 @@ export function AiTutorPage() {
   ];
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current?.parentElement) {
+      chatContainerRef.current.parentElement.scrollTo({
+        top: chatContainerRef.current.parentElement.scrollHeight,
+        behavior: "smooth"
+      });
+    }
   };
 
   useEffect(() => {
