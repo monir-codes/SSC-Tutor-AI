@@ -9,49 +9,14 @@ import {
   Sparkles,
   BookCheck,
   ShieldCheck,
+  Gift,
+  Library,
+  FileQuestion,
+  FileText,
+  Unlock,
 } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { SEO } from "@/components/SEO";
-import { useEffect, useState } from "react";
-
-function AnimatedCounter({
-  end,
-  suffix = "",
-  duration = 2,
-}: {
-  end: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let startTime: number | null = null;
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = timestamp - startTime;
-      const percentage = Math.min(progress / (duration * 1000), 1);
-
-      // Easing function (easeOutExpo)
-      const easeOut = percentage === 1 ? 1 : 1 - Math.pow(2, -10 * percentage);
-
-      setCount(Math.floor(end * easeOut));
-
-      if (percentage < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    requestAnimationFrame(animate);
-  }, [end, duration]);
-
-  return (
-    <>
-      {count}
-      {suffix}
-    </>
-  );
-}
 
 export function HomePage() {
   const { scrollY } = useScroll();
@@ -220,41 +185,97 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Statistics Section */}
+      {/* Platform Highlights Section */}
       <section className="bg-white border-y border-slate-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 py-12 md:grid-cols-4 lg:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 md:gap-x-8">
             <div className="flex flex-col items-center justify-center text-center">
-              <dt className="text-sm font-medium text-slate-500 mb-2">
-                Total Subjects
-              </dt>
-              <dd className="text-4xl font-extrabold tracking-tight text-slate-900 font-sans">
-                <AnimatedCounter end={20} suffix="+" />
-              </dd>
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <Gift className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                100% Free
+              </h3>
+              <p className="text-sm text-slate-500">
+                Full access, no hidden costs
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center text-center">
-              <dt className="text-sm font-medium text-slate-500 mb-2">
-                Chapters Covered
-              </dt>
-              <dd className="text-4xl font-extrabold tracking-tight text-slate-900 font-sans">
-                <AnimatedCounter end={500} suffix="+" />
-              </dd>
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <BrainCircuit className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                AI-Powered Learning
+              </h3>
+              <p className="text-sm text-slate-500">
+                Smart tutor for instant doubt clearing
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center text-center">
-              <dt className="text-sm font-medium text-slate-500 mb-2">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <BookCheck className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                NCTB Curriculum
+              </h3>
+              <p className="text-sm text-slate-500">
+                Aligned with SSC board syllabus
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <Library className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                Chapter-wise Learning
+              </h3>
+              <p className="text-sm text-slate-500">
+                Structured lessons for every subject
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <FileQuestion className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
                 Practice Questions
-              </dt>
-              <dd className="text-4xl font-extrabold tracking-tight text-slate-900 font-sans">
-                <AnimatedCounter end={1000} suffix="+" />
-              </dd>
+              </h3>
+              <p className="text-sm text-slate-500">
+                Test your knowledge chapter by chapter
+              </p>
             </div>
             <div className="flex flex-col items-center justify-center text-center">
-              <dt className="text-sm font-medium text-slate-500 mb-2">
-                Access Fee
-              </dt>
-              <dd className="text-4xl font-extrabold tracking-tight text-primary-600 font-sans">
-                Free
-              </dd>
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <FileText className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                Model Tests
+              </h3>
+              <p className="text-sm text-slate-500">
+                Prepare with full-length board style exams
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <Unlock className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                No Login Required
+              </h3>
+              <p className="text-sm text-slate-500">
+                Start learning immediately without friction
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 mb-4">
+                <GraduationCap className="h-6 w-6 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">
+                Made for Bangladesh
+              </h3>
+              <p className="text-sm text-slate-500">
+                Designed specifically for SSC students
+              </p>
             </div>
           </div>
         </div>
