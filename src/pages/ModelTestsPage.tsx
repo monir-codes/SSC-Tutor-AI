@@ -190,9 +190,17 @@ export function ModelTestsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 pb-20">
       <SEO 
-        title="Model Tests" 
-        description="Take SSC standard model tests for Science, Humanities, and Commerce subjects. Track your score and time with our AI evaluator."
-        href="/model-tests"
+        title="SSC Model Tests | Online Mock Exams & MCQ Practice | SSC Tutor AI" 
+        description="Take full-length SSC standard model tests for Science, Humanities, and Commerce subjects. Track your score and get instant AI-generated explanations."
+        href="/model-test"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "SSC Model Tests App",
+          "url": "https://ssc-tutor-ai.vercel.app/model-test",
+          "description": "Online practice exams and mock tests for Bangladesh SSC curriculum.",
+          "applicationCategory": "EducationalApplication"
+        }}
       />
       {examState === "setup" && (
         <>
@@ -528,7 +536,7 @@ export function ModelTestsPage() {
                                AI Explanation
                              </h5>
                              <Link 
-                               to={`/tutor?prompt=${encodeURIComponent(`এই প্রশ্নটি আমাকে সহজ করে বুঝিয়ে বলো:\n\nপ্রশ্ন: ${q.text}\nসঠিক উত্তর: ${q.correctAnswer}\n\nধাপে ধাপে ব্যাখ্যা করে দাও।`)}`}
+                               to={`/tutor?subject=${encodeURIComponent(subjectData[stream].find(s => s.id === subject)?.name || subject)}&prompt=${encodeURIComponent(`এই প্রশ্নটি আমাকে সহজ করে বুঝিয়ে বলো:\n\nপ্রশ্ন: ${q.text}\nসঠিক উত্তর: ${q.correctAnswer}\n\nধাপে ধাপে ব্যাখ্যা করে দাও।`)}`}
                                className="text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-full transition-colors flex items-center"
                              >
                                <Bot className="h-3 w-3 mr-1" /> Explain in Chat

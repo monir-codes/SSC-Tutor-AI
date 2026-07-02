@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
 
-Sitemap: https://ais-pre-mf5gyubfhrahdywdjhvolz-6418122271.asia-east1.run.app/sitemap.xml
+Sitemap: https://ssc-tutor-ai.vercel.app/sitemap.xml

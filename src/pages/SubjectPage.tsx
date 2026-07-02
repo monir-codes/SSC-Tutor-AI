@@ -57,12 +57,51 @@ export function SubjectPage() {
     return <div className="p-12 text-center text-xl">Subject not found.</div>;
   }
 
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://ssc-tutor-ai.vercel.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Subjects",
+          "item": "https://ssc-tutor-ai.vercel.app/subjects"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": subject.name,
+          "item": `https://ssc-tutor-ai.vercel.app${url}`
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": `SSC ${subject.name}`,
+      "description": `Study ${subject.name} for SSC. Chapter-wise interactive guide and AI explanations.`,
+      "provider": {
+        "@type": "EducationalOrganization",
+        "name": "SSC Tutor AI",
+        "sameAs": "https://ssc-tutor-ai.vercel.app/"
+      }
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <SEO 
-        title={subject.name} 
-        description={`Study ${subject.name} for SSC. Chapter-wise interactive guide and AI explanations.`}
+        title={`SSC ${subject.name} | Chapter-wise Notes, Practice & AI Tutor | SSC Tutor AI`} 
+        description={`Study ${subject.name} for SSC. Chapter-wise interactive guide, examples, board questions, and AI explanations.`}
         href={url}
+        jsonLd={jsonLd}
       />
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <Link to="/subjects" className="mb-8 inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary-600">
@@ -96,7 +135,7 @@ export function SubjectPage() {
               transition={{ duration: 0.3, delay: idx * 0.05 }}
             >
               <Link
-                to={`/tutor?prompt=Explain the chapter ${chapter} from ${subject.name}`}
+                to={`/tutor?subject=${encodeURIComponent(subject.name)}&chapter=${encodeURIComponent(chapter)}&prompt=Explain the chapter ${chapter} from ${subject.name}`}
                 className="group flex items-center justify-between rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md hover:ring-primary-500"
               >
                 <div className="flex items-center">

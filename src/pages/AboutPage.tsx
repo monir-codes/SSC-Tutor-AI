@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, BrainCircuit, CheckCircle2, Github, Globe, Linkedin, Mail, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { SEO } from "@/components/SEO";
 
 export function AboutPage() {
   const features = [
@@ -26,6 +27,24 @@ export function AboutPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
+      <SEO 
+        title="About Us | SSC Tutor AI - Mission & Vision"
+        description="Learn about the mission, vision, and the creator behind SSC Tutor AI - a free platform providing quality AI education for students in Bangladesh."
+        href="/about"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "name": "About SSC Tutor AI",
+          "url": "https://ssc-tutor-ai.vercel.app/about",
+          "description": "Learn about the mission, vision, and creator behind SSC Tutor AI.",
+          "mainEntity": {
+            "@type": "Person",
+            "name": "Md. Moniruzzaman (Rumman)",
+            "jobTitle": "Full Stack (MERN) Developer",
+            "url": "https://monir-uzzaman.vercel.app"
+          }
+        }}
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white pt-20 pb-24 border-b border-slate-200">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>

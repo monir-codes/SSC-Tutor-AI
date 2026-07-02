@@ -26,9 +26,33 @@ export function HomePage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SEO
-        title="Home"
-        description="Free AI-powered SSC exam preparation platform in Bangladesh. Practice tests, chapter-wise MCQs, and an intelligent AI tutor for Science, Humanities, and Commerce students."
+        title="SSC Tutor AI | AI-Powered SSC Learning Platform for Bangladesh"
+        description="SSC Tutor AI is a free AI-powered learning platform for SSC students in Bangladesh. Learn every SSC subject with easy explanations, chapter-wise notes, examples, practice questions, model tests, previous board questions, and AI assistance based on the NCTB curriculum."
         href="/"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "SSC Tutor AI",
+            "url": "https://ssc-tutor-ai.vercel.app/",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://ssc-tutor-ai.vercel.app/subjects?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            "name": "SSC Tutor AI",
+            "url": "https://ssc-tutor-ai.vercel.app/",
+            "logo": "https://ssc-tutor-ai.vercel.app/favicon.svg",
+            "description": "Free AI-powered SSC learning platform for Bangladesh",
+            "sameAs": [
+              "https://twitter.com/SSCTutorAI"
+            ]
+          }
+        ]}
       />
 
       {/* Premium Hero Section */}

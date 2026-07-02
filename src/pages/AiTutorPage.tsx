@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Send, Bot, User, Loader2, MessageSquare, Plus, Trash2, Pin, Mic, MicOff, Download } from "lucide-react";
+import { Send, Bot, User, Loader2, MessageSquare, Plus, Trash2, Pin, Mic, MicOff, Download, ArrowRight, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useUserStore, ChatMessage, ChatSession } from "@/store/userStore";
 import { format } from "date-fns";
 import { SEO } from "@/components/SEO";
-import html2canvas from "html2canvas";
+import { toCanvas } from "html-to-image";
 import { jsPDF } from "jspdf";
 import { toast } from "sonner";
 
@@ -34,6 +34,7 @@ export function AiTutorPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const recognition = useRef<any>(null);
 
@@ -48,9 +49,9 @@ export function AiTutorPage() {
   ];
 
   const scrollToBottom = () => {
-    if (chatContainerRef.current?.parentElement) {
-      chatContainerRef.current.parentElement.scrollTo({
-        top: chatContainerRef.current.parentElement.scrollHeight,
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
         behavior: "smooth"
       });
     }
@@ -119,15 +120,14 @@ export function AiTutorPage() {
   };
 
   const handleDownloadPDF = async () => {
-    if (!chatContainerRef.current) return;
+    if (!messagesContainerRef.current) return;
     
     setIsDownloading(true);
     const toastId = toast.loading("Generating PDF...");
     
     try {
-      const canvas = await html2canvas(chatContainerRef.current, {
-        scale: 2,
-        useCORS: true,
+      const canvas = await toCanvas(messagesContainerRef.current, {
+        pixelRatio: 2,
         backgroundColor: '#ffffff'
       });
       
@@ -163,7 +163,11 @@ export function AiTutorPage() {
     if (!sessionId) {
       // Create new session
       const title = input.slice(0, 30) + (input.length > 30 ? "..." : "");
-      sessionId = createChatSession(title);
+      
+      const subject = searchParams.get("subject") || undefined;
+      const chapter = searchParams.get("chapter") || undefined;
+      
+      sessionId = createChatSession(title, { subject, chapter });
       setCurrentSessionId(sessionId);
       navigate(`/tutor?session=${sessionId}`, { replace: true });
       
@@ -191,7 +195,9 @@ export function AiTutorPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
             message: userInputText,
-            history
+            history,
+            subject: currentSession?.subject || searchParams.get("subject"),
+            chapter: currentSession?.chapter || searchParams.get("chapter"),
         }),
       });
 
@@ -201,7 +207,11 @@ export function AiTutorPage() {
         throw new Error(data.error || "Failed to get response");
       }
 
-      addChatMessage(sessionId, { role: "assistant", content: data.text });
+      addChatMessage(sessionId, { 
+        role: "assistant", 
+        content: data.text,
+        redirect: data.redirect 
+      });
       
       // Update title if it's still generic (optional)
       if (currentSession && currentSession.messages.length === 2 && currentSession.title.includes("...")) {
@@ -224,11 +234,20 @@ export function AiTutorPage() {
   const unpinnedSessions = sortedSessions.filter(s => !s.isPinned);
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col lg:flex-row bg-slate-50">
+    <div className="absolute inset-0 flex flex-col lg:flex-row bg-slate-50">
       <SEO 
-        title="AI Tutor" 
-        description="Chat with your personal SSC Tutor AI. Ask questions, get explanations, and clear your doubts instantly."
+        title="AI Tutor | Smart SSC Assistant" 
+        description="Chat with your personal SSC Tutor AI. Ask questions, get easy Bengali explanations, and clear your doubts instantly for Physics, Chemistry, Math, Biology and more."
         href="/tutor"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "SSC AI Tutor",
+          "url": "https://ssc-tutor-ai.vercel.app/tutor",
+          "description": "AI-powered tutor for SSC students in Bangladesh, providing instant answers and explanations for all subjects.",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "All"
+        }}
       />
       {/* Sidebar for chat history (Desktop) */}
       <div className="hidden lg:flex w-80 flex-col border-r border-slate-200 bg-white">
@@ -316,7 +335,7 @@ export function AiTutorPage() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col relative">
+      <div className="flex-1 flex flex-col relative min-w-0 min-h-0 overflow-hidden">
         {/* Header (Mobile & Actions) */}
         <div className="flex items-center justify-end px-4 py-3 bg-white border-b border-slate-200 shadow-sm z-10 lg:bg-transparent lg:border-none lg:shadow-none lg:absolute lg:top-0 lg:right-0 lg:p-4">
            <button
@@ -329,8 +348,8 @@ export function AiTutorPage() {
            </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-          <div ref={chatContainerRef} className="mx-auto max-w-3xl space-y-8 pb-4">
+        <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          <div ref={messagesContainerRef} className="mx-auto max-w-3xl space-y-8 pb-4">
             <AnimatePresence initial={false}>
               {messages.map((msg) => (
                 <motion.div
@@ -355,13 +374,32 @@ export function AiTutorPage() {
                       "rounded-2xl px-6 py-4 text-base shadow-sm font-bn max-w-[85%] sm:max-w-[75%]",
                       msg.role === "user"
                         ? "bg-white text-slate-900 border border-slate-200"
-                        : "bg-primary-50 border border-primary-100 text-slate-900 leading-relaxed overflow-hidden"
+                        : msg.redirect 
+                          ? "bg-blue-50/50 border border-blue-100 text-slate-900 overflow-hidden" 
+                          : "bg-primary-50 border border-primary-100 text-slate-900 leading-relaxed overflow-hidden"
                     )}
                   >
-                    <div className={cn("prose prose-slate max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0 prose-headings:my-2 prose-h1:text-xl prose-h2:text-lg prose-h3:text-base", msg.role === "assistant" && "prose-p:leading-relaxed")}>
+                    {msg.redirect && (
+                      <div className="flex items-center space-x-2 text-blue-700 font-semibold mb-3 border-b border-blue-100 pb-3">
+                        <Info className="h-5 w-5" />
+                        <span>বিষয়ভিত্তিক সহায়তা</span>
+                      </div>
+                    )}
+                    <div className={cn("prose prose-slate max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0 prose-headings:my-2 prose-h1:text-xl prose-h2:text-lg prose-h3:text-base", msg.role === "assistant" && !msg.redirect && "prose-p:leading-relaxed", msg.redirect && "text-slate-700")}>
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {msg.content}
                       </ReactMarkdown>
+                      {msg.redirect && (
+                        <div className="mt-5 flex justify-start pt-2">
+                          <button
+                            onClick={() => navigate(msg.redirect!.target)}
+                            className="inline-flex items-center space-x-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-md"
+                          >
+                            <span>{msg.redirect.buttonText}</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -382,7 +420,7 @@ export function AiTutorPage() {
           </div>
         </div>
 
-        <div className="border-t border-slate-200 bg-white p-4 sm:p-6">
+        <div className="shrink-0 border-t border-slate-200 bg-white p-4 sm:p-6">
           <div className="mx-auto max-w-3xl">
             <form onSubmit={handleSubmit} className="relative flex items-center">
               <input

@@ -7,6 +7,11 @@ export type ChatMessage = {
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;
+  redirect?: {
+    type: 'subject' | 'chapter';
+    target: string;
+    buttonText: string;
+  };
 };
 
 export type ChatSession = {
@@ -15,6 +20,8 @@ export type ChatSession = {
   messages: ChatMessage[];
   updatedAt: number;
   isPinned: boolean;
+  subject?: string;
+  chapter?: string;
 };
 
 export type ExamResult = {
@@ -63,7 +70,7 @@ interface UserState {
   badges: Badge[];
   
   // Chat Actions
-  createChatSession: (title: string) => string;
+  createChatSession: (title: string, context?: { subject?: string; chapter?: string }) => string;
   addChatMessage: (sessionId: string, message: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   updateChatTitle: (sessionId: string, title: string) => void;
   deleteChatSession: (sessionId: string) => void;
@@ -89,7 +96,7 @@ export const useUserStore = create<UserState>()(
       recentActivity: [],
       badges: [],
 
-      createChatSession: (title) => {
+      createChatSession: (title, context?: { subject?: string; chapter?: string }) => {
         const id = uuidv4();
         set((state) => ({
           chatSessions: {
@@ -100,6 +107,8 @@ export const useUserStore = create<UserState>()(
               messages: [],
               updatedAt: Date.now(),
               isPinned: false,
+              subject: context?.subject,
+              chapter: context?.chapter,
             },
           },
         }));

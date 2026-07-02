@@ -1,6 +1,7 @@
 import { Mail, MapPin, MessageSquare, Linkedin, Github, Globe, Send } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { SEO } from "@/components/SEO";
 
 export function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
@@ -26,6 +27,32 @@ export function ContactPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
+      <SEO 
+        title="Contact Us | SSC Tutor AI Support"
+        description="Get in touch with the SSC Tutor AI team for support, feedback, or suggestions. Find frequently asked questions."
+        href="/contact"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contact SSC Tutor AI",
+            "url": "https://ssc-tutor-ai.vercel.app/contact",
+            "description": "Contact support for SSC Tutor AI."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqs.map(faq => ({
+              "@type": "Question",
+              "name": faq.q,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.a
+              }
+            }))
+          }
+        ]}
+      />
       {/* Hero */}
       <section className="bg-slate-900 py-20 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:24px_24px]"></div>

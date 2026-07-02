@@ -30,9 +30,16 @@ export function SubjectsPage() {
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <SEO 
-        title="Subjects" 
-        description="Browse all SSC subjects including Science, Humanities, and Commerce. Get chapter-wise study materials and quizzes."
+        title="SSC Subjects | Complete Notes, Board Questions & AI Tutor" 
+        description="Browse all SSC subjects including Science, Humanities, and Commerce. Get chapter-wise study materials, examples, quizzes, and instant AI tutor help."
         href="/subjects"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "SSC Subjects Study Materials",
+          "url": "https://ssc-tutor-ai.vercel.app/subjects",
+          "description": "Comprehensive list of SSC subjects with chapter-wise notes and AI tutor support for Bangladesh curriculum."
+        }}
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
