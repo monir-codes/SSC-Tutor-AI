@@ -177,6 +177,14 @@ export function HomePage() {
                 <span>NCTB Curriculum</span>
               </div>
               <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+                <BookOpen className="h-4 w-4 text-indigo-500" />
+                <span>All SSC Subjects</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+                <BrainCircuit className="h-4 w-4 text-purple-500" />
+                <span>AI Powered</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
                 <ShieldCheck className="h-4 w-4 text-primary-500" />
                 <span>No Login Required</span>
               </div>
