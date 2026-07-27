@@ -17,6 +17,15 @@ Whether you need help with Physics, Math, Biology, Chemistry, or Bangla, SSC Tut
 - **🗣️ Bengali Support:** Full natural language conversations in simple Bengali for easy understanding.
 - **⚡ Super Fast:** Built on Vite, React, and powered by Gemini AI for lightning-fast responses.
 
+## 🛠️ Tech Stack
+This project is built using modern web technologies to ensure a fast, responsive, and robust experience:
+- **Frontend:** React 18, TypeScript, Vite
+- **Styling:** Tailwind CSS, Framer Motion (for animations), Lucide React (for icons)
+- **State Management:** Zustand
+- **Backend / AI Integration:** Node.js, Express, Vercel Serverless Functions
+- **AI Model:** Google Gemini API (`@google/genai`)
+- **Deployment:** Vercel
+
 ## 🚀 How to Run Locally
 
 ### Prerequisites
