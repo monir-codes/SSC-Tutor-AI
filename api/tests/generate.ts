@@ -30,8 +30,10 @@ export default async function handler(req: any, res: any) {
 
       IMPORTANT RULES:
       1. Be conceptually accurate and match SSC board exam standards.
-      2. Include authentic board questions if available and label them correctly. Do NOT hallucinate board questions.
-      3. Output must be perfectly valid JSON.
+      2. YOU MUST ONLY GENERATE AUTHENTIC, REAL PREVIOUS SSC BOARD QUESTIONS that appeared in past exams (e.g., Dhaka Board 2023, Rajshahi Board 2019, etc.). 
+      3. DO NOT generate random, made-up, or generic questions. EVERY single question must be an actual past board question.
+      4. Label each question with its actual board and year in the \`boardInfo\` field. Set \`isBoardQuestion\` to true for all of them. Do NOT invent or hallucinate board questions.
+      5. Output must be perfectly valid JSON.
 
       Response format (JSON array of objects):
       [
@@ -42,8 +44,8 @@ export default async function handler(req: any, res: any) {
           "correctAnswer": "The exact text of the correct option",
           "explanation": "Detailed step-by-step explanation in Bangla...",
           "tips": "Short learning tip...",
-          "isBoardQuestion": true/false,
-          "boardInfo": "SSC Dhaka Board 2023" (if isBoardQuestion is true, else "Practice Question (SSC Exam Style)")
+          "isBoardQuestion": true,
+          "boardInfo": "SSC Dhaka Board 2023"
         }
       ]`;
 

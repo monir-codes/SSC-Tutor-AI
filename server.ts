@@ -145,11 +145,12 @@ Always prioritize helping students learn effectively while remaining strictly wi
 
       IMPORTANT RULES:
       1. Be conceptually accurate and match SSC board exam standards.
-      2. If you know an authentic, real previous SSC board question for this topic, include it. Label it with the actual board and year (e.g., "SSC Dhaka Board 2023"). Do NOT invent or hallucinate board questions.
-      3. If it's not a real board question, label it as "Practice Question (SSC Exam Style)".
-      4. Provide a detailed explanation for the correct answer, and explain why other options are incorrect.
-      5. Provide a learning tip for each question.
-      6. Output must be perfectly valid JSON.
+      2. YOU MUST ONLY GENERATE AUTHENTIC, REAL PREVIOUS SSC BOARD QUESTIONS that appeared in past exams (e.g., Dhaka Board 2023, Rajshahi Board 2019, etc.). 
+      3. DO NOT generate random, made-up, or generic practice questions. EVERY single question must be an actual past board question.
+      4. Label each question with its actual board and year in the \`boardInfo\` field. Set \`isBoardQuestion\` to true for all of them. Do NOT invent or hallucinate board questions.
+      5. Provide a detailed explanation for the correct answer, and explain why other options are incorrect.
+      6. Provide a learning tip for each question.
+      7. Output must be perfectly valid JSON.
 
       Response format (JSON array of objects):
       [
@@ -160,8 +161,8 @@ Always prioritize helping students learn effectively while remaining strictly wi
           "correctAnswer": "The exact text of the correct option",
           "explanation": "Detailed step-by-step explanation in Bangla...",
           "tips": "Short learning tip...",
-          "isBoardQuestion": true/false,
-          "boardInfo": "SSC Dhaka Board 2023" (if isBoardQuestion is true, else "Practice Question (SSC Exam Style)")
+          "isBoardQuestion": true,
+          "boardInfo": "SSC Dhaka Board 2023"
         }
       ]`;
 
@@ -197,8 +198,10 @@ Always prioritize helping students learn effectively while remaining strictly wi
 
       IMPORTANT RULES:
       1. Be conceptually accurate and match SSC board exam standards.
-      2. Include authentic board questions if available and label them correctly. Do NOT hallucinate board questions.
-      3. Output must be perfectly valid JSON.
+      2. YOU MUST ONLY GENERATE AUTHENTIC, REAL PREVIOUS SSC BOARD QUESTIONS that appeared in past exams (e.g., Dhaka Board 2023, Rajshahi Board 2019, etc.). 
+      3. DO NOT generate random, made-up, or generic questions. EVERY single question must be an actual past board question.
+      4. Label each question with its actual board and year in the \`boardInfo\` field. Set \`isBoardQuestion\` to true for all of them. Do NOT invent or hallucinate board questions.
+      5. Output must be perfectly valid JSON.
 
       Response format (JSON array of objects):
       [
@@ -209,8 +212,8 @@ Always prioritize helping students learn effectively while remaining strictly wi
           "correctAnswer": "The exact text of the correct option",
           "explanation": "Detailed step-by-step explanation in Bangla...",
           "tips": "Short learning tip...",
-          "isBoardQuestion": true/false,
-          "boardInfo": "SSC Dhaka Board 2023" (if isBoardQuestion is true, else "Practice Question (SSC Exam Style)")
+          "isBoardQuestion": true,
+          "boardInfo": "SSC Dhaka Board 2023"
         }
       ]`;
 
