@@ -105,7 +105,7 @@ Always prioritize helping students learn effectively while remaining strictly wi
       });
 
       const response = await ai.models.generateContent({
-          model: "gemini-3.5-flash",
+          model: "gemini-2.5-flash",
           contents: contents,
           config: {
               systemInstruction: SYSTEM_PROMPT,
@@ -157,7 +157,7 @@ Always prioritize helping students learn effectively while remaining strictly wi
       ]`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -207,7 +207,7 @@ Always prioritize helping students learn effectively while remaining strictly wi
       ]`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
