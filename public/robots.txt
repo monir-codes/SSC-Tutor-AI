@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /private/
 
 Sitemap: https://ssc-tutor-ai.vercel.app/sitemap.xml

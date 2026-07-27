@@ -60,120 +60,6 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: "Message is required." });
     }
 
-    let validationResult = { subject: null, chapter: null, isValid: true, reason: "" };
-
-    if (subject) {
-      // Programmatic Validation
-      const validationPrompt = `Analyze the following student question and determine its subject and chapter context in the Bangladesh SSC curriculum.
-      Question: "${message}"
-      
-      Respond in perfectly valid JSON with the following structure:
-      {
-        "detectedSubject": "The subject name (in English, e.g., 'Physics', 'Bangla', 'Mathematics', 'English', etc.), or null if unknown.",
-        "detectedChapter": "The chapter name (if any), or null if unknown."
-      }`;
-
-      try {
-        const validationResponse = await ai.models.generateContent({
-          model: "gemini-3.5-flash",
-          contents: validationPrompt,
-          config: {
-            responseMimeType: "application/json",
-            temperature: 0.1,
-          },
-        });
-        
-        const data = JSON.parse(validationResponse.text || '{}');
-        const detectedSubject = data.detectedSubject;
-        const detectedChapter = data.detectedChapter;
-        
-        const normalize = (str: string) => str?.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
-        
-        const idMap: Record<string, string> = {
-          "physics": "physics",
-          "chemistry": "chemistry",
-          "biology": "biology",
-          "math": "math",
-          "mathematics": "math",
-          "higher mathematics": "higher-math",
-          "bangla": "bangla",
-          "english": "english",
-          "ict": "ict",
-          "religion": "religion",
-          "accounting": "accounting",
-          "finance": "finance",
-          "economics": "economics",
-          "history": "history",
-          "geography": "geography",
-          "civics": "civics",
-          "entrepreneurship": "entrepreneurship",
-          "business entrepreneurship": "entrepreneurship"
-        };
-        
-        if (detectedSubject && normalize(detectedSubject) !== normalize(subject)) {
-          // Different subject detected
-          const subjectMap: Record<string, string> = {
-            "physics": "পদার্থবিজ্ঞান",
-            "chemistry": "রসায়ন",
-            "biology": "জীববিজ্ঞান",
-            "math": "গণিত",
-            "mathematics": "গণিত",
-            "higher mathematics": "উচ্চতর গণিত",
-            "bangla": "বাংলা",
-            "english": "ইংরেজি",
-            "ict": "তথ্য ও যোগাযোগ প্রযুক্তি",
-            "religion": "ধর্ম শিক্ষা",
-            "accounting": "হিসাববিজ্ঞান",
-            "finance": "ফিন্যান্স ও ব্যাংকিং",
-            "economics": "অর্থনীতি",
-            "history": "ইতিহাস",
-            "geography": "ভূগোল",
-            "civics": "পৌরনীতি",
-            "entrepreneurship": "ব্যবসায় উদ্যোগ",
-            "business entrepreneurship": "ব্যবসায় উদ্যোগ"
-          };
-          const currentSubName = subjectMap[normalize(subject)] || subject;
-          const detectedSubName = subjectMap[normalize(detectedSubject)] || detectedSubject;
-          
-          const detectedId = idMap[normalize(detectedSubject)];
-          const targetUrl = detectedId ? `/subjects/${detectedId}` : '/subjects';
-          
-          return res.status(200).json({
-            text: `📚 আপনি বর্তমানে **${currentSubName}** বিষয়ের চ্যাটে রয়েছেন।\n\nআপনার প্রশ্নটি **${detectedSubName}** বিষয়ের সাথে সম্পর্কিত।\n\nসঠিক ও বিষয়ভিত্তিক সহায়তা পেতে অনুগ্রহ করে **${detectedSubName}** বিষয়ের চ্যাট খুলে সেখানে প্রশ্ন করুন।\n\nপ্রতিটি বিষয়ের জন্য আলাদা AI সহায়তা রাখা হয়েছে যাতে উত্তর আরও নির্ভুল ও প্রাসঙ্গিক হয়।`,
-            redirect: {
-              type: 'subject',
-              target: targetUrl,
-              buttonText: `Open ${detectedSubject}`
-            }
-          });
-        }
-        
-        if (chapter && detectedChapter && detectedSubject && normalize(detectedSubject) === normalize(subject)) {
-            // Check chapter if both are present
-            if (normalize(detectedChapter) !== normalize(chapter)) {
-              // Different chapter detected, but we might want to just gently remind them, 
-              // or let it pass if it's related. The prompt says:
-              // "If the question belongs to another chapter of the same subject, reply like: আপনার প্রশ্নটি এই অধ্যায়ের পরিবর্তে "বীজগণিত" অধ্যায়ের সাথে সম্পর্কিত..."
-              // Let's only enforce if it's very clearly another chapter, but we can't be too strict
-              // Let's implement the redirect.
-              const currentId = idMap[normalize(subject)];
-              const chapterTargetUrl = currentId ? `/subjects/${currentId}` : '/subjects';
-              return res.status(200).json({
-                text: `আপনার প্রশ্নটি এই অধ্যায়ের পরিবর্তে **"${detectedChapter}"** অধ্যায়ের সাথে সম্পর্কিত।\n\nআরও নির্ভুল ব্যাখ্যার জন্য অনুগ্রহ করে সেই অধ্যায়টি নির্বাচন করুন।`,
-                redirect: {
-                  type: 'chapter',
-                  target: chapterTargetUrl,
-                  buttonText: `Open Chapter`
-                }
-              });
-            }
-        }
-      } catch (e) {
-        console.error("Validation error:", e);
-        // Fallback to normal flow if validation fails
-      }
-    }
-
     // Normal generation
     const contents = [];
     if (history && Array.isArray(history)) {
@@ -187,10 +73,10 @@ export default async function handler(req: any, res: any) {
     
     let systemContext = SYSTEM_PROMPT;
     if (subject) {
-      systemContext += `\n\nCURRENT SUBJECT CONTEXT: You are currently acting as the Tutor for the subject: ${subject}. Only answer questions related to ${subject}.`;
+      systemContext += `\n\nCURRENT SUBJECT CONTEXT: The user is currently studying ${subject}. While you can use this context if relevant, you are completely free to answer any SSC-related question they ask, even if it is for a different subject.`;
     }
     if (chapter) {
-      systemContext += `\nCURRENT CHAPTER CONTEXT: You are currently teaching the chapter: ${chapter}. Prioritize explanations based on this chapter.`;
+      systemContext += `\nCURRENT CHAPTER CONTEXT: The user is currently studying the chapter: ${chapter}. Use this context if relevant.`;
     }
 
     contents.push({
