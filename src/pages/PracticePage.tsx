@@ -391,14 +391,14 @@ export function PracticePage() {
                       className="mt-6 pt-6 border-t border-slate-100"
                     >
                       <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
-                        <div className="flex justify-between items-center mb-2">
+                        <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-2 sm:gap-0 mb-3">
                           <h4 className="font-semibold text-slate-900 flex items-center">
                             <BrainCircuit className="h-4 w-4 mr-2 text-primary-600" />
                             Explanation
                           </h4>
                           <Link
                             to={`/tutor?subject=${encodeURIComponent(subjectData[stream].find(s => s.id === subject)?.name || subject)}&chapter=${encodeURIComponent(chapter)}&prompt=${encodeURIComponent(`এই প্রশ্নটি আমাকে সহজ করে বুঝিয়ে বলো:\n\nপ্রশ্ন: ${q.text}\nসঠিক উত্তর: ${q.correctAnswer}\n\nধাপে ধাপে ব্যাখ্যা করে দাও।`)}`}
-                            className="text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-full transition-colors flex items-center"
+                            className="text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-full transition-colors flex items-center self-end sm:self-auto"
                           >
                             <Bot className="h-3 w-3 mr-1" /> Explain in Chat
                           </Link>

@@ -79,7 +79,7 @@ export function HomePage() {
           <motion.div
             animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-32 left-[15%] text-4xl font-serif text-slate-300 pointer-events-none select-none"
+            className="absolute top-32 left-[15%] text-4xl font-serif text-slate-300 pointer-events-none select-none hidden md:block"
           >
             ∑
           </motion.div>
@@ -91,7 +91,7 @@ export function HomePage() {
               ease: "easeInOut",
               delay: 1,
             }}
-            className="absolute bottom-40 right-[20%] text-5xl font-serif text-slate-300 pointer-events-none select-none"
+            className="absolute bottom-40 right-[20%] text-5xl font-serif text-slate-300 pointer-events-none select-none hidden md:block"
           >
             ∫
           </motion.div>
@@ -103,7 +103,7 @@ export function HomePage() {
               ease: "easeInOut",
               delay: 2,
             }}
-            className="absolute top-1/2 right-[10%] text-3xl font-serif text-slate-300 pointer-events-none select-none"
+            className="absolute top-1/2 right-[10%] text-3xl font-serif text-slate-300 pointer-events-none select-none hidden md:block"
           >
             √x
           </motion.div>
@@ -115,7 +115,7 @@ export function HomePage() {
               ease: "easeInOut",
               delay: 0.5,
             }}
-            className="absolute top-40 right-[30%] text-3xl font-serif text-slate-300 pointer-events-none select-none"
+            className="absolute top-40 right-[30%] text-3xl font-serif text-slate-300 pointer-events-none select-none hidden md:block"
           >
             π
           </motion.div>

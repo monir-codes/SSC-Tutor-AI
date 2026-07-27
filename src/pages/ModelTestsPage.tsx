@@ -345,7 +345,7 @@ export function ModelTestsPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="flex flex-col-reverse lg:grid lg:grid-cols-4 gap-8">
             {/* Main Question Area */}
             <div className="lg:col-span-3">
               <div className="bg-white p-8 rounded-3xl shadow-sm ring-1 ring-slate-200 min-h-[400px] flex flex-col">
@@ -416,9 +416,9 @@ export function ModelTestsPage() {
 
             {/* Sidebar Navigator */}
             <div className="lg:col-span-1">
-              <div className="bg-white p-6 rounded-2xl shadow-sm ring-1 ring-slate-200 sticky top-24">
+              <div className="bg-white p-6 rounded-2xl shadow-sm ring-1 ring-slate-200 lg:sticky lg:top-24 mb-6 lg:mb-0">
                 <h3 className="font-bold text-slate-900 mb-4">Question Navigator</h3>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="flex lg:grid lg:grid-cols-4 gap-2 overflow-x-auto pb-2 custom-scrollbar">
                   {questions.map((q, idx) => {
                     const isAns = !!answers[q.id];
                     const isFlagged = flags[q.id];
@@ -433,7 +433,7 @@ export function ModelTestsPage() {
                       <button
                         key={idx}
                         onClick={() => setCurrentIdx(idx)}
-                        className={`h-10 w-full rounded-lg font-semibold text-sm flex items-center justify-center transition-all ${bg}`}
+                        className={`h-10 w-10 shrink-0 lg:w-full rounded-lg font-semibold text-sm flex items-center justify-center transition-all ${bg}`}
                       >
                         {idx + 1}
                       </button>
@@ -530,14 +530,14 @@ export function ModelTestsPage() {
                         </div>
                         
                         <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                           <div className="flex justify-between items-center mb-2">
+                           <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-2 sm:gap-0 mb-3">
                              <h5 className="font-semibold text-slate-900 flex items-center text-sm">
                                <BrainCircuit className="h-4 w-4 mr-2 text-primary-600" />
                                AI Explanation
                              </h5>
                              <Link 
                                to={`/tutor?subject=${encodeURIComponent(subjectData[stream].find(s => s.id === subject)?.name || subject)}&prompt=${encodeURIComponent(`এই প্রশ্নটি আমাকে সহজ করে বুঝিয়ে বলো:\n\nপ্রশ্ন: ${q.text}\nসঠিক উত্তর: ${q.correctAnswer}\n\nধাপে ধাপে ব্যাখ্যা করে দাও।`)}`}
-                               className="text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-full transition-colors flex items-center"
+                               className="text-xs font-semibold text-primary-600 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-full transition-colors flex items-center self-end sm:self-auto"
                              >
                                <Bot className="h-3 w-3 mr-1" /> Explain in Chat
                              </Link>

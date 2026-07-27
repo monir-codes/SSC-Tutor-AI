@@ -107,13 +107,13 @@ export function ContactPage() {
             <div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">Connect with the Creator</h3>
               <div className="flex space-x-4">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-[#0A66C2] hover:text-white">
+                <a href="https://www.linkedin.com/in/moniruzzaman-rumman/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-[#0A66C2] hover:text-white">
                   <Linkedin className="h-5 w-5" />
                 </a>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-slate-900 hover:text-white">
+                <a href="https://github.com/monir-codes/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-slate-900 hover:text-white">
                   <Github className="h-5 w-5" />
                 </a>
-                <a href="https://portfolio.com" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-primary-600 hover:text-white">
+                <a href="https://monir-uzzaman.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-slate-600 transition-all hover:bg-primary-600 hover:text-white">
                   <Globe className="h-5 w-5" />
                 </a>
               </div>

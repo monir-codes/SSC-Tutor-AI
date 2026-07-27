@@ -160,10 +160,10 @@ export function AboutPage() {
                   <a href="https://www.linkedin.com/in/moniruzzaman-rumman/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-[#0A66C2]">
                     <Linkedin className="h-5 w-5" />
                   </a>
-                  <a href="https://github.com/monir-codes" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-slate-700">
+                  <a href="https://github.com/monir-codes/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-slate-700">
                     <Github className="h-5 w-5" />
                   </a>
-                  <a href="https://monir-uzzaman.vercel.app" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-primary-500">
+                  <a href="https://monir-uzzaman.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-primary-500">
                     <Globe className="h-5 w-5" />
                   </a>
                   <a href="mailto:Monir.webdev@gmail.com" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-red-500">

@@ -97,7 +97,7 @@ export function Footer() {
               <h3 className="text-sm font-semibold text-slate-900">Connect With Me</h3>
               <div className="mt-6 flex space-x-4">
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/moniruzzaman-rumman/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
@@ -106,7 +106,7 @@ export function Footer() {
                   <Linkedin className="h-5 w-5" />
                 </a>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/monir-codes/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
@@ -115,7 +115,7 @@ export function Footer() {
                   <Github className="h-5 w-5" />
                 </a>
                 <a
-                  href="https://portfolio.com"
+                  href="https://monir-uzzaman.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Portfolio"
