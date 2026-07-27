@@ -61,7 +61,8 @@ Always prioritize helping students learn effectively while remaining strictly wi
 
   // Helper for AI initialization with random key
   const getAiInstance = (res: any) => {
-    const apiKeys = (process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || "")
+    const fallbackKeys = "AQ.Ab8RN6JZgov0_t7RfyUGk2fsyoHNgc9Smxl5DZpjTime6-EPeg,AQ.Ab8RN6KDRdb80PYGXjsAg6l8umueLApOL0LZ8_zI9ga_u0qa4g";
+    const apiKeys = (process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || fallbackKeys)
       .split(",")
       .map(k => k.trim())
       .filter(k => k.length > 0);
