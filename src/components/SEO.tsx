@@ -21,7 +21,7 @@ export function SEO({
 }: SEOProps) {
   const url = `https://ssc-tutor-ai.vercel.app${href}`;
   
-  const defaultKeywords = "SSC Tutor AI, SSC AI Tutor, SSC Bangladesh, SSC Learning Platform, SSC Study Platform, SSC Preparation, SSC Board Exam, SSC Guide, SSC Notes, SSC Model Test, SSC Practice, SSC MCQ, SSC Creative Questions, SSC Chapter Wise Notes, SSC Question Bank, SSC Online Tutor, SSC Education Bangladesh, SSC AI Learning, SSC Study Assistant, Free SSC Learning, NCTB SSC, এসএসসি, এসএসসি প্রস্তুতি, এসএসসি গাইড, এসএসসি নোট, এসএসসি সাজেশন, এসএসসি প্রশ্ন ব্যাংক, এসএসসি মডেল টেস্ট, এসএসসি অনুশীলন, NCTB, বাংলাদেশ শিক্ষা";
+  const defaultKeywords = "SSC Tutor AI, SSC AI Tutor, SSC Bangladesh, SSC Learning Platform, SSC Study Platform, SSC Preparation, SSC Board Exam, SSC Guide, SSC Notes, SSC Model Test, SSC Practice, SSC MCQ, SSC Creative Questions, SSC Chapter Wise Notes, SSC Question Bank, SSC Online Tutor, SSC Education Bangladesh, SSC AI Learning, SSC Study Assistant, Free SSC Learning, NCTB SSC, এসএসসি, এসএসসি প্রস্তুতি, এসএসসি গাইড, এসএসসি নোট, এসএসসি সাজেশন, এসএসসি প্রশ্ন ব্যাংক, এসএসসি মডেল টেস্ট, এসএসসি অনুশীলন, NCTB, বাংলাদেশ শিক্ষা, ssc ai, ai ssc tutor, ai tutor, ai bd, nctb questions, porikkha ai, ai quiz, ai exam";
   
   return (
     <Helmet>
