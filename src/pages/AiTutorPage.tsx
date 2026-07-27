@@ -16,6 +16,7 @@ export function AiTutorPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const initialPrompt = searchParams.get("prompt");
+  const subjectParam = searchParams.get("subject");
   const urlSessionId = searchParams.get("session");
   
   const { 
@@ -427,7 +428,11 @@ export function AiTutorPage() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask anything about your SSC subjects (e.g. নিউটনের ৩য় সূত্রটা বুঝিয়ে বলো)..."
+                placeholder={
+                  subjectParam
+                    ? `Ask anything about ${subjectParam.split(" (")[0]}...`
+                    : "Ask anything about your SSC subjects (e.g. নিউটনের ৩য় সূত্রটা বুঝিয়ে বলো)..."
+                }
                 disabled={isLoading || isListening}
                 className="w-full rounded-full border border-slate-300 bg-slate-50 px-6 py-4 pr-24 text-base outline-none transition-colors focus:border-primary-500 focus:bg-white focus:ring-1 focus:ring-primary-500 disabled:opacity-50 font-bn"
               />
