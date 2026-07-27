@@ -5,20 +5,25 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const ai = process.env.GEMINI_API_KEY
-    ? new GoogleGenAI({
-        apiKey: process.env.GEMINI_API_KEY,
-        httpOptions: {
-          headers: {
-            "User-Agent": "aistudio-build",
-          },
-        },
-      })
-    : null;
+  const apiKeys = (process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || "")
+    .split(",")
+    .map(k => k.trim())
+    .filter(k => k.length > 0);
 
-  if (!ai) {
+  if (apiKeys.length === 0) {
     return res.status(500).json({ error: "GEMINI_API_KEY is missing." });
   }
+
+  const randomKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+
+  const ai = new GoogleGenAI({
+    apiKey: randomKey,
+    httpOptions: {
+      headers: {
+        "User-Agent": "aistudio-build",
+      },
+    },
+  });
 
   try {
     const { subject, chapter, difficulty, questionType, count = 5 } = req.body;

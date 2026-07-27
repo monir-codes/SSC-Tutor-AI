@@ -59,23 +59,29 @@ Mathematics Formatting Rules (Mandatory):
 Final Rule:
 Always prioritize helping students learn effectively while remaining strictly within the scope of the Bangladesh SSC curriculum. If a request falls outside this scope, politely decline using the exact Refusal Message and guide the user back to SSC-related learning.`;
 
-  // Initialize Gemini AI
-  const ai = process.env.GEMINI_API_KEY
-    ? new GoogleGenAI({
-        apiKey: process.env.GEMINI_API_KEY,
-        httpOptions: {
-          headers: {
-            "User-Agent": "aistudio-build",
-          },
-        },
-      })
-    : null;
+  // Helper for AI initialization with random key
+  const getAiInstance = (res: any) => {
+    const apiKeys = (process.env.GEMINI_API_KEYS || process.env.GEMINI_API_KEY || "")
+      .split(",")
+      .map(k => k.trim())
+      .filter(k => k.length > 0);
+
+    if (apiKeys.length === 0) {
+      res.status(500).json({ error: "GEMINI_API_KEY is missing." });
+      return null;
+    }
+
+    const randomKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+    return new GoogleGenAI({
+      apiKey: randomKey,
+      httpOptions: { headers: { "User-Agent": "aistudio-build" } },
+    });
+  };
 
   // Chat Endpoint
   app.post("/api/chat", async (req, res) => {
-    if (!ai) {
-      return res.status(500).json({ error: "GEMINI_API_KEY is missing. Please set it in Settings > Secrets." });
-    }
+    const ai = getAiInstance(res);
+    if (!ai) return;
 
     try {
       const { message, history } = req.body;
@@ -84,21 +90,7 @@ Always prioritize helping students learn effectively while remaining strictly wi
         return res.status(400).json({ error: "Message is required." });
       }
 
-      const chat = ai.chats.create({
-        model: "gemini-3.5-flash",
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          temperature: 0.7,
-        },
-      });
-      
-      // We don't have the history passed directly into chats.create perfectly in this old mock, 
-      // but in the real `@google/genai` we could pass history if needed.
-      // For simplicity, we just send the message, but a real app would append history.
-      // Since this is a simple implementation, let's just send the message to a fresh chat context 
-      // or we can structure the contents manually if we want full history.
-      // We'll use generateContent with structured history for better control.
-
+      // Normal generation
       const contents = [];
       if (history && Array.isArray(history)) {
           for (const msg of history) {
@@ -130,9 +122,8 @@ Always prioritize helping students learn effectively while remaining strictly wi
   });
 
   app.post("/api/practice/generate", async (req, res) => {
-    if (!ai) {
-      return res.status(500).json({ error: "GEMINI_API_KEY is missing." });
-    }
+    const ai = getAiInstance(res);
+    if (!ai) return;
 
     try {
       const { subject, chapter, difficulty, questionType, count = 5 } = req.body;
@@ -184,9 +175,8 @@ Always prioritize helping students learn effectively while remaining strictly wi
   });
 
   app.post("/api/tests/generate", async (req, res) => {
-    if (!ai) {
-      return res.status(500).json({ error: "GEMINI_API_KEY is missing." });
-    }
+    const ai = getAiInstance(res);
+    if (!ai) return;
 
     try {
       const { subject, syllabusType, difficulty, count = 10 } = req.body;
