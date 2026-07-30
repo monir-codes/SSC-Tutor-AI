@@ -98,16 +98,16 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 w-full border-b border-slate-200/50 bg-white/80 backdrop-blur-2xl dark:bg-slate-950/80 dark:border-slate-800/50 transition-all duration-300">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-xl"
+            className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-xl hover:scale-[1.05] active:scale-[0.98] transition-transform"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm">
               <BookOpen className="h-6 w-6" />
             </div>
-            <span className="font-sans text-xl font-bold tracking-tight text-slate-900">
+            <span className="font-sans text-xl font-bold tracking-tight text-slate-900 dark:text-white">
               SSC Tutor AI
             </span>
           </Link>
@@ -116,10 +116,10 @@ export function Navbar() {
             <Link
               to="/"
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm",
+                "text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm",
                 location.pathname === "/"
                   ? "text-primary-600"
-                  : "text-slate-600",
+                  : "text-slate-600 dark:text-slate-300 dark:hover:text-primary-400",
               )}
             >
               Home
@@ -129,10 +129,10 @@ export function Navbar() {
             <div className="group relative">
               <button
                 className={cn(
-                  "flex items-center text-sm font-medium transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm py-2",
+                  "flex items-center text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm py-2",
                   location.pathname.startsWith("/subjects")
                     ? "text-primary-600"
-                    : "text-slate-600",
+                    : "text-slate-600 dark:text-slate-300 dark:hover:text-primary-400",
                 )}
               >
                 Subjects
@@ -225,10 +225,10 @@ export function Navbar() {
                 key={link.name}
                 to={link.path}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm",
+                  "text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm",
                   location.pathname === link.path
                     ? "text-primary-600"
-                    : "text-slate-600",
+                    : "text-slate-600 dark:text-slate-300 dark:hover:text-primary-400",
                 )}
               >
                 {link.name}

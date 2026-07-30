@@ -5,8 +5,8 @@ import { useUserStore } from "@/store/userStore";
 import { format } from "date-fns";
 import { SEO } from "@/components/SEO";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -96,7 +96,13 @@ export function ProgressPage() {
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Performance Trend</h3>
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={trendData}>
+                        <AreaChart data={trendData}>
+                          <defs>
+                            <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3}/>
+                              <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
                           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                           <XAxis 
                             dataKey="date" 
@@ -116,18 +122,20 @@ export function ProgressPage() {
                             tickFormatter={(value) => `${value}%`}
                           />
                           <Tooltip 
-                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'var(--tw-colors-white, #ffffff)' }}
+                            itemStyle={{ color: '#2563eb', fontWeight: 'bold' }}
                             formatter={(value: number) => [`${value}%`, 'Score']}
                           />
-                          <Line 
+                          <Area 
                             type="monotone" 
                             dataKey="percentage" 
                             stroke="#2563eb" 
                             strokeWidth={3}
-                            dot={{ fill: '#2563eb', strokeWidth: 2 }}
-                            activeDot={{ r: 6 }}
+                            fillOpacity={1}
+                            fill="url(#colorScore)"
+                            activeDot={{ r: 6, strokeWidth: 0, fill: '#2563eb' }}
                           />
-                        </LineChart>
+                        </AreaChart>
                       </ResponsiveContainer>
                     </div>
                   </div>

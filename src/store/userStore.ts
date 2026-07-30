@@ -72,6 +72,7 @@ interface UserState {
   // Chat Actions
   createChatSession: (title: string, context?: { subject?: string; chapter?: string }) => string;
   addChatMessage: (sessionId: string, message: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
+  updateChatMessage: (sessionId: string, messageId: string, content: string) => void;
   updateChatTitle: (sessionId: string, title: string) => void;
   deleteChatSession: (sessionId: string) => void;
   togglePinChat: (sessionId: string) => void;
@@ -127,12 +128,32 @@ export const useUserStore = create<UserState>()(
                 ...session,
                 messages: [
                   ...session.messages,
-                  { ...message, id: uuidv4(), timestamp: Date.now() },
+                  { ...message, id: message.id || uuidv4(), timestamp: Date.now() },
                 ],
                 updatedAt: Date.now(),
               },
             },
           };
+        });
+      },
+
+      updateChatMessage: (sessionId, messageId, content) => {
+        set((state) => {
+          const session = state.chatSessions[sessionId];
+          if (!session) return state;
+          
+          return {
+            chatSessions: {
+              ...state.chatSessions,
+              [sessionId]: {
+                ...session,
+                messages: session.messages.map(msg => 
+                  msg.id === messageId ? { ...msg, content } : msg
+                ),
+                updatedAt: Date.now(),
+              }
+            }
+          }
         });
       },
 

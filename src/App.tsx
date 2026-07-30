@@ -10,9 +10,27 @@ import { pageview, GA_TRACKING_ID } from "./lib/analytics";
 import { useThemeStore } from "./store/themeStore";
 import { Navbar } from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { GlobalLoader } from "./components/ui/GlobalLoader";
 import { Loader2 } from "lucide-react";
+import { ErrorBoundary } from "react-error-boundary";
+
+function ErrorFallback({ error, resetErrorBoundary }: any) {
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center min-h-[50vh] p-4 text-center">
+      <div className="bg-red-50 text-red-900 p-6 rounded-xl max-w-md w-full shadow-sm border border-red-100">
+        <h2 className="text-lg font-bold mb-2">Something went wrong!</h2>
+        <p className="text-sm opacity-80 mb-4">{error.message}</p>
+        <button
+          onClick={resetErrorBoundary}
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+        >
+          Try again
+        </button>
+      </div>
+    </div>
+  );
+}
 
 // Lazy-loaded pages for performance (Code Splitting)
 const HomePage = lazy(() => import("./pages/HomePage").then(module => ({ default: module.HomePage })));
@@ -122,23 +140,34 @@ export default function App() {
         <AnalyticsTracker />
         <Navbar />
         <main className="flex-1 relative">
-          <AnimatePresence mode="wait">
-            <Suspense fallback={<PageLoader />}>
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/subjects" element={<SubjectsPage />} />
-                <Route path="/subjects/:subjectId" element={<SubjectPage />} />
-                <Route path="/tutor" element={<AiTutorPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/practice" element={<PracticePage />} />
-                <Route path="/model-tests" element={<ModelTestsPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/progress" element={<ProgressPage />} />
-                <Route path="/bookmarks" element={<BookmarksPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
-          </AnimatePresence>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="h-full w-full"
+              >
+                <Suspense fallback={<PageLoader />}>
+                  <Routes location={location}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/subjects" element={<SubjectsPage />} />
+                    <Route path="/subjects/:subjectId" element={<SubjectPage />} />
+                    <Route path="/tutor" element={<AiTutorPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/practice" element={<PracticePage />} />
+                    <Route path="/model-tests" element={<ModelTestsPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/progress" element={<ProgressPage />} />
+                    <Route path="/bookmarks" element={<BookmarksPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </Suspense>
+              </motion.div>
+            </AnimatePresence>
+          </ErrorBoundary>
         </main>
         {location.pathname !== '/tutor' && <Footer />}
       </div>

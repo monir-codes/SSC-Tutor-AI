@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { BrainCircuit, Loader2, CheckCircle2, XCircle, Clock, FileText, Target, AlertCircle, ChevronRight, ChevronLeft, Flag, Bot } from "lucide-react";
 import { motion } from "framer-motion";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 import { useUserStore } from "@/store/userStore";
 import { SEO } from "@/components/SEO";
 import { toast } from "sonner";
@@ -48,6 +50,7 @@ type Question = {
 };
 
 export function ModelTestsPage() {
+  const { width, height } = useWindowSize();
   const [examState, setExamState] = useState<"setup" | "loading" | "exam" | "results">("setup");
   
   const { addExamResult } = useUserStore();
@@ -459,7 +462,9 @@ export function ModelTestsPage() {
       )}
 
       {examState === "results" && (
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 mt-12 w-full">
+        <>
+          <Confetti width={width} height={height} recycle={false} numberOfPieces={500} gravity={0.15} />
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 mt-12 w-full relative z-10">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-3xl bg-white shadow-xl ring-1 ring-slate-200 overflow-hidden">
             {/* Result Header */}
             <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white text-center relative overflow-hidden">
@@ -566,6 +571,7 @@ export function ModelTestsPage() {
             </div>
           </motion.div>
         </div>
+        </>
       )}
     </div>
   );

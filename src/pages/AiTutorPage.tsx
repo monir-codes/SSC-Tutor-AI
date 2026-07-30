@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Send, Bot, User, Loader2, MessageSquare, Plus, Trash2, Pin, Mic, MicOff, Download, ArrowRight, Info } from "lucide-react";
+import { Send, Bot, User, Loader2, MessageSquare, Plus, Trash2, Pin, Mic, MicOff, Download, ArrowRight, Info, Volume2, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import { cn } from "@/lib/utils";
 import { useUserStore, ChatMessage, ChatSession } from "@/store/userStore";
 import { format } from "date-fns";
@@ -23,6 +26,7 @@ export function AiTutorPage() {
     chatSessions, 
     createChatSession, 
     addChatMessage, 
+    updateChatMessage,
     deleteChatSession,
     togglePinChat,
     updateChatTitle
@@ -33,6 +37,8 @@ export function AiTutorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isCooldown, setIsCooldown] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +50,7 @@ export function AiTutorPage() {
     {
       id: "init",
       role: "assistant",
-      content: "হ্যালো! আমি তোমার পার্সোনাল এআই টিউটর। এসএসসি পরীক্ষার যেকোনো বিষয়ের কোনো টপিক বুঝতে অসুবিধা হলে আমাকে জিজ্ঞেস করতে পারো।",
+      content: "হ্যালো! আমি তোমার পার্সোনাল এআই টিউটর। ফ্রি এপিআই (Free API) লিমিট থাকায় আমার উত্তর দিতে মাঝে মাঝে একটু সময় লাগতে পারে, দয়া করে একটু অপেক্ষা করো। এসএসসি পরীক্ষার যেকোনো বিষয়ের কোনো টপিক বুঝতে অসুবিধা হলে আমাকে জিজ্ঞেস করতে পারো।",
       timestamp: Date.now()
     } as ChatMessage
   ];
@@ -120,6 +126,21 @@ export function AiTutorPage() {
     }
   };
 
+  const handleTTS = (text: string) => {
+    if (!window.speechSynthesis) {
+      toast.error("Text-to-speech is not supported in your browser.");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    
+    // Strip markdown characters before speaking for a cleaner voice output
+    const cleanText = text.replace(/[*#`_]/g, '');
+    
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'bn-BD';
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleDownloadPDF = async () => {
     if (!messagesContainerRef.current) return;
     
@@ -158,7 +179,7 @@ export function AiTutorPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || isCooldown) return;
 
     let sessionId = currentSessionId;
     if (!sessionId) {
@@ -175,7 +196,7 @@ export function AiTutorPage() {
       // Add initial system message to store as well
       addChatMessage(sessionId, {
         role: "assistant",
-        content: "হ্যালো! আমি তোমার পার্সোনাল এআই টিউটর। এসএসসি পরীক্ষার যেকোনো বিষয়ের কোনো টপিক বুঝতে অসুবিধা হলে আমাকে জিজ্ঞেস করতে পারো।"
+        content: "হ্যালো! আমি তোমার পার্সোনাল এআই টিউটর। ফ্রি এপিআই (Free API) লিমিট থাকায় আমার উত্তর দিতে মাঝে মাঝে একটু সময় লাগতে পারে, দয়া করে একটু অপেক্ষা করো। এসএসসি পরীক্ষার যেকোনো বিষয়ের কোনো টপিক বুঝতে অসুবিধা হলে আমাকে জিজ্ঞেস করতে পারো।"
       });
     }
 
@@ -191,28 +212,95 @@ export function AiTutorPage() {
         ? currentSession.messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', text: m.content })) 
         : [];
 
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-            message: userInputText,
-            history,
-            subject: currentSession?.subject || searchParams.get("subject"),
-            chapter: currentSession?.chapter || searchParams.get("chapter"),
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to get response");
-      }
-
+      const messageId = "msg-" + Date.now();
       addChatMessage(sessionId, { 
+        id: messageId,
         role: "assistant", 
-        content: data.text,
-        redirect: data.redirect 
-      });
+        content: "" 
+      } as any);
+
+      // Start a 10-second timer for the temporary waiting message
+      let hasStartedReceiving = false;
+      const waitingTimeout = setTimeout(() => {
+        if (!hasStartedReceiving) {
+          updateChatMessage(sessionId, messageId, "অনুগ্রহ করে একটু অপেক্ষা করুন, সার্ভারের ব্যস্ততার কারণে সময় লাগছে...");
+        }
+      }, 10000);
+
+      let success = false;
+
+      while (!success) {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+              message: userInputText,
+              history,
+              subject: currentSession?.subject || searchParams.get("subject"),
+              chapter: currentSession?.chapter || searchParams.get("chapter"),
+          }),
+        });
+
+        if (!response.ok) {
+          let errorData: any = {};
+          try { errorData = await response.json(); } catch(e){}
+
+          if (response.status === 429) {
+            if (errorData.type === "DAILY_QUOTA") {
+               clearTimeout(waitingTimeout);
+               updateChatMessage(sessionId, messageId, "⚠️ আজকের জন্য আপনার এপিআই লিমিট (২০টি মেসেজ) শেষ হয়ে গেছে! অনুগ্রহ করে আগামীকাল আবার চেষ্টা করুন।");
+               success = true;
+               break;
+            }
+            // Wait 15 seconds before retrying
+            await new Promise(r => setTimeout(r, 15000));
+            continue;
+          }
+          throw new Error("Failed to get response from server. Please try again.");
+        }
+
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let assistantResponse = "";
+        let done = false;
+        let buffer = "";
+
+        while (reader && !done) {
+          const { value, done: readerDone } = await reader.read();
+          done = readerDone;
+          if (value) {
+            hasStartedReceiving = true;
+            clearTimeout(waitingTimeout);
+
+            const chunk = decoder.decode(value, { stream: true });
+            buffer += chunk;
+            const lines = buffer.split("\n");
+            
+            // Keep the last incomplete line in the buffer
+            buffer = lines.pop() || "";
+            
+            for (const line of lines) {
+              if (line.startsWith("data: ")) {
+                const data = line.slice(6);
+                if (data.trim() === "[DONE]") break;
+                try {
+                  const parsed = JSON.parse(data);
+                  if (parsed.text) {
+                    assistantResponse += parsed.text;
+                    // Because assistantResponse starts at "", the first chunk will completely overwrite the temporary waiting message!
+                    updateChatMessage(sessionId, messageId, assistantResponse);
+                  }
+                } catch (e) {
+                  // Ignore parse errors from partial chunks
+                }
+              }
+            }
+          }
+        }
+        success = true;
+      }
+      
+      clearTimeout(waitingTimeout);
       
       // Update title if it's still generic (optional)
       if (currentSession && currentSession.messages.length === 2 && currentSession.title.includes("...")) {
@@ -226,6 +314,10 @@ export function AiTutorPage() {
       });
     } finally {
       setIsLoading(false);
+      
+      // Add a 2-second cooldown to prevent Gemini API rate limit (429) errors
+      setIsCooldown(true);
+      setTimeout(() => setIsCooldown(false), 2000);
     }
   };
 
@@ -250,15 +342,35 @@ export function AiTutorPage() {
           "operatingSystem": "All"
         }}
       />
-      {/* Sidebar for chat history (Desktop) */}
-      <div className="hidden lg:flex w-80 flex-col border-r border-slate-200 bg-white">
-        <div className="p-4 border-b border-slate-200">
+      {/* Mobile Overlay */}
+      {isMobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden" 
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar for chat history */}
+      <div className={cn(
+        "fixed inset-y-0 left-0 z-50 w-80 flex flex-col border-r border-slate-200 bg-white shadow-2xl lg:shadow-none transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0",
+        isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
           <button 
-            onClick={handleNewChat}
-            className="w-full flex items-center justify-center space-x-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800"
+            onClick={() => {
+              handleNewChat();
+              setIsMobileSidebarOpen(false);
+            }}
+            className="flex-1 flex items-center justify-center space-x-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800"
           >
             <Plus className="h-4 w-4" />
             <span>New Chat</span>
+          </button>
+          <button 
+            onClick={() => setIsMobileSidebarOpen(false)}
+            className="lg:hidden ml-3 p-2 text-slate-500 hover:bg-slate-100 rounded-lg"
+          >
+            <X className="h-5 w-5" />
           </button>
         </div>
         
@@ -273,6 +385,7 @@ export function AiTutorPage() {
                       onClick={() => {
                         setCurrentSessionId(session.id);
                         navigate(`/tutor?session=${session.id}`);
+                        setIsMobileSidebarOpen(false);
                       }}
                       className={cn(
                         "flex-1 text-left px-3 py-2.5 rounded-lg text-sm font-medium truncate transition-colors",
@@ -305,6 +418,7 @@ export function AiTutorPage() {
                       onClick={() => {
                         setCurrentSessionId(session.id);
                         navigate(`/tutor?session=${session.id}`);
+                        setIsMobileSidebarOpen(false);
                       }}
                       className={cn(
                         "flex-1 text-left px-3 py-2.5 rounded-lg text-sm font-medium truncate pr-14 transition-colors",
@@ -338,7 +452,14 @@ export function AiTutorPage() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative min-w-0 min-h-0 overflow-hidden">
         {/* Header (Mobile & Actions) */}
-        <div className="flex items-center justify-end px-4 py-3 bg-white border-b border-slate-200 shadow-sm z-10 lg:bg-transparent lg:border-none lg:shadow-none lg:absolute lg:top-0 lg:right-0 lg:p-4">
+        <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 shadow-sm z-10 lg:bg-transparent lg:border-none lg:shadow-none lg:absolute lg:top-0 lg:right-0 lg:p-4">
+           <button
+             onClick={() => setIsMobileSidebarOpen(true)}
+             className="lg:hidden flex items-center justify-center h-10 w-10 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-sm"
+           >
+             <Menu className="h-5 w-5" />
+           </button>
+           
            <button
              onClick={handleDownloadPDF}
              disabled={isDownloading || messages.length <= 1}
@@ -364,22 +485,31 @@ export function AiTutorPage() {
                 >
                   <div
                     className={cn(
-                      "flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-sm",
-                      msg.role === "user" ? "bg-slate-900 text-white" : "bg-primary-600 text-white"
+                      "flex h-10 w-10 shrink-0 items-center justify-center rounded-full shadow-md border border-white/20",
+                      msg.role === "user" ? "bg-gradient-to-br from-slate-700 to-slate-900 text-white" : "bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-primary-500/30"
                     )}
                   >
                     {msg.role === "user" ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
                   </div>
                   <div
                     className={cn(
-                      "rounded-2xl px-6 py-4 text-base shadow-sm font-bn max-w-[85%] sm:max-w-[75%]",
+                      "rounded-2xl px-6 py-4 text-base shadow-sm font-bn max-w-[85%] sm:max-w-[75%] relative group/msg",
                       msg.role === "user"
-                        ? "bg-white text-slate-900 border border-slate-200"
+                        ? "bg-gradient-to-br from-primary-600 to-indigo-600 text-white shadow-lg shadow-primary-500/30 border border-white/20 rounded-tr-sm font-semibold tracking-wide drop-shadow-sm"
                         : msg.redirect 
                           ? "bg-blue-50/50 border border-blue-100 text-slate-900 overflow-hidden" 
                           : "bg-primary-50 border border-primary-100 text-slate-900 leading-relaxed overflow-hidden"
                     )}
                   >
+                    {msg.role === "assistant" && (
+                      <button 
+                        onClick={() => handleTTS(msg.content)}
+                        className="absolute -right-10 top-2 opacity-0 group-hover/msg:opacity-100 transition-opacity p-2 text-slate-400 hover:text-primary-600 rounded-full hover:bg-white border border-transparent hover:border-slate-200 shadow-sm"
+                        title="Listen"
+                      >
+                        <Volume2 className="h-4 w-4" />
+                      </button>
+                    )}
                     {msg.redirect && (
                       <div className="flex items-center space-x-2 text-blue-700 font-semibold mb-3 border-b border-blue-100 pb-3">
                         <Info className="h-5 w-5" />
@@ -387,7 +517,10 @@ export function AiTutorPage() {
                       </div>
                     )}
                     <div className={cn("prose prose-slate max-w-none prose-p:my-1 prose-ul:my-2 prose-li:my-0 prose-headings:my-2 prose-h1:text-xl prose-h2:text-lg prose-h3:text-base", msg.role === "assistant" && !msg.redirect && "prose-p:leading-relaxed", msg.redirect && "text-slate-700")}>
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm, remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                      >
                         {msg.content}
                       </ReactMarkdown>
                       {msg.redirect && (
@@ -411,9 +544,10 @@ export function AiTutorPage() {
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-600 text-white shadow-sm">
                   <Bot className="h-5 w-5" />
                 </div>
-                <div className="flex items-center rounded-2xl bg-primary-50 px-6 py-4 shadow-sm border border-primary-100">
-                  <Loader2 className="h-5 w-5 animate-spin text-primary-600" />
-                  <span className="ml-3 text-sm text-primary-700 font-medium">Thinking...</span>
+                <div className="flex flex-col gap-2 rounded-2xl bg-white border border-slate-200 px-6 py-4 shadow-sm w-[75%] max-w-sm">
+                  <div className="h-4 w-3/4 rounded-md bg-slate-200 animate-pulse"></div>
+                  <div className="h-4 w-1/2 rounded-md bg-slate-200 animate-pulse"></div>
+                  <div className="h-4 w-5/6 rounded-md bg-slate-200 animate-pulse"></div>
                 </div>
               </div>
             )}
@@ -425,22 +559,24 @@ export function AiTutorPage() {
           <div className="mx-auto max-w-3xl">
             <form onSubmit={handleSubmit} className="relative flex items-center">
               <input
+                id="chat-input"
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
+                  isCooldown ? "Please wait a moment..." :
                   subjectParam
                     ? `Ask anything about ${subjectParam.split(" (")[0]}...`
                     : "Ask anything about your SSC subjects (e.g. নিউটনের ৩য় সূত্রটা বুঝিয়ে বলো)..."
                 }
-                disabled={isLoading || isListening}
+                disabled={isLoading || isListening || isCooldown}
                 className="w-full rounded-full border border-slate-300 bg-slate-50 px-6 py-4 pr-24 text-base outline-none transition-colors focus:border-primary-500 focus:bg-white focus:ring-1 focus:ring-primary-500 disabled:opacity-50 font-bn"
               />
-              <div className="absolute right-2 flex items-center space-x-1">
+              <div className="absolute right-2 flex items-center space-x-1 bg-white pl-2">
                 <button
                   type="button"
                   onClick={toggleListening}
-                  disabled={isLoading}
+                  disabled={isLoading || isCooldown}
                   className={cn(
                     "flex h-10 w-10 items-center justify-center rounded-full transition-all disabled:opacity-50",
                     isListening ? "bg-red-100 text-red-600 animate-pulse" : "bg-transparent text-slate-400 hover:bg-slate-100 hover:text-slate-600"
@@ -450,7 +586,7 @@ export function AiTutorPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isLoading || (!input.trim() && !isListening)}
+                  disabled={isLoading || isCooldown || (!input.trim() && !isListening)}
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white transition-transform hover:scale-105 hover:bg-primary-500 disabled:opacity-50 disabled:hover:scale-100"
                 >
                   <Send className="h-5 w-5 ml-1" />
