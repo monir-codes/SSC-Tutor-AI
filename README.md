@@ -5,7 +5,7 @@
 </div>
 
 ## 🌟 Introduction
-SSC Tutor AI is the first dedicated AI-powered educational platform designed specifically for students under the Bangladesh (NCTB) curriculum. Our mission is to provide high-quality **free education, SSC suggestions, chapter-wise explanations, mock tests, and smart learning (shikkha)** using advanced AI technology.
+SSC Tutor AI is the first dedicated AI-powered educational platform designed specifically for students under the Bangladesh (NCTB) curriculum. Our mission is to provide high-quality **free education, SSC suggestions, chapter-wise explanations, mock tests, and smart learning** using advanced AI technology.
 
 Whether you need help with Physics, Math, Biology, Chemistry, or Bangla, SSC Tutor AI is available 24/7. It provides the **best free AI tutor** experience, ensuring you ace your exams!
 
