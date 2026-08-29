@@ -11,7 +11,6 @@ import { useThemeStore } from "./store/themeStore";
 import { Navbar } from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
 import { AnimatePresence, motion } from "framer-motion";
-import { GlobalLoader } from "./components/ui/GlobalLoader";
 import { Loader2 } from "lucide-react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -100,15 +99,6 @@ function AnalyticsTracker() {
 
 export default function App() {
   const location = useLocation();
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-
-  useEffect(() => {
-    // Simulate initial loading sequence
-    const timer = setTimeout(() => {
-      setIsInitialLoad(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -134,12 +124,11 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <div className="flex min-h-[100dvh] flex-col bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-        <GlobalLoader isLoading={isInitialLoad} />
+      <div className={location.pathname === '/tutor' ? "flex h-[100dvh] max-h-[100dvh] overflow-hidden flex-col bg-slate-50 dark:bg-slate-900 transition-colors duration-300" : "flex min-h-[100dvh] flex-col bg-slate-50 dark:bg-slate-900 transition-colors duration-300"}>
         <Toaster position="bottom-center" />
         <AnalyticsTracker />
         <Navbar />
-        <main className="flex-1 relative">
+        <main className={location.pathname === '/tutor' ? "flex-1 min-h-0 relative overflow-hidden flex flex-col" : "flex-1 relative"}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AnimatePresence mode="wait">
               <motion.div
@@ -148,7 +137,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="h-full w-full"
+                className={location.pathname === '/tutor' ? "h-full w-full flex-1 flex flex-col min-h-0 overflow-hidden" : "h-full w-full"}
               >
                 <Suspense fallback={<PageLoader />}>
                   <Routes location={location}>

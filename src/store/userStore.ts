@@ -71,7 +71,7 @@ interface UserState {
   
   // Chat Actions
   createChatSession: (title: string, context?: { subject?: string; chapter?: string }) => string;
-  addChatMessage: (sessionId: string, message: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
+  addChatMessage: (sessionId: string, message: Omit<ChatMessage, 'id' | 'timestamp'> & { id?: string }) => void;
   updateChatMessage: (sessionId: string, messageId: string, content: string) => void;
   updateChatTitle: (sessionId: string, title: string) => void;
   deleteChatSession: (sessionId: string) => void;

@@ -3,36 +3,37 @@ import { BookOpen, Github, Linkedin, Globe, CheckCircle2, Heart } from "lucide-r
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white pt-16 pb-8">
+    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 pt-12 sm:pt-16 pb-8 transition-colors">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
           
           {/* Brand & About */}
-          <div className="lg:col-span-1 flex flex-col gap-6">
+          <div className="md:col-span-2 lg:col-span-1 flex flex-col gap-4">
             <div>
               <Link to="/" className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 rounded-xl">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm">
                   <BookOpen className="h-6 w-6" />
                 </div>
-                <span className="font-sans text-xl font-bold tracking-tight text-slate-900">
+                <span className="font-sans text-xl font-bold tracking-tight text-slate-900 dark:text-white">
                   SSC Tutor AI
                 </span>
               </Link>
-              <p className="mt-4 text-sm font-medium text-slate-700">
-                Learn Every SSC Subject — Simple, Accurate & Student-Friendly.
+              <p className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200 font-bn">
+                বাংলাদেশের শিক্ষার্থীদের জন্য সহজ, নির্ভুল ও বিনামূল্যে ডিজিটাল শিক্ষা।
               </p>
             </div>
-            <p className="text-sm leading-relaxed text-slate-500">
-              This platform provides easy-to-understand, accurate, and high-quality learning resources for every SSC subject under the Bangladesh NCTB curriculum. Our goal is to make learning easier, clearer, and more enjoyable for every SSC student.
+            <p className="text-xs sm:text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+              NCTB কারিকুলাম অনুযায়ী প্রতিটি বিষয়ের সহজবোধ্য ব্যাখ্যা, প্র্যাকটিস প্রশ্ন ও এআই সহায়তা।
             </p>
           </div>
 
           {/* Quick Links */}
-          <div className="lg:col-span-1">
-            <h3 className="text-sm font-semibold text-slate-900">Quick Links</h3>
-            <ul className="mt-6 space-y-4">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Quick Links</h3>
+            <ul className="mt-4 sm:mt-6 space-y-3">
               {[
                 { name: "Home", href: "/" },
+                { name: "AI Tutor", href: "/tutor" },
                 { name: "Practice", href: "/practice" },
                 { name: "Model Tests", href: "/model-tests" },
                 { name: "About", href: "/about" },
@@ -41,7 +42,7 @@ export function Footer() {
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-slate-500 transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 rounded-sm"
+                    className="text-sm text-slate-600 dark:text-slate-400 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                   >
                     {link.name}
                   </Link>
@@ -51,18 +52,18 @@ export function Footer() {
           </div>
 
           {/* Subjects */}
-          <div className="lg:col-span-1">
-            <h3 className="text-sm font-semibold text-slate-900">Subjects</h3>
-            <ul className="mt-6 space-y-4">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Streams</h3>
+            <ul className="mt-4 sm:mt-6 space-y-3">
               {[
-                { name: "📘 Science", href: "/subjects" },
-                { name: "📙 Humanities (Arts)", href: "/subjects" },
-                { name: "📗 Business Studies (Commerce)", href: "/subjects" },
+                { name: "📘 Science (বিজ্ঞান)", href: "/subjects" },
+                { name: "📙 Humanities (মানবিক)", href: "/subjects" },
+                { name: "📗 Commerce (বাণিজ্য)", href: "/subjects" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-slate-500 transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 rounded-sm"
+                    className="text-sm text-slate-600 dark:text-slate-400 transition-colors hover:text-primary-600 dark:hover:text-primary-400 font-bn"
                   >
                     {link.name}
                   </Link>
@@ -72,36 +73,33 @@ export function Footer() {
           </div>
 
           {/* Free & Open */}
-          <div className="lg:col-span-1 flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
              <div>
-                <h3 className="text-sm font-semibold text-slate-900">Free & Open</h3>
-                <div className="mt-6 rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-200">
-                  <ul className="space-y-3">
-                    {["100% Free to Use", "Open for Everyone", "No Hidden Charges"].map((item) => (
-                      <li key={item} className="flex items-center text-sm font-medium text-slate-700">
-                        <CheckCircle2 className="mr-3 h-5 w-5 text-accent-500" />
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Free & Open</h3>
+                <div className="mt-4 sm:mt-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 p-4 sm:p-5 border border-slate-200 dark:border-slate-800">
+                  <ul className="space-y-2.5">
+                    {["100% Free to Use", "No Subscription Needed", "Open for Everyone"].map((item) => (
+                      <li key={item} className="flex items-center text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">
+                        <CheckCircle2 className="mr-2.5 h-4 w-4 text-emerald-500 shrink-0" />
                         {item}
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-4 text-xs leading-relaxed text-slate-500 italic">
-                    "We believe quality education should be accessible to every SSC student."
-                  </p>
                 </div>
              </div>
           </div>
 
           {/* Connect & Feedback */}
-          <div className="lg:col-span-1 flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Connect With Me</h3>
-              <div className="mt-6 flex space-x-4">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Connect</h3>
+              <div className="mt-4 sm:mt-6 flex space-x-3">
                 <a
                   href="https://www.linkedin.com/in/moniruzzaman-rumman/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-all hover:bg-[#0A66C2] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-[#0A66C2] hover:text-white"
                 >
                   <Linkedin className="h-5 w-5" />
                 </a>
@@ -110,7 +108,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-all hover:bg-slate-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-slate-900 hover:text-white"
                 >
                   <Github className="h-5 w-5" />
                 </a>
@@ -119,29 +117,22 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Portfolio"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition-all hover:bg-primary-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-primary-600 hover:text-white"
                 >
                   <Globe className="h-5 w-5" />
                 </a>
               </div>
             </div>
-            
-            <div>
-              <h3 className="text-sm font-semibold text-slate-900">Feedback</h3>
-              <p className="mt-4 text-sm leading-relaxed text-slate-500">
-                Found an error or have a suggestion? We'd love to hear from you. Your feedback helps improve this platform for everyone.
-              </p>
-            </div>
           </div>
 
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between border-t border-slate-200 pt-8 sm:flex-row gap-4 text-center sm:text-left">
-          <p className="text-sm text-slate-500">
-            © 2026 Monir. All Rights Reserved.
+        <div className="mt-12 sm:mt-16 flex flex-col items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-6 sm:pt-8 sm:flex-row gap-3 text-center sm:text-left">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            © 2026 SSC Tutor AI by Md. Moniruzzaman. All Rights Reserved.
           </p>
-          <p className="flex flex-wrap items-center justify-center sm:justify-start text-sm text-slate-500">
-            Made with <Heart className="mx-1 h-4 w-4 text-red-500 fill-red-500 shrink-0" /> in Bangladesh for every SSC Student.
+          <p className="flex flex-wrap items-center justify-center sm:justify-start text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Made with <Heart className="mx-1 h-3.5 w-3.5 text-red-500 fill-red-500 shrink-0" /> in Bangladesh for every SSC Student.
           </p>
         </div>
       </div>

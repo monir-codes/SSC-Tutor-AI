@@ -8,7 +8,7 @@ export function AboutPage() {
     { title: "AI-powered explanations", icon: BrainCircuit },
     { title: "Covers all SSC subjects", icon: BookOpen },
     { title: "NCTB curriculum focused", icon: BookOpen },
-    { title: "Easy language", icon: Sparkles },
+    { title: "Easy Bengali language", icon: Sparkles },
     { title: "Chapter-wise learning", icon: BookOpen },
     { title: "Real-life examples", icon: Sparkles },
     { title: "Exam-focused preparation", icon: BookOpen },
@@ -26,7 +26,7 @@ export function AboutPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
       <SEO 
         title="About Us | SSC Tutor AI - Mission & Vision"
         description="Learn about the mission, vision, and the creator behind SSC Tutor AI - a free platform providing quality AI education for students in Bangladesh."
@@ -34,19 +34,19 @@ export function AboutPage() {
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "AboutPage",
-          "name": "About SSC Tutor AI",
-          "url": "https://ssc-tutor-ai.vercel.app/about",
-          "description": "Learn about the mission, vision, and creator behind SSC Tutor AI.",
-          "mainEntity": {
+          name: "About SSC Tutor AI",
+          url: "https://ssc-tutor-ai.vercel.app/about",
+          description: "Learn about the mission, vision, and creator behind SSC Tutor AI.",
+          mainEntity: {
             "@type": "Person",
-            "name": "Md. Moniruzzaman (Rumman)",
-            "jobTitle": "Full Stack (MERN) Developer",
-            "url": "https://monir-uzzaman.vercel.app"
+            name: "Md. Moniruzzaman (Rumman)",
+            jobTitle: "Full Stack (MERN) Developer",
+            url: "https://monir-uzzaman.vercel.app"
           }
         }}
       />
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white pt-20 pb-24 border-b border-slate-200">
+      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-16 sm:pt-20 pb-20 sm:pb-24 border-b border-slate-200 dark:border-slate-800">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -54,20 +54,20 @@ export function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               About This Platform
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-xl leading-8 text-slate-600">
-              Making SSC Learning Easier, Smarter, and Accessible for Everyone.
+            <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-lg sm:text-xl leading-8 text-slate-600 dark:text-slate-300 font-bn">
+              বাংলাদেশের প্রতিটি এসএসসি শিক্ষার্থীর জন্য মানসম্মত শিক্ষা সম্পূর্ণ বিনামূল্যে ও সহজবোধ্য করার এক উদ্যোগ।
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Our Mission & Why */}
-      <section className="py-20">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-10 lg:gap-16 lg:grid-cols-2">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -75,16 +75,16 @@ export function AboutPage() {
               transition={{ duration: 0.5 }}
               className="flex flex-col justify-center"
             >
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900">Our Mission</h2>
-              <div className="mt-6 space-y-6 text-base leading-relaxed text-slate-600">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Our Mission</h2>
+              <div className="mt-6 space-y-5 text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 font-bn">
                 <p>
-                  This platform was created especially for Class 9, Class 10, and SSC students of Bangladesh following the latest NCTB curriculum.
+                  এই প্ল্যাটফর্মটি তৈরি করা হয়েছে বিশেষ করে বাংলাদেশের ৯ম, ১০ম শ্রেণি এবং এসএসসি পরীক্ষার্থীদের জন্য, যা সম্পূর্ণভাবে জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)-এর সিলেবাস অনুসরণ করে।
                 </p>
                 <p>
-                  Every lesson is explained in a simple, accurate, student-friendly, and easy-to-understand way so that students can understand difficult topics as if they were learning from an experienced private tutor.
+                  প্রতিটি পাঠ্য বিষয়কে সহজ, নির্ভুল এবং ছাত্রবান্ধব ভাষায় ধাপে ধাপে উপস্থাপন করা হয়েছে, যাতে একজন শিক্ষার্থী ঘরে বসেই একজন অভিজ্ঞ প্রাইভেট শিক্ষকের মতো সহায়তা পায়।
                 </p>
                 <p>
-                  Powered by AI, the platform focuses on conceptual understanding instead of memorization. Learning should be enjoyable, interactive, and accessible to everyone.
+                  কৃত্রিম বুদ্ধিমত্তা (AI) প্রযুক্তির সাহায্যে মুখস্থ বিদ্যার পরিবর্তে গভীর ধারণাগত বোঝাপড়াকে প্রাধান্য দিয়ে শিক্ষাকে আনন্দময় ও সহজলভ্য করাই আমাদের মূল লক্ষ্য।
                 </p>
               </div>
             </motion.div>
@@ -94,18 +94,18 @@ export function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col justify-center rounded-3xl bg-primary-50 p-8 sm:p-10 lg:p-12 ring-1 ring-primary-100"
+              className="flex flex-col justify-center rounded-3xl bg-primary-50 dark:bg-slate-950 p-6 sm:p-10 lg:p-12 border border-primary-100 dark:border-slate-800 shadow-sm"
             >
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900">Why This Exists</h2>
-              <div className="mt-6 space-y-6 text-base leading-relaxed text-slate-700">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Why This Exists</h2>
+              <div className="mt-6 space-y-5 text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300 font-bn">
                 <p>
-                  Many students cannot afford quality coaching or private tutors. Many struggle to understand textbook language.
+                  অনেক শিক্ষার্থীর পক্ষেই ব্যয়বহুল কোচিং কিংবা প্রাইভেট টিউটর রাখা সম্ভব হয় না। আবার পাঠ্যবইয়ের কঠিন ভাষা বুঝতে গিয়ে অনেকের বিজ্ঞানের বিষয় ও গণিতে ভীতি তৈরি হয়।
                 </p>
                 <p>
-                  Many become afraid of Mathematics, Science, English, and other subjects because explanations are often too difficult. This platform was built to remove those barriers.
+                  এই সমস্যার সমাধান হিসেবে বিনামূল্যে এবং নির্ভুলভাবে যে কেউ যেন তার পড়ালেখার সব সন্দেহ দূর করতে পারে, সেই উদ্দেশ্যেই এই প্ল্যাটফর্মের জন্ম।
                 </p>
-                <p className="font-semibold text-primary-700">
-                  Our goal is to make high-quality education available to every SSC student completely free of cost. Students should feel confident, curious, and motivated to learn.
+                <p className="font-semibold text-primary-700 dark:text-primary-400">
+                  আমাদের লক্ষ্য দেশের প্রত্যন্ত অঞ্চলসহ প্রতিটি এসএসসি শিক্ষার্থীর কাছে সর্বোচ্চ মানের ডিজিটাল শিক্ষা পৌঁছে দেওয়া।
                 </p>
               </div>
             </motion.div>
@@ -114,12 +114,14 @@ export function AboutPage() {
       </section>
 
       {/* Features */}
-      <section className="bg-white py-24 border-y border-slate-200">
+      <section className="bg-white dark:bg-slate-950 py-16 sm:py-24 border-y border-slate-200 dark:border-slate-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">What Makes This Platform Different</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              What Makes This Platform Different
+            </h2>
           </div>
-          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 sm:mt-16 grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -128,13 +130,13 @@ export function AboutPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm transition-all hover:shadow-md hover:border-primary-200 hover:bg-white"
+                  transition={{ duration: 0.4, delay: index * 0.04 }}
+                  className="flex items-center gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 p-5 sm:p-6 shadow-sm transition-all hover:shadow-md hover:border-primary-300 dark:hover:border-primary-600 hover:bg-white dark:hover:bg-slate-900"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-600">
-                    <Icon className="h-6 w-6" />
+                  <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 border border-primary-200 dark:border-primary-800">
+                    <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </div>
-                  <span className="font-semibold text-slate-900">{feature.title}</span>
+                  <span className="font-semibold text-sm sm:text-base text-slate-900 dark:text-white">{feature.title}</span>
                 </motion.div>
               );
             })}
@@ -143,55 +145,52 @@ export function AboutPage() {
       </section>
 
       {/* Meet the Creator */}
-      <section className="py-24">
+      <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-white shadow-xl ring-1 ring-slate-200 overflow-hidden">
+          <div className="rounded-3xl bg-white dark:bg-slate-950 shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12">
-              <div className="lg:col-span-5 bg-slate-900 p-12 text-white flex flex-col justify-center relative overflow-hidden">
+              <div className="lg:col-span-5 bg-slate-900 dark:bg-slate-900 p-8 sm:p-12 text-white flex flex-col justify-center relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary-400 via-transparent to-transparent"></div>
-                <h3 className="text-primary-400 font-semibold tracking-wider text-sm uppercase">Meet the Creator</h3>
-                <h2 className="mt-2 text-4xl font-bold">Md. Moniruzzaman (Rumman)</h2>
-                <p className="mt-4 text-xl font-light text-slate-300">Full Stack (MERN) Developer</p>
-                <p className="mt-6 text-base leading-relaxed text-slate-400">
+                <h3 className="text-primary-400 font-semibold tracking-wider text-xs sm:text-sm uppercase">Meet the Creator</h3>
+                <h2 className="mt-2 text-3xl sm:text-4xl font-bold">Md. Moniruzzaman (Rumman)</h2>
+                <p className="mt-3 text-lg sm:text-xl font-light text-slate-300">Full Stack (MERN) Developer</p>
+                <p className="mt-5 text-sm sm:text-base leading-relaxed text-slate-400">
                   Passionate Full Stack Developer dedicated to building modern, user-friendly, and impactful digital solutions that make education more accessible for everyone.
                 </p>
                 
-                <div className="mt-10 flex flex-wrap gap-4">
-                  <a href="https://www.linkedin.com/in/moniruzzaman-rumman/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-[#0A66C2]">
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a href="https://www.linkedin.com/in/moniruzzaman-rumman/" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white transition-colors hover:bg-[#0A66C2]">
                     <Linkedin className="h-5 w-5" />
                   </a>
-                  <a href="https://github.com/monir-codes/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-slate-700">
+                  <a href="https://github.com/monir-codes/" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white transition-colors hover:bg-slate-700">
                     <Github className="h-5 w-5" />
                   </a>
-                  <a href="https://monir-uzzaman.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-primary-500">
+                  <a href="https://monir-uzzaman.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white transition-colors hover:bg-primary-500">
                     <Globe className="h-5 w-5" />
                   </a>
-                  <a href="mailto:Monir.webdev@gmail.com" className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-red-500">
+                  <a href="mailto:Monir.webdev@gmail.com" className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white transition-colors hover:bg-red-500">
                     <Mail className="h-5 w-5" />
                   </a>
                 </div>
               </div>
-              <div className="lg:col-span-7 p-10 sm:p-12">
-                <div className="prose prose-slate max-w-none">
-                  <p className="lead text-lg text-slate-600">
+              <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12">
+                <div className="prose prose-slate dark:prose-invert max-w-none text-sm sm:text-base">
+                  <p className="lead text-base sm:text-lg text-slate-600 dark:text-slate-300">
                     Hi, I'm Md. Moniruzzaman (Rumman), a Full Stack (MERN) Developer with a strong passion for creating scalable, modern, and user-centric web applications.
                   </p>
-                  <p>
+                  <p className="text-slate-600 dark:text-slate-300">
                     I enjoy solving real-world problems through technology and continuously explore modern tools, AI, and innovative development practices to build meaningful digital experiences.
                   </p>
-                  <p>
+                  <p className="text-slate-600 dark:text-slate-300">
                     This educational platform reflects my belief that quality education should never be limited by financial barriers. Every student deserves access to clear explanations, reliable learning resources, and an engaging learning experience.
-                  </p>
-                  <p>
-                    My goal is not only to build software but also to create solutions that positively impact students and society.
                   </p>
                 </div>
 
-                <div className="mt-12">
-                  <h4 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-6">Technical Skills</h4>
+                <div className="mt-8 sm:mt-10">
+                  <h4 className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">Technical Skills</h4>
                   <div className="flex flex-wrap gap-2">
                     {skills.map((skill) => (
-                      <span key={skill} className="inline-flex items-center rounded-md bg-slate-100 px-3 py-1 text-sm font-medium text-slate-800 ring-1 ring-inset ring-slate-200/50">
+                      <span key={skill} className="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">
                         {skill}
                       </span>
                     ))}
@@ -204,38 +203,18 @@ export function AboutPage() {
       </section>
 
       {/* Future Vision */}
-      <section className="bg-slate-900 py-24 text-white relative overflow-hidden">
+      <section className="bg-slate-900 py-16 sm:py-24 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">Future Vision</h2>
-          <div className="mt-8 space-y-6 text-lg leading-relaxed text-slate-300">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Future Vision</h2>
+          <div className="mt-6 sm:mt-8 space-y-5 text-sm sm:text-lg leading-relaxed text-slate-300 font-bn">
             <p>
-              This platform is only the beginning.
-            </p>
-            <p>
-              Our vision is to continuously improve and expand this learning platform with more interactive features, smarter AI assistance, chapter-wise practice, model tests, progress tracking, and personalized learning experiences.
-            </p>
-            <p>
-              In the future, we aim to support HSC students, helping them prepare for higher-level academic challenges with the same commitment to simplicity, quality, and accessibility.
+              আমাদের লক্ষ্য এই প্ল্যাটফর্মকে প্রতিনিয়ত উন্নত করা এবং ভবিষ্যতে এইচএসসি (HSC) শিক্ষার্থীদের জন্যও একই ধরণের মানসম্মত ও সহজবোধ্য লার্নিং ম্যাটেরিয়ালস যুক্ত করা।
             </p>
             <p className="font-semibold text-white">
-              We also aspire to build one of Bangladesh's most trusted AI-powered educational platforms, where every learner—regardless of financial background—can access high-quality education completely free.
+              বাংলাদেশের প্রতিটি শিক্ষার্থী যাতে সমান সুযোগ নিয়ে নিজের মেধার সর্বোচ্চ বিকাশ ঘটাতে পারে, সেই অঙ্গীকার নিয়ে আমরা সামনে এগিয়ে যাচ্ছি।
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Closing */}
-      <section className="py-24 bg-white text-center">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <blockquote className="text-2xl sm:text-3xl font-medium text-slate-900 italic leading-relaxed">
-            "Education becomes truly meaningful when quality learning is accessible to everyone."
-          </blockquote>
-          <p className="mt-10 text-lg text-slate-600">
-            Thank you for being a part of this journey.
-            <br />
-            Together, let's make learning simpler, smarter, and available to every student.
-          </p>
         </div>
       </section>
     </div>

@@ -17,6 +17,11 @@
   --color-accent-600: #059669;
 }
 
+html, body {
+  height: 100%;
+  overscroll-behavior-y: none;
+}
+
 body {
   @apply bg-slate-50 text-slate-900 font-sans antialiased transition-colors duration-200;
 }
@@ -25,59 +30,28 @@ body {
   font-family: var(--font-bengali);
 }
 
-/* Global Dark Mode Fixes without rewriting every component */
+/* Global Dark Mode Baseline */
 .dark body {
   @apply bg-slate-900 text-slate-100;
 }
 
-.dark .bg-white {
-  @apply bg-slate-800;
+/* KaTeX responsive overflow prevention */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+  margin: 0.5rem 0 !important;
 }
 
-.dark .bg-slate-50 {
-  @apply bg-slate-900;
+.katex {
+  font-size: 1.05em;
+  text-rendering: optimizeLegibility;
 }
 
-.dark .bg-slate-100 {
-  @apply bg-slate-800;
-}
-
-.dark .text-slate-900 {
-  @apply text-slate-100;
-}
-
-.dark .text-slate-800 {
-  @apply text-slate-200;
-}
-
-.dark .text-slate-700 {
-  @apply text-slate-300;
-}
-
-.dark .text-slate-600 {
-  @apply text-slate-400;
-}
-
-.dark .text-slate-500 {
-  @apply text-slate-400;
-}
-
-.dark .border-slate-200 {
-  @apply border-slate-700;
-}
-
-.dark .border-slate-300 {
-  @apply border-slate-600;
-}
-
-.dark .bg-white\/80 {
-  @apply bg-slate-900/80;
-}
-
-/* Custom Scrollbar for horizontal lists */
+/* Custom Scrollbar for horizontal and vertical scroll areas */
 .custom-scrollbar::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
+  height: 5px;
+  width: 5px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
@@ -87,5 +61,11 @@ body {
   border-radius: 10px;
 }
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }

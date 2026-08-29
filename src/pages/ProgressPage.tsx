@@ -103,7 +103,7 @@ export function ProgressPage() {
                               <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
                             </linearGradient>
                           </defs>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                          <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" opacity={0.3} vertical={false} />
                           <XAxis 
                             dataKey="date" 
                             stroke="#94a3b8" 
@@ -122,8 +122,14 @@ export function ProgressPage() {
                             tickFormatter={(value) => `${value}%`}
                           />
                           <Tooltip 
-                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'var(--tw-colors-white, #ffffff)' }}
-                            itemStyle={{ color: '#2563eb', fontWeight: 'bold' }}
+                            contentStyle={{ 
+                              borderRadius: '12px', 
+                              border: '1px solid #334155', 
+                              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.2)', 
+                              backgroundColor: '#0f172a',
+                              color: '#ffffff'
+                            }}
+                            itemStyle={{ color: '#38bdf8', fontWeight: 'bold' }}
                             formatter={(value: number) => [`${value}%`, 'Score']}
                           />
                           <Area 

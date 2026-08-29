@@ -5,70 +5,82 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const fallbackKeys = "AQ.Ab8RN6JZgov0_t7RfyUGk2fsyoHNgc9Smxl5DZpjTime6-EPeg,AQ.Ab8RN6KDRdb80PYGXjsAg6l8umueLApOL0LZ8_zI9ga_u0qa4g";
-  const allKeysStr = [process.env.GEMINI_API_KEYS, process.env.GEMINI_API_KEY, fallbackKeys].filter(Boolean).join(",");
-  const apiKeys = Array.from(new Set(allKeysStr.split(",").map(k => k.trim()).filter(k => k.length > 0)));
+  const envKeys = process.env.GEMINI_API_KEYS ? process.env.GEMINI_API_KEYS.split(',').map(k => k.trim()).filter(Boolean) : [];
+  const API_KEYS = envKeys.length > 0 ? envKeys : [];
 
-  if (apiKeys.length === 0) {
+  if (API_KEYS.length === 0) {
     return res.status(500).json({ error: "GEMINI_API_KEY is missing." });
   }
 
-  const randomKey = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+  const { subject, chapter, difficulty, questionType, board, year, count = 5 } = req.body;
 
-  const ai = new GoogleGenAI({
-    apiKey: randomKey,
-    httpOptions: {
-      headers: {
-        "User-Agent": "aistudio-build",
-      },
-    },
-  });
-
-  try {
-    const { subject, chapter, difficulty, questionType, count = 5 } = req.body;
-
-    const prompt = `Generate ${count} practice questions for a Bangladesh SSC student (NCTB curriculum).
-      Subject: ${subject}
-      Chapter: ${chapter || "Full Syllabus"}
-      Difficulty: ${difficulty}
-      Question Type: ${questionType} (e.g. MCQ)
-
-      IMPORTANT RULES:
-      1. Be conceptually accurate and match SSC board exam standards.
-      2. YOU MUST ONLY GENERATE AUTHENTIC, REAL PREVIOUS SSC BOARD QUESTIONS that appeared in past exams (e.g., Dhaka Board 2023, Rajshahi Board 2019, etc.). 
-      3. DO NOT generate random, made-up, or generic practice questions. EVERY single question must be an actual past board question.
-      4. Label each question with its actual board and year in the \`boardInfo\` field. Set \`isBoardQuestion\` to true for all of them. Do NOT invent or hallucinate board questions.
-      5. Provide a detailed explanation for the correct answer, and explain why other options are incorrect.
-      6. Provide a learning tip for each question.
-      7. Output must be perfectly valid JSON.
-
-      Response format (JSON array of objects):
-      [
-        {
-          "id": "unique_string",
-          "text": "The question text in Bangla",
-          "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-          "correctAnswer": "The exact text of the correct option",
-          "explanation": "Detailed step-by-step explanation in Bangla...",
-          "tips": "Short learning tip...",
-          "isBoardQuestion": true,
-          "boardInfo": "SSC Dhaka Board 2023"
-        }
-      ]`;
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        temperature: 0.2,
-      },
-    });
-
-    const data = JSON.parse(response.text || "[]");
-    res.status(200).json({ questions: data });
-  } catch (error) {
-    console.error("Practice Gen Error:", error);
-    res.status(500).json({ error: "Failed to generate questions." });
+  let boardRequirement = "";
+  if (board && board !== "all") {
+    boardRequirement += `\n- Target Board: ${board.toUpperCase()} BOARD (or recent board questions if specific year).`;
   }
+  if (year && year !== "all") {
+    boardRequirement += `\n- Target Year: ${year}.`;
+  }
+
+  const prompt = `Generate ${count} authentic SSC practice questions for a Bangladesh SSC student (NCTB curriculum).
+Subject: ${subject}
+Chapter: ${chapter || 'Full Syllabus'}
+Difficulty: ${difficulty}
+Question Type: ${questionType || 'MCQ'}
+${boardRequirement}
+
+IMPORTANT RULES:
+1. Be conceptually accurate and match Bangladesh SSC board exam standards.
+2. YOU MUST ONLY GENERATE AUTHENTIC, REAL PREVIOUS SSC BOARD QUESTIONS from past exams (e.g. Dhaka Board 2024/2023, Rajshahi Board 2023, Chittagong Board 2022, Comilla Board 2023, Jessore Board 2024, Dinajpur Board, etc.).
+3. Label each question with its exact board and year in the \`boardInfo\` field (e.g. "ঢাকা বোর্ড ২০২৩", "রাজশাহী বোর্ড ২০২৪", "যশোর বোর্ড ২০২২"). Set \`isBoardQuestion\` to true.
+4. Provide a friendly, teacher-style step-by-step explanation in Bangla for the correct answer.
+5. Provide an easy learning tip for each question.
+6. Output must be valid JSON array of objects.
+
+Response format:
+[
+  {
+    "id": "q-1",
+    "text": "প্রশ্নটি বাংলায়...",
+    "options": ["ক. অপশন ১", "খ. অপশন ২", "গ. অপশন ৩", "ঘ. অপশন ৪"],
+    "correctAnswer": "ক. অপশন ১",
+    "explanation": "শিক্ষক সুলভ সহজ ভাষায় ধাপে ধাপে ব্যাখ্যা...",
+    "tips": "মনে রাখার সহজ টেকনিক...",
+    "isBoardQuestion": true,
+    "boardInfo": "ঢাকা বোর্ড ২০২৩"
+  }
+]`;
+
+  for (let i = 0; i < API_KEYS.length; i++) {
+    try {
+      const ai = new GoogleGenAI({
+        apiKey: API_KEYS[i],
+        httpOptions: {
+          headers: {
+            "User-Agent": "aistudio-build",
+          },
+        },
+      });
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.2,
+        },
+      });
+
+      const data = JSON.parse(response.text || "[]");
+      return res.status(200).json({ questions: data });
+    } catch (error: any) {
+      if (error.status === 429 || (error.message && error.message.includes('429'))) {
+        continue;
+      }
+      console.error("Practice Gen Error:", error);
+      break;
+    }
+  }
+
+  res.status(500).json({ error: "Failed to generate practice questions." });
 }

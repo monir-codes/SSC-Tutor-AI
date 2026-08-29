@@ -96,7 +96,7 @@ export function SubjectPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-10 sm:py-12 transition-colors">
       <SEO 
         title={`SSC ${subject.name} | Chapter-wise Notes, Practice & AI Tutor | SSC Tutor AI`} 
         description={`Study ${subject.name} for SSC. Chapter-wise interactive guide, examples, board questions, and AI explanations.`}
@@ -104,21 +104,23 @@ export function SubjectPage() {
         jsonLd={jsonLd}
       />
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <Link to="/subjects" className="mb-8 inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary-600">
+        <Link to="/subjects" className="mb-6 sm:mb-8 inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Subjects
         </Link>
         
-        <div className="mb-12 flex justify-between items-start">
+        <div className="mb-8 sm:mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{subject.name}</h1>
-            <p className="mt-4 text-lg text-slate-600 font-bn">অধ্যায়সমূহ নির্বাচন করো</p>
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">{subject.name}</h1>
+            <p className="mt-2 sm:mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 font-bn">অধ্যায়সমূহ নির্বাচন করো</p>
           </div>
           <button 
             onClick={handleBookmark}
             disabled={isBookmarked}
-            className={`flex items-center px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
-              isBookmarked ? 'bg-slate-200 text-slate-500' : 'bg-primary-50 text-primary-600 hover:bg-primary-100'
+            className={`self-start sm:self-auto flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              isBookmarked 
+                ? 'bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400' 
+                : 'bg-primary-50 dark:bg-primary-950/60 text-primary-600 dark:text-primary-300 border border-primary-200 dark:border-primary-800 hover:bg-primary-100 dark:hover:bg-primary-900/60 shadow-sm'
             }`}
           >
             <BookmarkPlus className="h-4 w-4 mr-2" />
@@ -126,26 +128,26 @@ export function SubjectPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3.5 sm:gap-4 sm:grid-cols-2">
           {subject.chapters.map((chapter: string, idx: number) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: idx * 0.05 }}
+              transition={{ duration: 0.3, delay: idx * 0.04 }}
             >
               <Link
                 to={`/tutor?subject=${encodeURIComponent(subject.name)}&chapter=${encodeURIComponent(chapter)}&prompt=Explain the chapter ${chapter} from ${subject.name}`}
-                className="group flex items-center justify-between rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md hover:ring-primary-500"
+                className="group flex items-center justify-between rounded-2xl bg-white dark:bg-slate-950 p-4 sm:p-5 shadow-sm border border-slate-200 dark:border-slate-800 transition-all hover:shadow-md hover:border-primary-400 dark:hover:border-primary-600 active:scale-[0.99]"
               >
-                <div className="flex items-center">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
+                <div className="flex items-center min-w-0">
+                  <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 border border-primary-100 dark:border-primary-900/40">
                     <BookOpen className="h-5 w-5" />
                   </div>
-                  <h3 className="ml-4 text-lg font-semibold text-slate-900 font-bn">{chapter}</h3>
+                  <h3 className="ml-3.5 text-base sm:text-lg font-semibold text-slate-900 dark:text-white font-bn truncate">{chapter}</h3>
                 </div>
-                <div className="text-sm font-medium text-primary-600 opacity-0 transition-opacity group-hover:opacity-100">
-                  Study
+                <div className="text-xs sm:text-sm font-semibold text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-2">
+                  Study &rarr;
                 </div>
               </Link>
             </motion.div>

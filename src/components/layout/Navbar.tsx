@@ -7,6 +7,7 @@ import { useThemeStore } from "@/store/themeStore";
 
 const mainNavLinks = [
   { name: "Home", path: "/" },
+  { name: "Board Exams", path: "/model-tests?mode=board_exam" },
   { name: "Practice", path: "/practice" },
   { name: "Model Tests", path: "/model-tests" },
   { name: "About", path: "/about" },
@@ -152,10 +153,10 @@ export function Navbar() {
               </button>
 
               <div className="absolute left-0 top-full mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out z-50">
-                <div className="rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 py-2">
+                <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-xl ring-1 ring-slate-200 dark:ring-slate-800 py-2">
                   {Object.entries(subjectGroups).map(([key, group]) => (
                     <div key={key} className="group/nested relative">
-                      <button className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary-600 transition-colors">
+                      <button className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                         <span>
                           {group.icon} {group.title}
                         </span>
@@ -176,9 +177,9 @@ export function Navbar() {
 
                       {/* Nested Dropdown */}
                       <div className="absolute left-full top-0 ml-2 w-64 opacity-0 invisible group-hover/nested:opacity-100 group-hover/nested:visible transition-all duration-200 ease-in-out">
-                        <div className="rounded-2xl bg-white shadow-xl ring-1 ring-slate-200 py-2">
-                          <div className="px-4 py-2 border-b border-slate-100 mb-1">
-                            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-xl ring-1 ring-slate-200 dark:ring-slate-800 py-2">
+                          <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
+                            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                               {group.icon} {group.title} Subjects
                             </span>
                           </div>
@@ -186,7 +187,7 @@ export function Navbar() {
                             <Link
                               key={item.name}
                               to={item.path}
-                              className="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-primary-600 transition-colors"
+                              className="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                             >
                               {item.name}
                             </Link>
@@ -195,10 +196,10 @@ export function Navbar() {
                       </div>
                     </div>
                   ))}
-                  <div className="mt-2 border-t border-slate-100 pt-2">
+                  <div className="mt-2 border-t border-slate-100 dark:border-slate-800 pt-2">
                     <Link
                       to="/subjects"
-                      className="block px-4 py-2 text-sm font-medium text-primary-600 hover:bg-slate-50 transition-colors flex items-center"
+                      className="block px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center"
                     >
                       View All Subjects
                       <svg
@@ -295,7 +296,7 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-slate-200 bg-white shadow-2xl overflow-y-auto"
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-2xl overflow-y-auto"
             >
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4">
                 <span className="font-sans text-lg font-bold text-slate-900 dark:text-white">
@@ -346,8 +347,8 @@ export function Navbar() {
                   className={cn(
                     "group flex items-center rounded-xl px-4 py-3 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600",
                     location.pathname === "/"
-                      ? "bg-primary-50 text-primary-700"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                      ? "bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 font-semibold"
+                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white",
                   )}
                 >
                   <span
@@ -369,8 +370,8 @@ export function Navbar() {
                     className={cn(
                       "w-full group flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600",
                       location.pathname.startsWith("/subjects")
-                        ? "bg-primary-50 text-primary-700"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                        ? "bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 font-semibold"
+                        : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white",
                     )}
                   >
                     <span
@@ -409,12 +410,12 @@ export function Navbar() {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="pl-4 pr-2 pt-2 pb-2 space-y-2 border-l-2 border-slate-100 ml-4 mt-1">
+                        <div className="pl-4 pr-2 pt-2 pb-2 space-y-2 border-l-2 border-slate-100 dark:border-slate-800 ml-4 mt-1">
                           {Object.entries(subjectGroups).map(([key, group]) => (
                             <div key={key}>
                               <button
                                 onClick={() => toggleStream(key)}
-                                className="w-full flex items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-primary-600 transition-colors"
+                                className="w-full flex items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                               >
                                 <span>
                                   {group.icon} {group.title}
@@ -450,7 +451,7 @@ export function Navbar() {
                                         <Link
                                           key={item.name}
                                           to={item.path}
-                                          className="block rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                                          className="block rounded-lg px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-primary-950/60 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
                                         >
                                           {item.name}
                                         </Link>
@@ -463,7 +464,7 @@ export function Navbar() {
                           ))}
                           <Link
                             to="/subjects"
-                            className="block rounded-lg px-4 py-2 text-sm font-semibold text-primary-600 hover:bg-primary-50 transition-colors mt-2"
+                            className="block rounded-lg px-4 py-2 text-sm font-semibold text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/60 transition-colors mt-2"
                           >
                             View All Subjects &rarr;
                           </Link>
@@ -482,8 +483,8 @@ export function Navbar() {
                       className={cn(
                         "group flex items-center rounded-xl px-4 py-3 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600",
                         isActive
-                          ? "bg-primary-50 text-primary-700"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                          ? "bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 font-semibold"
+                          : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white",
                       )}
                     >
                       <span
