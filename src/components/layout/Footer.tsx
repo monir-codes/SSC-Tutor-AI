@@ -28,7 +28,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
               <ShieldCheck className="h-4 w-4 text-emerald-600" />
               <span>NCTB কারিকুলাম মানসম্মত</span>
@@ -142,14 +142,34 @@ export function Footer() {
         </div>
 
         {/* Bottom Legal & Attribution Bar */}
-        <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-500 dark:text-slate-400">
-          <div>
-            © 2026 SSC TUTOR AI • গণপ্রজাতন্ত্রী বাংলাদেশ জাতীয় মাধ্যমিক ডিজিটাল শিক্ষা উদ্যোগ
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-5 text-xs text-slate-500 dark:text-slate-400">
+          {/* Copyright & National Initiative */}
+          <div className="w-full sm:w-auto text-center sm:text-left leading-relaxed">
+            <span className="font-sans font-bold text-slate-700 dark:text-slate-300">© 2026 SSC TUTOR AI</span>
+            <span className="hidden sm:inline"> • </span>
+            <span className="block sm:inline text-slate-500 dark:text-slate-400 font-bn mt-0.5 sm:mt-0">
+              গণপ্রজাতন্ত্রী বাংলাদেশ জাতীয় মাধ্যমিক ডিজিটাল শিক্ষা উদ্যোগ
+            </span>
           </div>
-          <div className="flex items-center justify-center gap-1">
-            <span>Designed & Developed with</span>
-            <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500 inline" />
-            <span>for every SSC candidate in Bangladesh.</span>
+
+          {/* Credit & Dedication - Fully responsive, perfectly aligned on mobile and desktop */}
+          <div className="w-full sm:w-auto text-center sm:text-right leading-relaxed font-sans text-xs">
+            <p className="flex flex-wrap items-center justify-center sm:justify-end gap-1">
+              <span>Designed &amp; Developed with</span>
+              <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500 inline-block shrink-0 mx-0.5" />
+              <span className="font-bn">by</span>
+              <a
+                href="https://monir-uzzaman.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-slate-800 dark:text-slate-200 hover:text-primary-600 dark:hover:text-primary-400 underline decoration-slate-300 dark:decoration-slate-700 underline-offset-2 transition-colors ml-0.5"
+              >
+                Md. Moniruzzaman
+              </a>
+            </p>
+            <p className="text-[11px] text-slate-400 dark:text-slate-500 font-bn mt-1 text-center sm:text-right">
+              দেশের সকল এসএসসি পরীক্ষার্থীর জন্য নিবেদিত
+            </p>
           </div>
         </div>
 

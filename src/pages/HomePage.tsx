@@ -398,21 +398,21 @@ export function HomePage() {
             transition={{ duration: 0.6 }}
             className="absolute inset-0 z-0"
           >
-            {/* Background Image with Deep National Institutional Overlay */}
+            {/* Background Image with Crisp Contrast & Balanced Brightness */}
             <img
               src={currentHero.image}
               alt={currentHero.title}
-              className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
+              className="w-full h-full object-cover object-[center_30%] sm:object-center brightness-90 contrast-[1.05] transition-transform duration-1000"
             />
-            {/* Multi-layered Vignette & Dark Gradients for 100% Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/50"></div>
-            <div className="absolute inset-0 bg-radial-at-c from-transparent via-slate-950/60 to-slate-950/90"></div>
-            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,rgba(2,6,23,0.95)_100%)]"></div>
+            {/* Responsive Overlays: Gentle top on mobile, horizontal on desktop */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/70 to-slate-950 md:hidden"></div>
+            <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-transparent"></div>
+            <div className="hidden md:block absolute inset-0 bg-[linear-gradient(to_bottom,transparent_70%,rgba(2,6,23,0.95)_100%)]"></div>
           </motion.div>
         </AnimatePresence>
 
         {/* Foreground Content Container with Unclipped Bengali Typography */}
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24 w-full">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-20 lg:py-24 w-full">
           <div className="max-w-3xl font-bn">
             {/* Official Badge Pill with generous line-height */}
             <motion.div
@@ -420,10 +420,35 @@ export function HomePage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
-              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-bold text-emerald-300 mb-4 sm:mb-6 shadow-sm max-w-full"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-bold text-emerald-300 mb-3 sm:mb-6 shadow-sm max-w-full"
             >
               <currentHero.tagIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
               <span className="leading-normal truncate sm:whitespace-normal">{currentHero.tag}</span>
+            </motion.div>
+
+            {/* Dedicated High-Definition Image Showcase Card for Mobile Screens (< sm) */}
+            <motion.div
+              key={`mobile-hero-img-${currentHero.id}`}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="sm:hidden mb-4 relative w-full h-44 rounded-2xl overflow-hidden border border-white/20 shadow-2xl"
+            >
+              <img
+                src={currentHero.image}
+                alt={currentHero.title}
+                className="w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-black/30" />
+              <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-bold text-white font-bn">
+                <span className="bg-emerald-600/90 px-2.5 py-0.5 rounded-full backdrop-blur-xs flex items-center gap-1 shadow-sm">
+                  <currentHero.tagIcon className="h-3 w-3" />
+                  <span>{currentHero.metaPills[0]}</span>
+                </span>
+                <span className="bg-slate-900/80 px-2.5 py-0.5 rounded-md backdrop-blur-xs text-slate-300 font-sans text-[10px] border border-white/10">
+                  {currentSlide + 1} / {heroSlides.length}
+                </span>
+              </div>
             </motion.div>
 
             {/* Main Headline - Fixed top clipping with leading-[1.3] and py-1.5 */}
