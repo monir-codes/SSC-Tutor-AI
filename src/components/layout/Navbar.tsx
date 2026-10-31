@@ -117,18 +117,18 @@ export function Navbar() {
       {/* Top Utility Strip (Crisp & Responsive) */}
       <div className="bg-slate-900 text-slate-300 border-b border-slate-800 text-[11px] sm:text-xs font-bn py-1.5 px-3 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl flex items-center justify-between gap-2">
-          <div className="flex items-center space-x-2 truncate">
+          <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0">
             <span className="flex h-2 w-2 rounded-full bg-emerald-400 shrink-0 animate-pulse"></span>
             <span className="font-semibold text-slate-200 truncate">
               <span className="hidden sm:inline">গণপ্রজাতন্ত্রী বাংলাদেশ অনুমোদিত এনসিটিবি কারিকুলাম • </span>
               জাতীয় মাধ্যমিক ডিজিটাল পরীক্ষা পোর্টাল
             </span>
           </div>
-          <div className="flex items-center space-x-3 text-slate-400 shrink-0 text-[10px] sm:text-[11px]">
+          <div className="flex items-center space-x-2 text-slate-400 shrink-0 text-[10px] sm:text-[11px] whitespace-nowrap">
             <span className="hidden md:inline">10টি শিক্ষা বোর্ড</span>
             <span className="hidden md:inline">•</span>
-            <span>শিক্ষাবর্ষ: 2025–26</span>
-            <span>•</span>
+            <span className="hidden sm:inline">শিক্ষাবর্ষ: 2025–26</span>
+            <span className="hidden sm:inline">•</span>
             <span className="text-emerald-400 font-bold">সার্ভার সচল 🟢</span>
           </div>
         </div>
@@ -136,26 +136,26 @@ export function Navbar() {
 
       {/* Main Navigation Bar */}
       <nav className="w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-md dark:bg-slate-950/95 dark:border-slate-800/90 shadow-xs">
-        <div className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8 gap-2">
           
           {/* Logo & Brand Identity */}
           <Link
             to="/"
-            className="flex items-center gap-2.5 sm:gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-xl"
+            className="flex items-center gap-2 sm:gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-xl shrink-0 min-w-0"
           >
-            <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-950 text-white shadow-sm border border-emerald-500/30 shrink-0 group-hover:scale-105 transition-transform">
-              <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-300" />
+            <div className="relative flex h-8 w-8 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-950 text-white shadow-sm border border-emerald-500/30 shrink-0 group-hover:scale-105 transition-transform">
+              <GraduationCap className="h-4.5 w-4.5 sm:h-6 sm:w-6 text-emerald-300" />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0 justify-center">
               <div className="flex items-center gap-1.5">
-                <span className="font-sans text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                <span className="font-sans text-[15px] sm:text-lg md:text-xl font-black tracking-tight text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors whitespace-nowrap">
                   SSC TUTOR AI
                 </span>
-                <span className="hidden sm:inline-flex bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800 font-bn">
+                <span className="hidden md:inline-flex bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800 font-bn whitespace-nowrap shrink-0">
                   জাতীয় শিক্ষা পোর্টাল
                 </span>
               </div>
-              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 font-bn tracking-wide hidden xs:inline-block">
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 font-bn tracking-wide hidden md:inline-block whitespace-nowrap">
                 বোর্ড প্রশ্নব্যাংক, টেস্ট পেপার ও এআই ক্লাসরুম
               </span>
             </div>
@@ -289,22 +289,22 @@ export function Navbar() {
           </div>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center space-x-2 sm:space-x-3 font-bn">
+          <div className="flex items-center space-x-1.5 sm:space-x-3 font-bn shrink-0">
             {/* Primary Action: AI Tutor */}
             <Link
               to="/tutor"
-              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-600 hover:to-emerald-700 text-white text-xs sm:text-sm font-extrabold px-3.5 sm:px-4.5 py-2 sm:py-2.5 rounded-xl shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-1 sm:gap-1.5 bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-600 hover:to-emerald-700 text-white text-xs sm:text-sm font-extrabold px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-xl shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0"
             >
-              <BrainCircuit className="h-4 w-4 text-emerald-200" />
-              <span className="hidden xs:inline">এআই শিক্ষক ভাইয়া</span>
-              <span className="xs:hidden">এআই শিক্ষক</span>
+              <BrainCircuit className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-200 shrink-0" />
+              <span className="hidden sm:inline">এআই শিক্ষক ভাইয়া</span>
+              <span className="sm:hidden">এআই শিক্ষক</span>
             </Link>
 
             {/* Dark / Light Mode Switch */}
             <button
               onClick={cycleTheme}
               aria-label="Toggle theme"
-              className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none"
+              className="relative flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none shrink-0"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {isDark ? (
@@ -335,9 +335,9 @@ export function Navbar() {
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               aria-label="Open mobile menu"
-              className="lg:hidden flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none"
+              className="lg:hidden flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none shrink-0"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
             </button>
           </div>
         </div>

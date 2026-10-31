@@ -699,7 +699,7 @@ export function AiTutorPage() {
 
   const currentSubjectLabel =
     currentSession?.subject || subjectParam ? (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 truncate max-w-[200px] sm:max-w-xs">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 border border-primary-200 dark:border-primary-800 truncate max-w-[120px] xs:max-w-[160px] sm:max-w-xs shrink-0">
         <BookOpen className="h-3 w-3 shrink-0" />
         <span className="truncate">
           {currentSession?.subject || subjectParam}

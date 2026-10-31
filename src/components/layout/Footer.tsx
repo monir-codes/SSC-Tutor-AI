@@ -14,11 +14,11 @@ export function Footer() {
               <GraduationCap className="h-6 w-6 text-emerald-300" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-sans text-xl sm:text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+                <span className="font-sans text-xl sm:text-2xl font-black tracking-tight text-slate-950 dark:text-white whitespace-nowrap">
                   SSC TUTOR AI
                 </span>
-                <span className="bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
+                <span className="bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800 whitespace-nowrap">
                   জাতীয় শিক্ষা পোর্টাল
                 </span>
               </div>

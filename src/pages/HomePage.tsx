@@ -380,10 +380,10 @@ export function HomePage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
-              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-bold text-emerald-300 mb-4 sm:mb-6 shadow-sm"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-bold text-emerald-300 mb-4 sm:mb-6 shadow-sm max-w-full"
             >
               <currentHero.tagIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
-              <span className="leading-normal">{currentHero.tag}</span>
+              <span className="leading-normal truncate sm:whitespace-normal">{currentHero.tag}</span>
             </motion.div>
 
             {/* Main Headline - Fixed top clipping with leading-[1.3] and py-1.5 */}
@@ -394,7 +394,7 @@ export function HomePage() {
               transition={{ duration: 0.4, delay: 0.08 }}
               className="py-1"
             >
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.3] sm:leading-[1.32] drop-shadow-sm">
+              <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.3] sm:leading-[1.32] drop-shadow-sm">
                 {currentHero.title}
               </h1>
             </motion.div>
@@ -534,7 +534,7 @@ export function HomePage() {
                 <Building2 className="h-3.5 w-3.5" />
                 <span>জাতীয় শিক্ষা বোর্ড ডিরেক্টরি</span>
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-950 dark:text-white">
                 10টি শিক্ষা বোর্ডের আসল প্রশ্নপত্র সংগ্রহশালা
               </h2>
               <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl">
@@ -759,7 +759,7 @@ export function HomePage() {
               <BrainCircuit className="h-3.5 w-3.5" />
               <span>জাতীয় আধুনিক শিক্ষণ পদ্ধতি</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black">
               বোর্ড পরীক্ষার সম্পূর্ণ প্রস্তুতির 4টি স্তম্ভ
             </h2>
             <p className="mt-3 text-slate-300 text-base sm:text-lg">
@@ -819,7 +819,7 @@ export function HomePage() {
               <Users className="h-3.5 w-3.5 text-primary-600" />
               <span>বিভাগীয় শিক্ষার্থী ও শিক্ষক মতামত</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-950 dark:text-white">
               সারাদেশের শিক্ষার্থীদের অভিজ্ঞতা
             </h2>
           </div>
@@ -863,7 +863,7 @@ export function HomePage() {
               <HelpCircle className="h-3.5 w-3.5" />
               <span>সহায়তা ও সাধারণ জিজ্ঞাসা</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-950 dark:text-white">
               সচরাচর জিজ্ঞাসিত প্রশ্নাবলি (FAQ)
             </h2>
           </div>
@@ -915,12 +915,12 @@ export function HomePage() {
             <span>বাংলাদেশ জাতীয় মাধ্যমিক শিক্ষা উদ্যোগ • সম্পূর্ণ মুক্ত ও উন্মুক্ত</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight mb-4">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-4">
             পরীক্ষার হলে সর্বোচ্চ আত্মবিশ্বাসের সাথে অংশ নিন
           </h2>
 
           <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-            বিগত ৭ বছরের আসল টেস্ট পেপার, বোল্ড করা উত্তর ও এআই শিক্ষকের সহায়তা সম্পূর্ণ ফ্রিতে এক ক্লিকে শুরু করুন।
+            বিগত 7 বছরের আসল টেস্ট পেপার, বোল্ড করা উত্তর ও এআই শিক্ষকের সহায়তা সম্পূর্ণ ফ্রিতে এক ক্লিকে শুরু করুন।
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

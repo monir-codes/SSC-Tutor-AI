@@ -251,17 +251,17 @@ export function BoardHallTestPaper({
           {/* Top Paper Header: Government & Board Details */}
           <div className="text-center pb-4 border-b-2 border-slate-900 mb-4">
             <div className="flex items-center justify-center space-x-2 mb-1">
-              <div className="h-6 w-6 rounded-full bg-emerald-900 text-white flex items-center justify-center font-bold text-[10px] border border-emerald-700">
+              <div className="h-6 w-6 rounded-full bg-emerald-900 text-white flex items-center justify-center font-bold text-[10px] border border-emerald-700 shrink-0">
                 BD
               </div>
-              <span className="text-xs sm:text-sm font-bold tracking-wide text-slate-800 uppercase">
-                গণপ্রজাতন্ত্রী বাংলাদেশ সরকার / মাধ্যমিক ও উচ্চমাধ্যমিক শিক্ষা বোর্ড
+              <span className="text-[11px] sm:text-sm font-bold tracking-wide text-slate-800 uppercase leading-snug">
+                <span className="hidden sm:inline">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার / </span>মাধ্যমিক ও উচ্চমাধ্যমিক শিক্ষা বোর্ড
               </span>
             </div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-slate-950 mt-1">
+            <h1 className="text-lg sm:text-2xl md:text-3xl font-black tracking-tight text-slate-950 mt-1 leading-snug">
               মাধ্যমিক স্কুল সার্টিফিকেট পরীক্ষা — {paper.year}
             </h1>
-            <div className="text-[11px] sm:text-xs font-bold tracking-widest uppercase text-slate-600 mt-0.5 font-sans">
+            <div className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-slate-600 mt-0.5 font-sans">
               SECONDARY SCHOOL CERTIFICATE EXAMINATION
             </div>
             <div className="inline-block mt-2 px-3.5 py-0.5 border border-slate-900 rounded-md font-bold text-xs sm:text-sm text-slate-900 bg-slate-50">
@@ -270,14 +270,19 @@ export function BoardHallTestPaper({
           </div>
 
           {/* Subject & Timing Bar */}
-          <div className="flex flex-wrap justify-between items-center text-xs sm:text-sm font-bold border-b border-slate-400 pb-2 mb-3 gap-2">
-            <div>
-              বিষয় কোড: <span className="font-extrabold underline">{paper.subjectCode}</span>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs sm:text-sm font-bold border-b border-slate-400 pb-2 mb-3 gap-1.5 sm:gap-2">
+            <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+              <div>
+                বিষয় কোড: <span className="font-extrabold underline">{paper.subjectCode}</span>
+              </div>
+              <div className="sm:hidden font-extrabold text-slate-950">
+                বিষয়: {paper.subjectName}
+              </div>
             </div>
-            <div className="text-center sm:text-base font-extrabold text-slate-950">
+            <div className="hidden sm:block text-center sm:text-base font-extrabold text-slate-950">
               বিষয়: {paper.subjectName}
             </div>
-            <div className="text-right">
+            <div className="text-left sm:text-right text-[11px] sm:text-xs text-slate-800">
               {paper.mcqMarks > 0 && <span>বহুনির্বাচনি: {toBn(paper.mcqMarks)} </span>}
               {paper.cqMarks > 0 && <span>| সৃজনশীল: {toBn(paper.cqMarks)} </span>}
               <span>| মোট পূর্ণমান: {toBn(paper.totalMarks)}</span>
@@ -286,12 +291,12 @@ export function BoardHallTestPaper({
 
           {/* Time Limit and Special Instructions */}
           <div className="bg-slate-50 border border-slate-300 p-3 rounded-sm mb-6 text-xs text-slate-800 leading-relaxed">
-            <div className="flex justify-between font-bold mb-1 border-b border-slate-200 pb-1 text-[11px] sm:text-xs">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center font-bold mb-1 border-b border-slate-200 pb-1 text-[11px] sm:text-xs gap-1">
               <span>
                 সময়: {paper.mcqTime ? `বহুনির্বাচনি ${paper.mcqTime}` : ""}{" "}
                 {paper.cqTime ? `| সৃজনশীল ${paper.cqTime}` : ""}
               </span>
-              <span className="text-primary-800 font-extrabold">
+              <span className="text-primary-800 font-extrabold text-left sm:text-right">
                 {solvedMode ? "★ সলভড টেস্ট পেপার (বোল্ড উত্তর ও বোর্ড রেফারেন্সসহ)" : "★ পরীক্ষার্থী প্রশ্নপত্র (ব্ল্যাংক কপি)"}
               </span>
             </div>

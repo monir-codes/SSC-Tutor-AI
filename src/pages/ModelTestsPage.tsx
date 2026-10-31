@@ -325,11 +325,14 @@ export function ModelTestsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 mb-4 font-bn">
-                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
-                  <span>গণপ্রজাতন্ত্রী বাংলাদেশ অনুমোদিত এনসিটিবি কারিকুলাম • জাতীয় মাধ্যমিক ডিজিটাল পরীক্ষা সংকলন</span>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 mb-4 font-bn max-w-full">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping shrink-0"></div>
+                  <span className="truncate sm:whitespace-normal">
+                    <span className="hidden sm:inline">গণপ্রজাতন্ত্রী বাংলাদেশ অনুমোদিত এনসিটিবি কারিকুলাম • </span>
+                    জাতীয় মাধ্যমিক ডিজিটাল পরীক্ষা সংকলন
+                  </span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-950 dark:text-white font-bn">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-950 dark:text-white font-bn leading-snug">
                   জাতীয় বোর্ড পরীক্ষা প্রশ্নব্যাংক, টেস্ট পেপার ও সিমুলেটর
                 </h1>
                 <p className="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto font-bn">
@@ -617,17 +620,17 @@ export function ModelTestsPage() {
       {examState === "exam" && questions.length > 0 && currentQ && (
         <div className="mx-auto max-w-5xl px-3.5 sm:px-6 lg:px-8 mt-6 sm:mt-8 w-full">
           {/* Header Bar */}
-          <div className="flex flex-wrap justify-between items-center bg-white dark:bg-slate-950 p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 mb-6 gap-3">
-            <div className="flex items-center space-x-3">
-              <div className="bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm border border-primary-200 dark:border-primary-800">
+          <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center bg-white dark:bg-slate-950 p-3 sm:p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 mb-6 gap-3">
+            <div className="flex items-center justify-between sm:justify-start space-x-3">
+              <div className="bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm border border-primary-200 dark:border-primary-800 shrink-0">
                 Question {currentIdx + 1} / {questions.length}
               </div>
-              <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-bold truncate max-w-[150px] sm:max-w-none font-bn">
+              <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-bold truncate max-w-[180px] sm:max-w-none font-bn">
                 {currentSubject.name} [কোড: {currentSubject.code}]
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 sm:space-x-5">
+            <div className="flex items-center justify-between sm:justify-end space-x-3 sm:space-x-5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-850">
               <div
                 className={`flex items-center text-sm sm:text-base font-extrabold ${
                   timeLeft < 60 ? "text-red-600 animate-pulse" : "text-slate-900 dark:text-white"
