@@ -322,23 +322,63 @@ export function HomePage() {
       />
 
       {/* OFFICIAL GOVERNMENT ANNOUNCEMENT BULLETIN TICKER */}
-      <div className="bg-slate-900 border-b border-slate-800 text-white py-2 px-4 sm:px-6 lg:px-8 text-xs font-bn">
-        <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center space-x-2.5 overflow-hidden">
-            <span className="inline-flex items-center gap-1 bg-red-600 text-white font-black px-2.5 py-0.5 rounded text-[11px] tracking-wide uppercase shrink-0">
-              <Bell className="h-3 w-3" />
-              <span>জরুরি বুলেটিন</span>
-            </span>
-            <span className="truncate text-slate-300 font-medium text-xs sm:text-sm">
-              এসএসসি 2025/2026: সকল শিক্ষা বোর্ডের বিগত 7 বছরের কমন প্রশ্ন, টেস্ট পেপার ও সৃজনশীল মডেল উত্তর প্রকাশিত হয়েছে।
-            </span>
+      <div className="bg-slate-900 border-b border-slate-800 text-white py-2 px-3 sm:px-6 lg:px-8 text-xs font-bn overflow-hidden select-none">
+        <div className="mx-auto max-w-7xl flex items-center justify-between gap-3">
+          {/* Fixed Badge on the left */}
+          <div className="flex items-center gap-1.5 bg-red-600 text-white font-black px-2.5 py-1 rounded shadow-sm text-[11px] tracking-wide uppercase shrink-0 z-20">
+            <Bell className="h-3.5 w-3.5 animate-pulse text-amber-300" />
+            <span className="whitespace-nowrap">জরুরি বুলেটিন</span>
           </div>
 
+          {/* Continuous Infinite Marquee with Soft Edge Gradients */}
           <Link
             to="/model-tests?mode=test_paper"
-            className="hidden sm:inline-flex items-center gap-1 text-primary-400 hover:text-primary-300 font-bold shrink-0 text-xs"
+            className="relative flex-1 overflow-hidden block py-0.5 group cursor-pointer"
+            title="জরুরি বুলেটিন ও টেস্ট পেপার সংগ্রহ করতে ক্লিক করুন"
           >
-            <span>টেস্ট পেপার সংগ্রহ করুন &rarr;</span>
+            {/* Left and right soft edge gradients */}
+            <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-slate-900 to-transparent z-10" />
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-slate-900 to-transparent z-10" />
+
+            <div className="animate-bulletin-marquee items-center text-slate-300 font-medium text-xs sm:text-sm">
+              {/* Announcement Block 1 */}
+              <span className="inline-flex items-center gap-6 pr-6">
+                <span>
+                  📢 <strong className="text-white font-bold">মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) পরীক্ষা 2025–26:</strong> সকল শিক্ষা বোর্ডের বিগত 7 বছরের আসল প্রশ্নব্যাংক ও নির্ভুল টেস্ট পেপার সম্পূর্ণ বিনামূল্যে উন্মুক্ত করা হয়েছে।
+                </span>
+                <span className="text-slate-600">•</span>
+                <span>
+                  ★ <strong className="text-white font-bold">হুবহু বোর্ড মানবণ্টন:</strong> বহুনির্বাচনির বোল্ড উত্তর এবং সৃজনশীল (CQ) মডেল সমাধানসহ হলের আদলে A4 সাইজের PDF ডাউনলোড করুন।
+                </span>
+                <span className="text-slate-600">•</span>
+                <span>
+                  ★ <strong className="text-white font-bold">24/7 এআই শিক্ষক:</strong> যেকোনো বিষয়ের কঠিন সমীকরণ বা পড়া এক ক্লিকে সহজ বাংলায় ক্লাসরুমে বুঝে নিন।
+                </span>
+              </span>
+
+              {/* Announcement Block 2 (Duplicate for seamless infinite scroll) */}
+              <span className="inline-flex items-center gap-6 pr-6" aria-hidden="true">
+                <span>
+                  📢 <strong className="text-white font-bold">মাধ্যমিক স্কুল সার্টিফিকেট (এসএসসি) পরীক্ষা 2025–26:</strong> সকল শিক্ষা বোর্ডের বিগত 7 বছরের আসল প্রশ্নব্যাংক ও নির্ভুল টেস্ট পেপার সম্পূর্ণ বিনামূল্যে উন্মুক্ত করা হয়েছে।
+                </span>
+                <span className="text-slate-600">•</span>
+                <span>
+                  ★ <strong className="text-white font-bold">হুবহু বোর্ড মানবণ্টন:</strong> বহুনির্বাচনির বোল্ড উত্তর এবং সৃজনশীল (CQ) মডেল সমাধানসহ হলের আদলে A4 সাইজের PDF ডাউনলোড করুন।
+                </span>
+                <span className="text-slate-600">•</span>
+                <span>
+                  ★ <strong className="text-white font-bold">24/7 এআই শিক্ষক:</strong> যেকোনো বিষয়ের কঠিন সমীকরণ বা পড়া এক ক্লিকে সহজ বাংলায় ক্লাসরুমে বুঝে নিন।
+                </span>
+              </span>
+            </div>
+          </Link>
+
+          {/* Quick Vault Action Link */}
+          <Link
+            to="/model-tests?mode=test_paper"
+            className="hidden md:inline-flex items-center gap-1 text-primary-400 hover:text-primary-300 font-bold shrink-0 text-xs transition-colors hover:underline"
+          >
+            <span>টেস্ট পেপার ভল্ট &rarr;</span>
           </Link>
         </div>
       </div>
