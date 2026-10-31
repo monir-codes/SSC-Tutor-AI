@@ -1,69 +1,78 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { BookOpen, BrainCircuit, Menu, X, Sun, Moon } from "lucide-react";
+import {
+  BrainCircuit,
+  Menu,
+  X,
+  Sun,
+  Moon,
+  Landmark,
+  FileText,
+  ChevronDown,
+  Sparkles,
+  BookOpen,
+  GraduationCap,
+  Atom,
+  BookMarked,
+  Briefcase,
+  Layers,
+  ArrowRight,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useThemeStore } from "@/store/themeStore";
 
-const mainNavLinks = [
-  { name: "Home", path: "/" },
-  { name: "Board Exams", path: "/model-tests?mode=board_exam" },
-  { name: "Practice", path: "/practice" },
-  { name: "Model Tests", path: "/model-tests" },
-  { name: "About", path: "/about" },
-  { name: "Contact", path: "/contact" },
+const subjectCategories = [
+  {
+    title: "বিজ্ঞান বিভাগ (Science)",
+    icon: Atom,
+    color: "text-blue-600 dark:text-blue-400",
+    bg: "bg-blue-50 dark:bg-blue-950/50",
+    items: [
+      { name: "পদার্থবিজ্ঞান (Physics)", code: "136", path: "/subjects/physics" },
+      { name: "রসায়ন (Chemistry)", code: "137", path: "/subjects/chemistry" },
+      { name: "উচ্চতর গণিত (Higher Math)", code: "126", path: "/subjects/higher-math" },
+      { name: "সাধারণ গণিত (General Math)", code: "109", path: "/subjects/math" },
+      { name: "জীববিজ্ঞান (Biology)", code: "138", path: "/subjects/biology" },
+    ],
+  },
+  {
+    title: "মানবিক বিভাগ (Humanities)",
+    icon: BookMarked,
+    color: "text-amber-600 dark:text-amber-400",
+    bg: "bg-amber-50 dark:bg-amber-950/50",
+    items: [
+      { name: "বাংলা (1st ও 2nd পত্র)", code: "101", path: "/subjects/bangla" },
+      { name: "ইংরেজি (1st ও 2nd পত্র)", code: "107", path: "/subjects/english" },
+      { name: "ইতিহাস ও বিশ্বসভ্যতা", code: "153", path: "/subjects/history" },
+      { name: "ভূগোল ও পরিবেশ", code: "110", path: "/subjects/geography" },
+      { name: "পৌরনীতি ও নাগরিকতা", code: "140", path: "/subjects/civics" },
+      { name: "অর্থনীতি (Economics)", code: "141", path: "/subjects/economics" },
+    ],
+  },
+  {
+    title: "ব্যবসায় শিক্ষা (Commerce)",
+    icon: Briefcase,
+    color: "text-emerald-600 dark:text-emerald-400",
+    bg: "bg-emerald-50 dark:bg-emerald-950/50",
+    items: [
+      { name: "হিসাববিজ্ঞান (Accounting)", code: "146", path: "/subjects/accounting" },
+      { name: "ফিন্যান্স ও ব্যাংকিং", code: "152", path: "/subjects/finance" },
+      { name: "ব্যবসায় উদ্যোগ", code: "143", path: "/subjects/entrepreneurship" },
+      { name: "তথ্য ও যোগাযোগ প্রযুক্তি (ICT)", code: "154", path: "/subjects/ict" },
+      { name: "ইসলাম ও নৈতিক শিক্ষা", code: "111", path: "/subjects/religion" },
+    ],
+  },
 ];
-
-const subjectGroups = {
-  science: {
-    title: "Science",
-    icon: "📘",
-    items: [
-      { name: "Mathematics", path: "/subjects/math" },
-      { name: "Higher Mathematics", path: "/subjects/higher-math" },
-      { name: "Physics", path: "/subjects/physics" },
-      { name: "Chemistry", path: "/subjects/chemistry" },
-      { name: "Biology", path: "/subjects/biology" },
-    ],
-  },
-  humanities: {
-    title: "Humanities (Arts)",
-    icon: "📙",
-    items: [
-      { name: "Bangla", path: "/subjects/bangla" },
-      { name: "English", path: "/subjects/english" },
-      { name: "History", path: "/subjects/history" },
-      { name: "Geography", path: "/subjects/geography" },
-      { name: "Civics", path: "/subjects/civics" },
-      { name: "Economics", path: "/subjects/economics" },
-      { name: "ICT", path: "/subjects/ict" },
-      { name: "Religion", path: "/subjects/religion" },
-    ],
-  },
-  commerce: {
-    title: "Business Studies (Commerce)",
-    icon: "📗",
-    items: [
-      { name: "Accounting", path: "/subjects/accounting" },
-      { name: "Finance & Banking", path: "/subjects/finance" },
-      { name: "Business Entrepreneurship", path: "/subjects/entrepreneurship" },
-      { name: "ICT", path: "/subjects/ict" },
-      { name: "Bangla", path: "/subjects/bangla" },
-      { name: "English", path: "/subjects/english" },
-      { name: "Mathematics", path: "/subjects/math" },
-      { name: "Religion", path: "/subjects/religion" },
-    ],
-  },
-};
 
 export function Navbar() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mobileSubjectsOpen, setMobileSubjectsOpen] = useState(false);
-  const [expandedStream, setExpandedStream] = useState<string | null>(null);
+  const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
+  const [mobileSubjectsExpanded, setMobileSubjectsExpanded] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useThemeStore();
 
-  // Resolve actual theme (light or dark)
   const isDark =
     theme === "dark" ||
     (theme === "system" &&
@@ -74,14 +83,13 @@ export function Navbar() {
     setTheme(isDark ? "light" : "dark");
   };
 
-  // Close mobile menu when route changes
+  // Close menus on page navigation
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setMobileSubjectsOpen(false);
-    setExpandedStream(null);
-  }, [location.pathname]);
+    setIsSubjectsOpen(false);
+  }, [location.pathname, location.search]);
 
-  // Prevent scroll when mobile menu is open
+  // Lock scroll on mobile menu open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -93,155 +101,210 @@ export function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
-  const toggleStream = (streamKey: string) => {
-    setExpandedStream((prev) => (prev === streamKey ? null : streamKey));
-  };
+  // Click outside listener for subjects dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsSubjectsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <>
-      <nav className="sticky top-0 z-50 w-full border-b border-slate-200/50 bg-white/80 backdrop-blur-2xl dark:bg-slate-950/80 dark:border-slate-800/50 transition-all duration-300">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full transition-all duration-200">
+      {/* Top Utility Strip (Crisp & Responsive) */}
+      <div className="bg-slate-900 text-slate-300 border-b border-slate-800 text-[11px] sm:text-xs font-bn py-1.5 px-3 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl flex items-center justify-between gap-2">
+          <div className="flex items-center space-x-2 truncate">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-400 shrink-0 animate-pulse"></span>
+            <span className="font-semibold text-slate-200 truncate">
+              <span className="hidden sm:inline">গণপ্রজাতন্ত্রী বাংলাদেশ অনুমোদিত এনসিটিবি কারিকুলাম • </span>
+              জাতীয় মাধ্যমিক ডিজিটাল পরীক্ষা পোর্টাল
+            </span>
+          </div>
+          <div className="flex items-center space-x-3 text-slate-400 shrink-0 text-[10px] sm:text-[11px]">
+            <span className="hidden md:inline">10টি শিক্ষা বোর্ড</span>
+            <span className="hidden md:inline">•</span>
+            <span>শিক্ষাবর্ষ: 2025–26</span>
+            <span>•</span>
+            <span className="text-emerald-400 font-bold">সার্ভার সচল 🟢</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navigation Bar */}
+      <nav className="w-full border-b border-slate-200/90 bg-white/95 backdrop-blur-md dark:bg-slate-950/95 dark:border-slate-800/90 shadow-xs">
+        <div className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8">
+          
+          {/* Logo & Brand Identity */}
           <Link
             to="/"
-            className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-xl hover:scale-[1.05] active:scale-[0.98] transition-transform"
+            className="flex items-center gap-2.5 sm:gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-xl"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm">
-              <BookOpen className="h-6 w-6" />
+            <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-950 text-white shadow-sm border border-emerald-500/30 shrink-0 group-hover:scale-105 transition-transform">
+              <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-300" />
             </div>
-            <span className="font-sans text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-              SSC Tutor AI
-            </span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5">
+                <span className="font-sans text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                  SSC TUTOR AI
+                </span>
+                <span className="hidden sm:inline-flex bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800 font-bn">
+                  জাতীয় শিক্ষা পোর্টাল
+                </span>
+              </div>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 font-bn tracking-wide hidden xs:inline-block">
+                বোর্ড প্রশ্নব্যাংক, টেস্ট পেপার ও এআই ক্লাসরুম
+              </span>
+            </div>
           </Link>
 
-          <div className="hidden lg:flex lg:items-center lg:space-x-8">
+          {/* Desktop Navigation Links */}
+          <div className="hidden lg:flex lg:items-center lg:space-x-1 xl:space-x-2 font-bn">
+            {/* Home */}
             <Link
               to="/"
               className={cn(
-                "text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm",
+                "text-sm font-bold transition-all py-2 px-3 rounded-xl",
                 location.pathname === "/"
-                  ? "text-primary-600"
-                  : "text-slate-600 dark:text-slate-300 dark:hover:text-primary-400",
+                  ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/50"
+                  : "text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-slate-900"
               )}
             >
-              Home
+              হোম
             </Link>
 
-            {/* Subjects Dropdown */}
-            <div className="group relative">
+            {/* Subjects Mega-Menu Dropdown */}
+            <div className="relative" ref={dropdownRef}>
               <button
+                onClick={() => setIsSubjectsOpen(!isSubjectsOpen)}
+                onMouseEnter={() => setIsSubjectsOpen(true)}
                 className={cn(
-                  "flex items-center text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm py-2",
+                  "flex items-center gap-1 text-sm font-bold transition-all py-2 px-3 rounded-xl",
                   location.pathname.startsWith("/subjects")
-                    ? "text-primary-600"
-                    : "text-slate-600 dark:text-slate-300 dark:hover:text-primary-400",
+                    ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/50"
+                    : "text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-slate-900"
                 )}
               >
-                Subjects
-                <svg
-                  className="ml-1 h-4 w-4 text-slate-400 group-hover:text-primary-500 transition-transform group-hover:rotate-180"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                <span>বিষয়সমূহ</span>
+                <ChevronDown
+                  className={cn(
+                    "h-4 w-4 text-slate-400 transition-transform duration-200",
+                    isSubjectsOpen && "rotate-180 text-emerald-600"
+                  )}
+                />
               </button>
 
-              <div className="absolute left-0 top-full mt-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out z-50">
-                <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-xl ring-1 ring-slate-200 dark:ring-slate-800 py-2">
-                  {Object.entries(subjectGroups).map(([key, group]) => (
-                    <div key={key} className="group/nested relative">
-                      <button className="w-full flex items-center justify-between px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                        <span>
-                          {group.icon} {group.title}
-                        </span>
-                        <svg
-                          className="h-4 w-4 text-slate-400 group-hover/nested:text-primary-500 transition-transform group-hover/nested:-rotate-90"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
+              {/* Clean Categorized Mega Menu Dropdown */}
+              <AnimatePresence>
+                {isSubjectsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                    transition={{ duration: 0.18 }}
+                    onMouseLeave={() => setIsSubjectsOpen(false)}
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[720px] rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-200 dark:border-slate-800 p-5 z-50 font-bn"
+                  >
+                    <div className="grid grid-cols-3 gap-5">
+                      {subjectCategories.map((cat, idx) => {
+                        const IconComponent = cat.icon;
+                        return (
+                          <div key={idx} className="flex flex-col">
+                            <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100 dark:border-slate-800">
+                              <span className={cn("p-1.5 rounded-lg", cat.bg, cat.color)}>
+                                <IconComponent className="h-4 w-4" />
+                              </span>
+                              <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                                {cat.title}
+                              </h4>
+                            </div>
 
-                      {/* Nested Dropdown */}
-                      <div className="absolute left-full top-0 ml-2 w-64 opacity-0 invisible group-hover/nested:opacity-100 group-hover/nested:visible transition-all duration-200 ease-in-out">
-                        <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-xl ring-1 ring-slate-200 dark:ring-slate-800 py-2">
-                          <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
-                            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                              {group.icon} {group.title} Subjects
-                            </span>
+                            <div className="space-y-1">
+                              {cat.items.map((item) => (
+                                <Link
+                                  key={item.code}
+                                  to={item.path}
+                                  className="group flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
+                                >
+                                  <span className="truncate">{item.name}</span>
+                                  <span className="text-[10px] text-slate-400 group-hover:text-emerald-600 font-mono">
+                                    {item.code}
+                                  </span>
+                                </Link>
+                              ))}
+                            </div>
                           </div>
-                          {group.items.map((item) => (
-                            <Link
-                              key={item.name}
-                              to={item.path}
-                              className="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                  <div className="mt-2 border-t border-slate-100 dark:border-slate-800 pt-2">
-                    <Link
-                      to="/subjects"
-                      className="block px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center"
-                    >
-                      View All Subjects
-                      <svg
-                        className="ml-1 h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                      <span className="text-slate-500 dark:text-slate-400">
+                        এনসিটিবি সিলেবাস অনুযায়ী সকল বিষয়ের অধ্যায়ভিত্তিক নোট ও সুপার সাজেশন
+                      </span>
+                      <Link
+                        to="/subjects"
+                        className="font-bold text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-1"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                        <span>সকল বিষয় একসাথে &rarr;</span>
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {mainNavLinks.slice(1).map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={cn(
-                  "text-sm font-medium transition-all hover:scale-[1.02] active:scale-[0.98] hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 rounded-sm",
-                  location.pathname === link.path
-                    ? "text-primary-600"
-                    : "text-slate-600 dark:text-slate-300 dark:hover:text-primary-400",
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {/* Test Paper & Exam */}
+            <Link
+              to="/model-tests?mode=test_paper"
+              className={cn(
+                "text-sm font-bold transition-all py-2 px-3 rounded-xl flex items-center gap-1.5",
+                location.pathname.startsWith("/model-tests")
+                  ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/50"
+                  : "text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-slate-900"
+              )}
+            >
+              <FileText className="h-4 w-4 text-emerald-600" />
+              <span>টেস্ট পেপার ও পরীক্ষা</span>
+              <span className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] px-1.5 py-0.2 rounded font-extrabold border border-emerald-300 dark:border-emerald-800">
+                PDF
+              </span>
+            </Link>
+
+            {/* About */}
+            <Link
+              to="/about"
+              className={cn(
+                "text-sm font-bold transition-all py-2 px-3 rounded-xl",
+                location.pathname === "/about"
+                  ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/50"
+                  : "text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:bg-slate-100/70 dark:hover:bg-slate-900"
+              )}
+            >
+              আমাদের লক্ষ্য
+            </Link>
           </div>
 
-          <div className="flex items-center space-x-4">
+          {/* Right Action Buttons */}
+          <div className="flex items-center space-x-2 sm:space-x-3 font-bn">
+            {/* Primary Action: AI Tutor */}
+            <Link
+              to="/tutor"
+              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-600 hover:to-emerald-700 text-white text-xs sm:text-sm font-extrabold px-3.5 sm:px-4.5 py-2 sm:py-2.5 rounded-xl shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <BrainCircuit className="h-4 w-4 text-emerald-200" />
+              <span className="hidden xs:inline">এআই শিক্ষক ভাইয়া</span>
+              <span className="xs:hidden">এআই শিক্ষক</span>
+            </Link>
+
+            {/* Dark / Light Mode Switch */}
             <button
               onClick={cycleTheme}
               aria-label="Toggle theme"
-              className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
+              className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {isDark ? (
@@ -252,26 +315,27 @@ export function Navbar() {
                     exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Moon className="h-5 w-5" />
+                    <Moon className="h-4 w-4 text-amber-400" />
                   </motion.div>
                 ) : (
                   <motion.div
                     key="light"
                     initial={{ opacity: 0, rotate: 90, scale: 0.5 }}
                     animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                    exit={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                    exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Sun className="h-5 w-5" />
+                    <Sun className="h-4 w-4 text-amber-500" />
                   </motion.div>
                 )}
               </AnimatePresence>
             </button>
 
+            {/* Mobile Menu Trigger */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              aria-label="Open Menu"
-              className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
+              aria-label="Open mobile menu"
+              className="lg:hidden flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 focus-visible:outline-none"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -279,7 +343,7 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Slide-out Menu Overlay */}
+      {/* Slide-out Mobile Navigation Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -287,224 +351,116 @@ export function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm"
               onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm"
             />
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-2xl overflow-y-auto"
+              transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-2xl flex flex-col font-bn"
             >
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4">
-                <span className="font-sans text-lg font-bold text-slate-900 dark:text-white">
-                  Navigation
-                </span>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={cycleTheme}
-                    aria-label="Toggle theme"
-                    className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
-                  >
-                    <AnimatePresence mode="wait" initial={false}>
-                      {isDark ? (
-                        <motion.div
-                          key="dark-mobile"
-                          initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
-                          animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                          exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Moon className="h-5 w-5" />
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="light-mobile"
-                          initial={{ opacity: 0, rotate: 90, scale: 0.5 }}
-                          animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                          exit={{ opacity: 0, rotate: -90, scale: 0.5 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Sun className="h-5 w-5" />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </button>
-                  <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    aria-label="Close Menu"
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-4">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-800 text-white">
+                    <GraduationCap className="h-4 w-4 text-emerald-300" />
+                  </div>
+                  <span className="font-sans text-base font-black text-slate-900 dark:text-white">
+                    SSC TUTOR AI
+                  </span>
                 </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-              <div className="flex flex-col px-6 py-8 space-y-2">
+
+              {/* Drawer Links */}
+              <div className="flex-1 overflow-y-auto px-4 py-5 space-y-2">
                 <Link
                   to="/"
-                  className={cn(
-                    "group flex items-center rounded-xl px-4 py-3 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600",
-                    location.pathname === "/"
-                      ? "bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 font-semibold"
-                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white",
-                  )}
+                  className="flex items-center justify-between p-3 rounded-xl font-bold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900"
                 >
-                  <span
-                    className={cn(
-                      "transition-transform duration-200",
-                      location.pathname === "/"
-                        ? "translate-x-2"
-                        : "group-hover:translate-x-2",
-                    )}
-                  >
-                    Home
+                  <span>হোম</span>
+                </Link>
+
+                <Link
+                  to="/model-tests?mode=test_paper"
+                  className="flex items-center justify-between p-3.5 rounded-xl font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800"
+                >
+                  <span className="flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-emerald-600" />
+                    <span>টেস্ট পেপার ও পরীক্ষা</span>
+                  </span>
+                  <span className="bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 text-[10px] px-2 py-0.5 rounded font-extrabold">
+                    PDF
                   </span>
                 </Link>
 
-                {/* Mobile Subjects Accordion */}
-                <div>
+                <Link
+                  to="/tutor"
+                  className="flex items-center justify-between p-3.5 rounded-xl font-bold bg-primary-50 dark:bg-primary-950/60 text-primary-800 dark:text-primary-200"
+                >
+                  <span className="flex items-center gap-2">
+                    <BrainCircuit className="h-4 w-4 text-primary-600" />
+                    <span>এআই শিক্ষক ভাইয়া</span>
+                  </span>
+                </Link>
+
+                {/* Collapsible Subjects in Mobile */}
+                <div className="rounded-xl border border-slate-100 dark:border-slate-800 overflow-hidden">
                   <button
-                    onClick={() => setMobileSubjectsOpen(!mobileSubjectsOpen)}
-                    className={cn(
-                      "w-full group flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600",
-                      location.pathname.startsWith("/subjects")
-                        ? "bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 font-semibold"
-                        : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white",
-                    )}
+                    onClick={() => setMobileSubjectsExpanded(!mobileSubjectsExpanded)}
+                    className="w-full flex items-center justify-between p-3 font-bold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900"
                   >
-                    <span
-                      className={cn(
-                        "transition-transform duration-200",
-                        location.pathname.startsWith("/subjects")
-                          ? "translate-x-2"
-                          : "group-hover:translate-x-2",
-                      )}
-                    >
-                      Subjects
+                    <span className="flex items-center gap-2">
+                      <BookOpen className="h-4 w-4 text-slate-500" />
+                      <span>বিষয়সমূহ ও সাজেশন</span>
                     </span>
-                    <svg
+                    <ChevronDown
                       className={cn(
-                        "h-5 w-5 transition-transform duration-200",
-                        mobileSubjectsOpen ? "rotate-180" : "",
+                        "h-4 w-4 text-slate-400 transition-transform",
+                        mobileSubjectsExpanded && "rotate-180"
                       )}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                    />
                   </button>
 
-                  <AnimatePresence>
-                    {mobileSubjectsOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pl-4 pr-2 pt-2 pb-2 space-y-2 border-l-2 border-slate-100 dark:border-slate-800 ml-4 mt-1">
-                          {Object.entries(subjectGroups).map(([key, group]) => (
-                            <div key={key}>
-                              <button
-                                onClick={() => toggleStream(key)}
-                                className="w-full flex items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                              >
-                                <span>
-                                  {group.icon} {group.title}
-                                </span>
-                                <svg
-                                  className={cn(
-                                    "h-4 w-4 transition-transform duration-200",
-                                    expandedStream === key ? "rotate-180" : "",
-                                  )}
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth="2"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M19 9l-7 7-7-7"
-                                  />
-                                </svg>
-                              </button>
-
-                              <AnimatePresence>
-                                {expandedStream === key && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    className="overflow-hidden"
-                                  >
-                                    <div className="pl-4 py-2 space-y-1">
-                                      {group.items.map((item) => (
-                                        <Link
-                                          key={item.name}
-                                          to={item.path}
-                                          className="block rounded-lg px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-primary-950/60 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
-                                        >
-                                          {item.name}
-                                        </Link>
-                                      ))}
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          ))}
-                          <Link
-                            to="/subjects"
-                            className="block rounded-lg px-4 py-2 text-sm font-semibold text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/60 transition-colors mt-2"
-                          >
-                            View All Subjects &rarr;
-                          </Link>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {mobileSubjectsExpanded && (
+                    <div className="px-3 pb-3 pt-1 space-y-1 bg-slate-50 dark:bg-slate-900/50">
+                      {subjectCategories.flatMap((c) => c.items).map((item) => (
+                        <Link
+                          key={item.code}
+                          to={item.path}
+                          className="flex items-center justify-between py-1.5 px-2.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"
+                        >
+                          <span>{item.name}</span>
+                          <span className="text-[10px] text-slate-400 font-mono">{item.code}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                {mainNavLinks.slice(1).map((link) => {
-                  const isActive = location.pathname === link.path;
-                  return (
-                    <Link
-                      key={link.name}
-                      to={link.path}
-                      className={cn(
-                        "group flex items-center rounded-xl px-4 py-3 text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600",
-                        isActive
-                          ? "bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 font-semibold"
-                          : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white",
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "transition-transform duration-200",
-                          isActive
-                            ? "translate-x-2"
-                            : "group-hover:translate-x-2",
-                        )}
-                      >
-                        {link.name}
-                      </span>
-                    </Link>
-                  );
-                })}
+                <Link
+                  to="/about"
+                  className="flex items-center justify-between p-3 rounded-xl font-bold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900"
+                >
+                  <span>আমাদের লক্ষ্য</span>
+                </Link>
+              </div>
+
+              {/* Drawer Footer */}
+              <div className="border-t border-slate-100 dark:border-slate-800 p-4 text-center text-xs text-slate-500 dark:text-slate-400">
+                গণপ্রজাতন্ত্রী বাংলাদেশ অনুমোদিত এনসিটিবি কারিকুলাম
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
-    </>
+    </header>
   );
 }

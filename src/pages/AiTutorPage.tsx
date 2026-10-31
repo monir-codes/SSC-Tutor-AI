@@ -42,7 +42,7 @@ import { jsPDF } from "jspdf";
 import { toast } from "sonner";
 
 const QUICK_SUGGESTIONS = [
-  { text: "নিউটনের ৩টি গতিসূত্র রিকশা ও ক্রিকেটের বাস্তব উদাহরণ দিয়ে বুঝিয়ে বলো ভাইয়া", icon: "⚡" },
+  { text: "নিউটনের 3টি গতিসূত্র রিকশা ও ক্রিকেটের বাস্তব উদাহরণ দিয়ে বুঝিয়ে বলো ভাইয়া", icon: "⚡" },
   { text: "পর্যায় সারণির গ্রুপ ও পর্যায় চেনার সহজ টেকনিক বুঝিয়ে দাও", icon: "🧪" },
   { text: "ত্রিকোণমিতির sin, cos, tan সূত্র মনে রাখার সহজ ট্রিকস কী?", icon: "📐" },
   { text: "উদ্ভিদের সালোকসংশ্লেষণ প্রক্রিয়াটি রান্নাঘরের উদাহরণ দিয়ে বলো", icon: "🌱" },
@@ -619,7 +619,7 @@ export function AiTutorPage() {
               updateChatMessage(
                 sessionId,
                 messageId,
-                "⚠️ আজকের জন্য আপনার এপিআই লিমিট (২০টি মেসেজ) শেষ হয়ে গেছে! অনুগ্রহ করে আগামীকাল আবার চেষ্টা করুন।"
+                "⚠️ আজকের জন্য আপনার এপিআই লিমিট (20টি মেসেজ) শেষ হয়ে গেছে! অনুগ্রহ করে আগামীকাল আবার চেষ্টা করুন।"
               );
               success = true;
               break;
@@ -711,8 +711,8 @@ export function AiTutorPage() {
   return (
     <div className="h-full w-full flex flex-col lg:flex-row bg-slate-50 dark:bg-slate-900 overflow-hidden relative select-text">
       <SEO
-        title="AI Tutor | Smart SSC Assistant"
-        description="Chat with your personal SSC Tutor AI. Ask questions, get easy Bengali explanations, and clear your doubts instantly for Physics, Chemistry, Math, Biology and more."
+        title="২৪/৭ ফ্রি এসএসসি এআই শিক্ষক | SSC 24/7 AI Tutor — SSC Tutor AI"
+        description="পদার্থবিজ্ঞান, রসায়ন, গণিত, জীববিজ্ঞানসহ সকল বিষয়ের যেকোনো কঠিন প্রশ্নের সহজ বাংলা ব্যাখ্যা ও সমাধান পান আপনার ব্যক্তিগত এআই শিক্ষকের কাছে। সম্পূর্ণ ফ্রি।"
         href="/tutor"
         jsonLd={{
           "@context": "https://schema.org",
@@ -1203,7 +1203,7 @@ export function AiTutorPage() {
                     ? "অনুগ্রহ করে একটু অপেক্ষা করুন..."
                     : subjectParam
                     ? `${subjectParam.split(" (")[0]} সম্পর্কিত যেকোনো প্রশ্ন লিখো...`
-                    : "এসএসসি বিষয় সম্পর্কিত যেকোনো প্রশ্ন লিখো (যেমন: নিউটনের ৩য় সূত্র)..."
+                    : "এসএসসি বিষয় সম্পর্কিত যেকোনো প্রশ্ন লিখো (যেমন: নিউটনের 3য় গতিসূত্র)..."
                 }
                 disabled={isLoading || isListening || isCooldown}
                 className="w-full rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white px-4 sm:px-5 py-3 sm:py-3.5 pr-20 sm:pr-24 text-sm sm:text-base outline-none transition-all focus:border-primary-500 focus:bg-white dark:focus:bg-slate-800/90 focus:ring-2 focus:ring-primary-500/20 disabled:opacity-60 font-bn shadow-inner"

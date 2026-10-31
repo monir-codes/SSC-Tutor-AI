@@ -1,48 +1,78 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Github, Linkedin, Globe, CheckCircle2, Heart } from "lucide-react";
+import { GraduationCap, BookOpen, Github, Linkedin, Globe, CheckCircle2, Heart, ShieldCheck, FileText, Scale } from "lucide-react";
+import { SSC_BOARDS } from "@/lib/sscBoardData";
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 pt-12 sm:pt-16 pb-8 transition-colors">
+    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 pt-12 sm:pt-16 pb-10 transition-colors font-bn">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
-          
-          {/* Brand & About */}
-          <div className="md:col-span-2 lg:col-span-1 flex flex-col gap-4">
+        
+        {/* Top Institutional Identity Banner */}
+        <div className="pb-8 mb-8 border-b border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="flex items-center space-x-3.5">
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-950 text-white shadow-sm border border-emerald-500/30 shrink-0">
+              <GraduationCap className="h-6 w-6 text-emerald-300" />
+            </div>
             <div>
-              <Link to="/" className="flex items-center space-x-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 rounded-xl">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm">
-                  <BookOpen className="h-6 w-6" />
-                </div>
-                <span className="font-sans text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  SSC Tutor AI
+              <div className="flex items-center gap-2">
+                <span className="font-sans text-xl sm:text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+                  SSC TUTOR AI
                 </span>
-              </Link>
-              <p className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200 font-bn">
-                বাংলাদেশের শিক্ষার্থীদের জন্য সহজ, নির্ভুল ও বিনামূল্যে ডিজিটাল শিক্ষা।
+                <span className="bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
+                  জাতীয় শিক্ষা পোর্টাল
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400 mt-0.5">
+                বাংলাদেশ জাতীয় মাধ্যমিক ডিজিটাল প্রশ্নব্যাংক, টেস্ট পেপার ও এআই ক্লাসরুম
               </p>
             </div>
-            <p className="text-xs sm:text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-              NCTB কারিকুলাম অনুযায়ী প্রতিটি বিষয়ের সহজবোধ্য ব্যাখ্যা, প্র্যাকটিস প্রশ্ন ও এআই সহায়তা।
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
+              <ShieldCheck className="h-4 w-4 text-emerald-600" />
+              <span>NCTB কারিকুলাম মানসম্মত</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              <span>10টি বোর্ড প্রশ্নব্যাংক</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Multi-column Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
+          
+          {/* Mission & Purpose */}
+          <div className="lg:col-span-2 flex flex-col gap-3">
+            <h3 className="text-sm font-black text-slate-950 dark:text-white uppercase tracking-wider font-sans">
+              জাতীয় শিক্ষা অঙ্গীকার
+            </h3>
+            <p className="text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              বাংলাদেশের প্রতিটি অঞ্চলের এসএসসি পরীক্ষার্থীর জন্য মানসম্মত শিক্ষা, বিগত 7 বছরের আসল বোর্ড প্রশ্ন, নির্ভুল সৃজনশীল মডেল উত্তর এবং হুবহু হলের টেস্ট পেপারের ফ্রি ডিজিটাল অধিকার নিশ্চিত করতে এই প্ল্যাটফর্মটি নির্মিত।
             </p>
+            <div className="mt-3 text-xs text-slate-500 dark:text-slate-500 font-mono">
+              অফিশিয়াল পোর্টাল: https://ssc-tutor-ai.vercel.app
+            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Quick Links</h3>
-            <ul className="mt-4 sm:mt-6 space-y-3">
+            <h3 className="text-xs sm:text-sm font-black text-slate-950 dark:text-white uppercase tracking-wider font-sans">
+              গুরুত্বপূর্ণ লিংকসমূহ
+            </h3>
+            <ul className="mt-4 space-y-2.5 text-xs sm:text-sm">
               {[
-                { name: "Home", href: "/" },
-                { name: "AI Tutor", href: "/tutor" },
-                { name: "Practice", href: "/practice" },
-                { name: "Model Tests", href: "/model-tests" },
-                { name: "About", href: "/about" },
-                { name: "Contact", href: "/contact" },
+                { name: "হোম পেজ (Home)", href: "/" },
+                { name: "টেস্ট পেপার ভল্ট (PDF Download)", href: "/model-tests?mode=test_paper" },
+                { name: "অনলাইন বোর্ড পরীক্ষা (Exam)", href: "/model-tests?mode=board_exam" },
+                { name: "এআই শিক্ষক ভাইয়া (AI Tutor)", href: "/tutor" },
+                { name: "অধ্যায়ভিত্তিক ড্রিল (Drill)", href: "/practice" },
+                { name: "আমাদের লক্ষ্য (About)", href: "/about" },
               ].map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-slate-600 dark:text-slate-400 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+                    className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -51,90 +81,78 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Subjects */}
+          {/* Education Boards */}
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Streams</h3>
-            <ul className="mt-4 sm:mt-6 space-y-3">
-              {[
-                { name: "📘 Science (বিজ্ঞান)", href: "/subjects" },
-                { name: "📙 Humanities (মানবিক)", href: "/subjects" },
-                { name: "📗 Commerce (বাণিজ্য)", href: "/subjects" },
-              ].map((link) => (
-                <li key={link.name}>
+            <h3 className="text-xs sm:text-sm font-black text-slate-950 dark:text-white uppercase tracking-wider font-sans">
+              শিক্ষা বোর্ডসমূহ
+            </h3>
+            <ul className="mt-4 space-y-2 text-xs sm:text-sm">
+              {SSC_BOARDS.slice(1, 8).map((b) => (
+                <li key={b.id}>
                   <Link
-                    to={link.href}
-                    className="text-sm text-slate-600 dark:text-slate-400 transition-colors hover:text-primary-600 dark:hover:text-primary-400 font-bn"
+                    to={`/model-tests?mode=test_paper&board=${b.id}`}
+                    className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                   >
-                    {link.name}
+                    {b.name.split(" (")[0]}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Free & Open */}
-          <div className="flex flex-col gap-4">
-             <div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Free & Open</h3>
-                <div className="mt-4 sm:mt-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 p-4 sm:p-5 border border-slate-200 dark:border-slate-800">
-                  <ul className="space-y-2.5">
-                    {["100% Free to Use", "No Subscription Needed", "Open for Everyone"].map((item) => (
-                      <li key={item} className="flex items-center text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">
-                        <CheckCircle2 className="mr-2.5 h-4 w-4 text-emerald-500 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-             </div>
-          </div>
-
-          {/* Connect & Feedback */}
-          <div className="flex flex-col gap-4">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Connect</h3>
-              <div className="mt-4 sm:mt-6 flex space-x-3">
-                <a
-                  href="https://www.linkedin.com/in/moniruzzaman-rumman/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-[#0A66C2] hover:text-white"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://github.com/monir-codes/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="GitHub"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-slate-900 hover:text-white"
-                >
-                  <Github className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://monir-uzzaman.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Portfolio"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-primary-600 hover:text-white"
-                >
-                  <Globe className="h-5 w-5" />
-                </a>
-              </div>
+          {/* Connect & Creator */}
+          <div>
+            <h3 className="text-xs sm:text-sm font-black text-slate-950 dark:text-white uppercase tracking-wider font-sans">
+              প্রকৌশল ও যোগাযোগ
+            </h3>
+            <p className="mt-4 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              উন্নত এআই প্রযুক্তি ও এনসিটিবি কারিকুলাম সমন্বয়ে পরিচালিত জাতীয় ডিজিটাল সেবা।
+            </p>
+            <div className="mt-4 flex space-x-2.5">
+              <a
+                href="https://www.linkedin.com/in/moniruzzaman-rumman/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-[#0A66C2] hover:text-white transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a
+                href="https://github.com/monir-codes/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-950 hover:text-white transition-colors"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+              <a
+                href="https://monir-uzzaman.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Portfolio"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-600 hover:text-white transition-colors"
+              >
+                <Globe className="h-4 w-4" />
+              </a>
             </div>
           </div>
 
         </div>
 
-        <div className="mt-12 sm:mt-16 flex flex-col items-center justify-between border-t border-slate-200 dark:border-slate-800 pt-6 sm:pt-8 sm:flex-row gap-3 text-center sm:text-left">
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            © 2026 SSC Tutor AI by Md. Moniruzzaman. All Rights Reserved.
-          </p>
-          <p className="flex flex-wrap items-center justify-center sm:justify-start text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Made with <Heart className="mx-1 h-3.5 w-3.5 text-red-500 fill-red-500 shrink-0" /> in Bangladesh for every SSC Student.
-          </p>
+        {/* Bottom Legal & Attribution Bar */}
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-500 dark:text-slate-400">
+          <div>
+            © 2026 SSC TUTOR AI • গণপ্রজাতন্ত্রী বাংলাদেশ জাতীয় মাধ্যমিক ডিজিটাল শিক্ষা উদ্যোগ
+          </div>
+          <div className="flex items-center justify-center gap-1">
+            <span>Designed & Developed with</span>
+            <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500 inline" />
+            <span>for every SSC candidate in Bangladesh.</span>
+          </div>
         </div>
+
       </div>
     </footer>
   );

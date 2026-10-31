@@ -32,22 +32,23 @@ ${boardRequirement}
 IMPORTANT RULES:
 1. Be conceptually accurate and match Bangladesh SSC board exam standards.
 2. YOU MUST ONLY GENERATE AUTHENTIC, REAL PREVIOUS SSC BOARD QUESTIONS from past exams (e.g. Dhaka Board 2024/2023, Rajshahi Board 2023, Chittagong Board 2022, Comilla Board 2023, Jessore Board 2024, Dinajpur Board, etc.).
-3. Label each question with its exact board and year in the \`boardInfo\` field (e.g. "ঢাকা বোর্ড ২০২৩", "রাজশাহী বোর্ড ২০২৪", "যশোর বোর্ড ২০২২"). Set \`isBoardQuestion\` to true.
+3. Label each question with its exact board and year in the \`boardInfo\` field (e.g. "ঢাকা বোর্ড 2023", "রাজশাহী বোর্ড 2024", "যশোর বোর্ড 2022"). Set \`isBoardQuestion\` to true.
 4. Provide a friendly, teacher-style step-by-step explanation in Bangla for the correct answer.
 5. Provide an easy learning tip for each question.
-6. Output must be valid JSON array of objects.
+6. NUMERAL REQUIREMENT: ALWAYS use standard English/Arabic numerals (1, 2, 3, 2024, 25, 75) for all digits, math values, and years. NEVER output Bengali digits (০, ১, ২, ৩, ইত্যাদি) as they are ambiguous in font rendering.
+7. Output must be valid JSON array of objects.
 
 Response format:
 [
   {
     "id": "q-1",
     "text": "প্রশ্নটি বাংলায়...",
-    "options": ["ক. অপশন ১", "খ. অপশন ২", "গ. অপশন ৩", "ঘ. অপশন ৪"],
-    "correctAnswer": "ক. অপশন ১",
+    "options": ["ক. অপশন 1", "খ. অপশন 2", "গ. অপশন 3", "ঘ. অপশন 4"],
+    "correctAnswer": "ক. অপশন 1",
     "explanation": "শিক্ষক সুলভ সহজ ভাষায় ধাপে ধাপে ব্যাখ্যা...",
     "tips": "মনে রাখার সহজ টেকনিক...",
     "isBoardQuestion": true,
-    "boardInfo": "ঢাকা বোর্ড ২০২৩"
+    "boardInfo": "ঢাকা বোর্ড 2023"
   }
 ]`;
 

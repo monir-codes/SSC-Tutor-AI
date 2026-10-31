@@ -12,8 +12,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  BarChart,
-  Bar,
 } from "recharts";
 
 export function ProgressPage() {
@@ -40,8 +38,8 @@ export function ProgressPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 pb-20">
       <SEO 
-        title="My Progress" 
-        description="Track your performance, recent learning, and exam history on SSC Tutor AI."
+        title="পড়াশোনার অগ্রগতি ও ফলাফল | Learning Analytics — SSC Tutor AI" 
+        description="আপনার এসএসসি মডেল টেস্টের নম্বর, বিষয়ভিত্তিক প্রগ্রেস ও ভুল উত্তরের অ্যানালিটিক্স ট্র্যাক করুন।"
         href="/progress"
       />
       <section className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 py-12">

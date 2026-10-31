@@ -28,8 +28,8 @@ export function BookmarksPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 transition-colors">
       <SEO 
-        title="Bookmarks | Saved Study Materials" 
-        description="Access your saved SSC subjects, chapters, questions, and important AI explanations."
+        title="সংরক্ষিত প্রশ্ন ও নোট | Saved Bookmarks — SSC Tutor AI" 
+        description="আপনার সেভ করা গুরুত্বপূর্ণ এসএসসি সৃজনশীল ও বহুনির্বাচনি প্রশ্ন, অধ্যায়ভিত্তিক নোট এবং সমাধান সহজে খুঁজে পান।"
         href="/bookmarks"
       />
       <section className="bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 py-10 sm:py-14">

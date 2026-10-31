@@ -158,8 +158,8 @@ export function PracticePage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 pb-20 transition-colors">
       <SEO
-        title="Chapter-wise SSC Practice Questions & Quizzes | SSC Tutor AI"
-        description="Generate custom, board-standard practice questions powered by AI. Authentic SSC board questions included for Science, Humanities and Commerce."
+        title="অধ্যায়ভিত্তিক এসএসসি বোর্ড প্রশ্ন প্র্যাকটিস ও কুইজ | SSC Practice — SSC Tutor AI"
+        description="বিজ্ঞান, মানবিক ও ব্যবসায় শিক্ষা বিভাগের প্রতিটি অধ্যায়ের বিগত বছরের আসল বোর্ড প্রশ্ন, বহুনির্বাচনি ও কুইজ অনুশীলন করুন শিক্ষকের ব্যাখ্যাসহ।"
         href="/practice"
         jsonLd={{
           "@context": "https://schema.org",

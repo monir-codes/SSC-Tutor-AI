@@ -28,8 +28,8 @@ export function ContactPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
       <SEO 
-        title="Contact Us | SSC Tutor AI Support"
-        description="Get in touch with the SSC Tutor AI team for support, feedback, or suggestions. Find frequently asked questions."
+        title="যোগাযোগ ও সহায়তা | Contact SSC Tutor AI Support"
+        description="যেকোনো জিজ্ঞাসা, মতামত বা টেকনিক্যাল সহায়তার জন্য এসএসসি টিউটর এআই টিমের সাথে যোগাযোগ করুন।"
         href="/contact"
         jsonLd={[
           {

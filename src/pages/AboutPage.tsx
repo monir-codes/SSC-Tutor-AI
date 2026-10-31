@@ -28,8 +28,8 @@ export function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
       <SEO 
-        title="About Us | SSC Tutor AI - Mission & Vision"
-        description="Learn about the mission, vision, and the creator behind SSC Tutor AI - a free platform providing quality AI education for students in Bangladesh."
+        title="আমাদের লক্ষ্য ও উদ্যোগ | About SSC Tutor AI — Bangladesh Education"
+        description="বাংলাদেশের ১০টি শিক্ষা বোর্ডের শিক্ষার্থীদের জন্য মানসম্মত ও সম্পূর্ণ বিনামূল্যে এসএসসি টেস্ট পেপার, বিগত 7 বছরের বোর্ড প্রশ্নব্যাংক ও এআই টিউটরিং প্ল্যাটফর্ম।"
         href="/about"
         jsonLd={{
           "@context": "https://schema.org",
@@ -78,7 +78,7 @@ export function AboutPage() {
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Our Mission</h2>
               <div className="mt-6 space-y-5 text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 font-bn">
                 <p>
-                  এই প্ল্যাটফর্মটি তৈরি করা হয়েছে বিশেষ করে বাংলাদেশের ৯ম, ১০ম শ্রেণি এবং এসএসসি পরীক্ষার্থীদের জন্য, যা সম্পূর্ণভাবে জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)-এর সিলেবাস অনুসরণ করে।
+                  এই প্ল্যাটফর্মটি তৈরি করা হয়েছে বিশেষ করে বাংলাদেশের 9ম, 10ম শ্রেণি এবং এসএসসি পরীক্ষার্থীদের জন্য, যা সম্পূর্ণভাবে জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB)-এর সিলেবাস অনুসরণ করে।
                 </p>
                 <p>
                   প্রতিটি পাঠ্য বিষয়কে সহজ, নির্ভুল এবং ছাত্রবান্ধব ভাষায় ধাপে ধাপে উপস্থাপন করা হয়েছে, যাতে একজন শিক্ষার্থী ঘরে বসেই একজন অভিজ্ঞ প্রাইভেট শিক্ষকের মতো সহায়তা পায়।

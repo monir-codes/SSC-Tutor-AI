@@ -44,8 +44,8 @@ export function SubjectsPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-10 sm:py-16 transition-colors">
       <SEO 
-        title="SSC Subjects | Complete Notes, Board Questions & AI Tutor" 
-        description="Browse all SSC subjects including Science, Humanities, and Commerce. Get chapter-wise study materials, examples, quizzes, and instant AI tutor help."
+        title="এসএসসি সকল বিষয় ও গাইড | SSC Subjects Question Bank — SSC Tutor AI" 
+        description="বিজ্ঞান, মানবিক ও ব্যবসায় শিক্ষা বিভাগের সকল বিষয়ের অধ্যায়ভিত্তিক নোট, বিগত 7 বছরের বোর্ড প্রশ্নব্যাংক এবং এআই শিক্ষকের সহায়তা।"
         href="/subjects"
         jsonLd={{
           "@context": "https://schema.org",

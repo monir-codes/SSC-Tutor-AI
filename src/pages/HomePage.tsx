@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -15,378 +16,929 @@ import {
   Unlock,
   Landmark,
   Award,
-  ChevronRight
+  ChevronRight,
+  ChevronLeft,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  Printer,
+  Check,
+  Star,
+  Users,
+  MessageSquareQuote,
+  HelpCircle,
+  Layers,
+  Play,
+  RotateCcw,
+  Bell,
+  Scale,
+  Building2,
+  ExternalLink,
+  Flame,
+  Clock,
+  Laptop,
 } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { SEO } from "@/components/SEO";
+import { SSC_BOARDS, SSC_SUBJECTS } from "@/lib/sscBoardData";
 
-const popularBoardExams = [
+// Hero Slider Data: Educational & Board / NCTB Focused Imagery
+const heroSlides = [
   {
-    board: "ঢাকা বোর্ড (Dhaka Board)",
-    year: "2024",
-    subject: "Physics (পদার্থবিজ্ঞান)",
-    subjectId: "physics",
-    boardId: "dhaka",
-    color: "from-blue-600 to-indigo-600",
-    badge: "🔥 Hot",
+    id: 1,
+    tag: "জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) • অনুমোদিত মাধ্যমিক সংকলন",
+    tagIcon: Landmark,
+    title: "বিগত 7 বছরের আসল টেস্ট পেপার ও সুপার সাজেশন",
+    subtitle:
+      "ঢাকা, রাজশাহী, চট্টগ্রামসহ 10টি শিক্ষা বোর্ডের সর্বাধিক কমন ও রিপিটেড প্রশ্নাবলি নিয়ে হুবহু হলের আদলে টেস্ট পেপার, বোল্ড উত্তরসহ A4 PDF ডাউনলোড এবং এনসিটিবি কারিকুলামের নির্ভুল সমাধান।",
+    primaryBtn: {
+      text: "টেস্ট পেপার সলভ ও PDF",
+      link: "/model-tests?mode=test_paper",
+      icon: FileText,
+    },
+    secondaryBtn: {
+      text: "অনলাইন বোর্ড পরীক্ষা দিন",
+      link: "/model-tests?mode=board_exam",
+      icon: Play,
+    },
+    metaPills: ["10টি শিক্ষা বোর্ড", "2018–2024 প্রশ্নব্যাংক", "অফিশিয়াল A4 PDF"],
+    image:
+      "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=2000&q=85",
+    accentColor: "emerald",
   },
   {
-    board: "রাজশাহী বোর্ড (Rajshahi Board)",
-    year: "2023",
-    subject: "General Math (সাধারণ গণিত)",
-    subjectId: "math",
-    boardId: "rajshahi",
-    color: "from-emerald-600 to-teal-600",
-    badge: "⚡ Most Practiced",
+    id: 2,
+    tag: "সার্বক্ষণিক দেশীয় এআই শিক্ষক ভাইয়া • 24/7 ফ্রি ক্লাসরুম",
+    tagIcon: BrainCircuit,
+    title: "বইয়ের কঠিন পড়া এখন পছন্দের শিক্ষকের মতো সহজ বাংলায়",
+    subtitle:
+      "রিকশার জড়তা, ক্রিকেটের ভরবেগ কিংবা রান্নার রসায়ন—বাস্তব জীবনের মিষ্টি উদাহরণ দিয়ে বিজ্ঞান, গণিত ও যেকোনো বিষয়ের ডাউট ক্লিয়ার করো এক নিমিষে।",
+    primaryBtn: {
+      text: "এআই শিক্ষক ভাইয়ার ক্লাসরুম",
+      link: "/tutor",
+      icon: BrainCircuit,
+    },
+    secondaryBtn: {
+      text: "সকল বিষয়ের অধ্যায় গাইড",
+      link: "/subjects",
+      icon: BookOpen,
+    },
+    metaPills: ["বাস্তব জীবনের উদাহরণ", "LaTeX গাণিতিক সূত্র", "ধাপে ধাপে সমাধান"],
+    image:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2000&q=85",
+    accentColor: "blue",
   },
   {
-    board: "চট্টগ্রাম বোর্ড (Chittagong Board)",
-    year: "2024",
-    subject: "Chemistry (রসায়ন)",
-    subjectId: "chemistry",
-    boardId: "chittagong",
-    color: "from-purple-600 to-pink-600",
-    badge: "✨ Authentic",
+    id: 3,
+    tag: "রিয়েল-টাইম বোর্ড এক্সাম হল সিমুলেটর • ঘড়ি ধরে হলের প্রস্তুতি",
+    tagIcon: Clock,
+    title: "পরীক্ষার হলে যাওয়ার আগেই সম্পূর্ণ ভয় দূর করুন",
+    subtitle:
+      "25 মিনিটে 25টি বহুনির্বাচনি ও 2 ঘণ্টা 35 মিনিটে 5টি সৃজনশীল লেখার সঠিক টাইম ম্যানেজমেন্ট শিখুন, ওএমআর শিট ফিলআপ করুন এবং অটো স্কোরকার্ড পান।",
+    primaryBtn: {
+      text: "অনলাইন পরীক্ষা শুরু করুন",
+      link: "/model-tests?mode=board_exam",
+      icon: Landmark,
+    },
+    secondaryBtn: {
+      text: "টেস্ট পেপার সংগ্রহ করুন",
+      link: "/model-tests?mode=test_paper",
+      icon: FileText,
+    },
+    metaPills: ["OMR উত্তরমালা", "স্বয়ংক্রিয় মূল্যায়ন", "নেগেটিভ মার্কিং ফ্রি"],
+    image:
+      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=2000&q=85",
+    accentColor: "purple",
+  },
+];
+
+const officialBoards = [
+  {
+    id: "all",
+    name: "কেন্দ্রীয় সুপার সাজেশন ভল্ট",
+    subtitle: "বিগত 7 বছরের সর্বাধিক কমন ও রিপিটেড প্রশ্নাবলি",
+    code: "NCTB-ALL",
+    est: "2018–2024",
+    color: "from-blue-700 to-indigo-900",
+    badge: "99% সুপার সাজেশন",
+    icon: Award,
+    isSuper: true,
   },
   {
-    board: "যশোর বোর্ড (Jessore Board)",
-    year: "2023",
-    subject: "Higher Math (উচ্চতর গণিত)",
-    subjectId: "higher-math",
-    boardId: "jessore",
-    color: "from-amber-600 to-orange-600",
-    badge: "🎯 High Scoring",
+    id: "dhaka",
+    name: "ঢাকা শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Dhaka",
+    code: "DB-101",
+    est: "1921",
+    color: "from-emerald-700 to-slate-900",
+    badge: "সর্বাধিক পরীক্ষার্থী",
+    icon: Landmark,
   },
   {
-    board: "কুমিল্লা বোর্ড (Comilla Board)",
-    year: "2024",
-    subject: "Biology (জীববিজ্ঞান)",
-    subjectId: "biology",
-    boardId: "comilla",
-    color: "from-rose-600 to-red-600",
-    badge: "📘 Full Board Paper",
+    id: "rajshahi",
+    name: "রাজশাহী শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Rajshahi",
+    code: "RB-102",
+    est: "1961",
+    color: "from-blue-800 to-slate-900",
+    badge: "উচ্চ পাসের হার",
+    icon: Landmark,
   },
   {
-    board: "দিনাজপুর বোর্ড (Dinajpur Board)",
-    year: "2023",
-    subject: "Accounting (হিসাববিজ্ঞান)",
-    subjectId: "accounting",
-    boardId: "dinajpur",
-    color: "from-cyan-600 to-blue-600",
-    badge: "💼 Commerce",
+    id: "chittagong",
+    name: "চট্টগ্রাম শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Chattogram",
+    code: "CB-103",
+    est: "1995",
+    color: "from-teal-800 to-slate-900",
+    badge: "মানসম্মত প্রশ্নপত্র",
+    icon: Landmark,
+  },
+  {
+    id: "comilla",
+    name: "কুমিল্লা শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Cumilla",
+    code: "COB-104",
+    est: "1962",
+    color: "from-cyan-800 to-slate-900",
+    badge: "ঐতিহ্যবাহী বোর্ড",
+    icon: Landmark,
+  },
+  {
+    id: "jessore",
+    name: "যশোর শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Jashore",
+    code: "JB-105",
+    est: "1963",
+    color: "from-amber-800 to-slate-900",
+    badge: "দক্ষিণ-পশ্চিমাঞ্চল",
+    icon: Landmark,
+  },
+  {
+    id: "dinajpur",
+    name: "দিনাজপুর শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Dinajpur",
+    code: "DIB-106",
+    est: "2006",
+    color: "from-purple-800 to-slate-900",
+    badge: "উত্তরাঞ্চল জোন",
+    icon: Landmark,
+  },
+  {
+    id: "barisal",
+    name: "বরিশাল শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Barishal",
+    code: "BB-107",
+    est: "1999",
+    color: "from-rose-800 to-slate-900",
+    badge: "দক্ষিণাঞ্চল জোন",
+    icon: Landmark,
+  },
+  {
+    id: "sylhet",
+    name: "সিলেট শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Sylhet",
+    code: "SB-108",
+    est: "1999",
+    color: "from-indigo-800 to-slate-900",
+    badge: "পূর্বাঞ্চল জোন",
+    icon: Landmark,
+  },
+  {
+    id: "mymensingh",
+    name: "ময়মনসিংহ শিক্ষা বোর্ড",
+    subtitle: "Board of Intermediate & Secondary Education, Mymensingh",
+    code: "MB-109",
+    est: "2017",
+    color: "from-emerald-900 to-slate-950",
+    badge: "নতুন বোর্ড প্রশ্ন",
+    icon: Landmark,
+  },
+  {
+    id: "madrasah",
+    name: "বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড",
+    subtitle: "Bangladesh Madrasah Education Board (দাখিল)",
+    code: "MDB-110",
+    est: "1979",
+    color: "from-green-800 to-slate-900",
+    badge: "দাখিল পরীক্ষা",
+    icon: Landmark,
+  },
+];
+
+const testimonials = [
+  {
+    name: "তাহসিন আহমেদ",
+    role: "এসএসসি 2025 পরীক্ষার্থী (বিজ্ঞান বিভাগ)",
+    institution: "ঢাকা রেসিডেন্সিয়াল মডেল কলেজ",
+    quote:
+      "বিগত 7 বছরের বোর্ড প্রশ্নগুলো একদম পরীক্ষার হলের মতো 2-কলাম অফিসিয়াল লেআউটে পেয়েছি। বহুনির্বাচনির বোল্ড উত্তর এবং নিচে ওএমআর শিট থাকায় সময় ধরে প্র্যাকটিস করা ও A4 PDF প্রিন্ট নেওয়া দারুণ সহজ হয়েছে।",
+    rating: 5,
+  },
+  {
+    name: "সামিয়া আক্তার",
+    role: "এসএসসি পরীক্ষার্থী",
+    institution: "ভিকারুননিসা নূন স্কুল অ্যান্ড কলেজ",
+    quote:
+      "সৃজনশীল প্রশ্নের ক, খ, গ, ঘ এর এত নিখুঁত ও এনসিটিবি গাইডলাইনসম্মত মডেল সমাধান ইন্টারনেটে আর কোথাও পাইনি। প্রতিটি প্রশ্নের সাথে কোন কোন বোর্ডে কতবার রিপিট হয়েছে তা উল্লেখ থাকায় রিভিশনে সময় বাঁচে।",
+    rating: 5,
+  },
+  {
+    name: "এম. এ. রহমান",
+    role: "সিনিয়র শিক্ষক (পদার্থবিজ্ঞান ও গণিত)",
+    institution: "রাজশাহী গভ. মডেল স্কুল অ্যান্ড কলেজ",
+    quote:
+      "আমার ব্যাচের শিক্ষার্থীদের এখন এই পোর্টাল থেকে টেস্ট পেপার প্রিন্ট দিয়ে মক টেস্ট নেই। ওয়াটারমার্ক, ফন্ট ও লেআউট একদম সরকারি পরীক্ষার প্রশ্নপত্রের সমমানের। এটি দেশের শিক্ষার্থীদের জন্য একটি মাইলফলক।",
+    rating: 5,
+  },
+];
+
+const institutionalFaqs = [
+  {
+    q: "এই পোর্টালের প্রশ্নগুলো কি সরকারি এসএসসি পরীক্ষার আসল বিগত বছরের প্রশ্ন?",
+    a: "হ্যাঁ, সম্পূর্ণভাবে। জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) অনুমোদিত পাঠ্যক্রম অনুযায়ী 2018 থেকে 2024 সাল পর্যন্ত ঢাকা, রাজশাহী, চট্টগ্রাম, কুমিল্লা, যশোর, দিনাজপুর, বরিশাল, সিলেট, ময়মনসিংহ ও মাদ্রাসা বোর্ডের অনুষ্ঠিত পরীক্ষার মূল প্রশ্নপত্র পর্যালোচনা করে এটি তৈরি করা হয়েছে।",
+  },
+  {
+    q: "টেস্ট পেপারে বহুনির্বাচনি (MCQ) উত্তরগুলো কি বোল্ড করা থাকবে?",
+    a: "হ্যাঁ! সলভড টেস্ট পেপার মোডে বহুনির্বাচনির সঠিক উত্তরটি অফিশিয়াল প্রশ্নপত্রে বোল্ড (Bold & Underlined) করা থাকে। এছাড়াও শিক্ষক বা পরীক্ষার্থীর সুবিধার্থে এক ক্লিকে 'পরীক্ষার্থী কপি' নির্বাচন করে উত্তরবিহীন আসল ব্ল্যাংক প্রশ্নপত্র দেখার এবং প্রিন্ট করার ব্যবস্থাও রয়েছে।",
+  },
+  {
+    q: "সৃজনশীল (CQ) প্রশ্নের উদ্দীপক ও উত্তরগুলো কি নির্ভুল?",
+    a: "আমাদের অভিজ্ঞ শিক্ষকমণ্ডলী ও এআই মডেল প্রতিটি সৃজনশীলের উদ্দীপক, জ্ঞানমূলক (1), অনুধাবনমূলক (2), প্রয়োগমূলক (3) এবং উচ্চতর দক্ষতামূলক (4) প্রশ্নের ধাপে ধাপে এনসিটিবি মানবণ্টন অনুযায়ী 100% নির্ভুল মডেল উত্তর প্রস্তুত করেছে।",
+  },
+  {
+    q: "মোবাইল বা ল্যাপটপ থেকে সরাসরি A4 PDF কীভাবে ডাউনলোড করা যাবে?",
+    a: "যেকোনো টেস্ট পেপার ওপেন করার পর উপরের টুলবার থেকে 'PDF ডাউনলোড' বাটনে ক্লিক করলেই আপনার ডিভাইসে স্বয়ংক্রিয়ভাবে ঝকঝকে হাই-রেজ্যুলেশন A4 সাইজের ওয়াটারমার্কযুক্ত PDF ফাইল সেভ হয়ে যাবে। এছাড়া সরাসরি 'প্রিন্ট' অপশন দিয়েও প্রিন্ট নেওয়া যাবে।",
+  },
+  {
+    q: "এই জাতীয় ডিজিটাল সেবা কি সম্পূর্ণ বিনামূল্যে উন্মুক্ত?",
+    a: "হ্যাঁ, এটি বাংলাদেশের 64 জেলার সকল প্রান্তের শিক্ষার্থীদের জন্য শতভাগ বিনামূল্যে উন্মুক্ত একটি জাতীয় ডিজিটাল শিক্ষা উদ্যোগ। কোনো প্রকার সাবস্ক্রিপশন ফি বা সাইন-আপের প্রয়োজন নেই।",
   },
 ];
 
 export function HomePage() {
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 1000], [0, -100]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [activeStream, setActiveStream] = useState<"science" | "humanities" | "commerce">("science");
+  const [activeFaq, setActiveFaq] = useState<number | null>(0);
+
+  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-play Slider effect
+  useEffect(() => {
+    if (isAutoPlaying) {
+      autoPlayTimerRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      }, 5500);
+    }
+
+    return () => {
+      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+    };
+  }, [isAutoPlaying]);
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  };
+
+  const filteredSubjects = SSC_SUBJECTS.filter((s) => s.stream === activeStream);
+
+  const toggleFaq = (idx: number) => {
+    setActiveFaq(activeFaq === idx ? null : idx);
+  };
+
+  const currentHero = heroSlides[currentSlide];
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-900 transition-colors">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950 transition-colors">
       <SEO
-        title="SSC Tutor AI | All-in-One Digital School & Board Exam Bank for Bangladesh"
-        description="SSC Tutor AI is a free AI-powered digital academy for SSC candidates in Bangladesh. Practice authentic previous board questions (2018-2024), chapter-wise tests, and get warm, easy-to-understand explanations from your personal AI tutor."
+        title="SSC Tutor AI | National Secondary Board Examination Portal & Digital Academy"
+        description="Official National Digital Learning & Examination Platform for Bangladesh SSC Candidates. Access past 7 years authentic board test papers, watermarked A4 PDFs, bold answers, CQ model solutions, and intelligent AI tutoring."
         href="/"
-        jsonLd={[
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "SSC Tutor AI",
-            url: "https://ssc-tutor-ai.vercel.app/",
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://ssc-tutor-ai.vercel.app/subjects?q={search_term_string}",
-              "query-input": "required name=search_term_string",
-            },
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "EducationalOrganization",
-            name: "SSC Tutor AI",
-            url: "https://ssc-tutor-ai.vercel.app/",
-            logo: "https://ssc-tutor-ai.vercel.app/favicon.svg",
-            description: "Free AI-powered SSC learning platform for Bangladesh",
-            sameAs: ["https://twitter.com/SSCTutorAI"],
-          },
-        ]}
       />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-16 sm:pt-24 pb-20 sm:pb-32 border-b border-slate-200 dark:border-slate-800">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-500/10 dark:bg-primary-500/20 rounded-full blur-3xl opacity-70"></div>
-          <motion.div
-            style={{ y: y1 }}
-            className="absolute top-20 left-10 w-64 h-64 bg-blue-400/10 dark:bg-blue-500/10 rounded-full blur-3xl"
-          ></motion.div>
-          <motion.div
-            style={{ y: y2 }}
-            className="absolute bottom-10 right-10 w-72 h-72 bg-purple-400/10 dark:bg-purple-500/10 rounded-full blur-3xl"
-          ></motion.div>
-        </div>
+      {/* OFFICIAL GOVERNMENT ANNOUNCEMENT BULLETIN TICKER */}
+      <div className="bg-slate-900 border-b border-slate-800 text-white py-2 px-4 sm:px-6 lg:px-8 text-xs font-bn">
+        <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center space-x-2.5 overflow-hidden">
+            <span className="inline-flex items-center gap-1 bg-red-600 text-white font-black px-2.5 py-0.5 rounded text-[11px] tracking-wide uppercase shrink-0">
+              <Bell className="h-3 w-3" />
+              <span>জরুরি বুলেটিন</span>
+            </span>
+            <span className="truncate text-slate-300 font-medium text-xs sm:text-sm">
+              এসএসসি 2025/2026: সকল শিক্ষা বোর্ডের বিগত 7 বছরের কমন প্রশ্ন, টেস্ট পেপার ও সৃজনশীল মডেল উত্তর প্রকাশিত হয়েছে।
+            </span>
+          </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          <Link
+            to="/model-tests?mode=test_paper"
+            className="hidden sm:inline-flex items-center gap-1 text-primary-400 hover:text-primary-300 font-bold shrink-0 text-xs"
+          >
+            <span>টেস্ট পেপার সংগ্রহ করুন &rarr;</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* FULL-WIDTH HIGH-IMPACT EDUCATION HERO SLIDER / SWIPER */}
+      <section
+        onMouseEnter={() => setIsAutoPlaying(false)}
+        onMouseLeave={() => setIsAutoPlaying(true)}
+        className="relative w-full overflow-hidden bg-slate-950 text-white min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] flex items-center"
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentHero.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 z-0"
+          >
+            {/* Background Image with Deep National Institutional Overlay */}
+            <img
+              src={currentHero.image}
+              alt={currentHero.title}
+              className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
+            />
+            {/* Multi-layered Vignette & Dark Gradients for 100% Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-950/50"></div>
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-slate-950/60 to-slate-950/90"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,rgba(2,6,23,0.95)_100%)]"></div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Foreground Content Container with Unclipped Bengali Typography */}
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24 w-full">
+          <div className="max-w-3xl font-bn">
+            {/* Official Badge Pill with generous line-height */}
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="mx-auto mb-6 sm:mb-8 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-primary-200/60 dark:border-primary-800 bg-primary-50/70 dark:bg-primary-950/60 backdrop-blur-md px-4 sm:px-5 py-2 shadow-sm"
+              key={`badge-${currentHero.id}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-bold text-emerald-300 mb-4 sm:mb-6 shadow-sm"
             >
-              <Sparkles className="h-4 w-4 text-primary-600 dark:text-primary-400" />
-              <span className="text-xs sm:text-sm font-semibold text-primary-700 dark:text-primary-300 font-bn">
-                🇧🇩 বাংলাদেশের শিক্ষার্থীদের জন্য ১০০% ফ্রি অল-ইন-ওয়ান ডিজিটাল স্কুল
-              </span>
+              <currentHero.tagIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
+              <span className="leading-normal">{currentHero.tag}</span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+            {/* Main Headline - Fixed top clipping with leading-[1.3] and py-1.5 */}
+            <motion.div
+              key={`title-${currentHero.id}`}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              className="mx-auto max-w-4xl font-bn text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-6xl lg:text-7xl leading-[1.15]"
+              transition={{ duration: 0.4, delay: 0.08 }}
+              className="py-1"
             >
-              বোর্ড প্রশ্নব্যাংক ও খাঁটি বাংলা <br className="hidden sm:block" />{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-indigo-600 dark:from-primary-400 dark:to-indigo-400">
-                এআই টিউটর
-              </span>
-            </motion.h1>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.3] sm:leading-[1.32] drop-shadow-sm">
+                {currentHero.title}
+              </h1>
+            </motion.div>
 
+            {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              key={`sub-${currentHero.id}`}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-              className="mx-auto mt-5 sm:mt-6 max-w-2xl text-base sm:text-xl leading-relaxed text-slate-600 dark:text-slate-300 font-bn"
+              transition={{ duration: 0.4, delay: 0.16 }}
+              className="mt-3 sm:mt-5 text-sm sm:text-lg md:text-xl text-slate-200 leading-relaxed font-normal max-w-2xl drop-shadow-xs"
             >
-              বিগত বছরের আসল বোর্ড পরীক্ষা (২০১৮-২০২৪) দাও, অধ্যায়ভিত্তিক ড্রিল প্র্যাকটিস করো এবং পছন্দের শিক্ষকের মতো সহজ বাংলায় সমাধান বুঝে নাও।
+              {currentHero.subtitle}
             </motion.p>
 
+            {/* Primary & Secondary Action Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              key={`actions-${currentHero.id}`}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-              className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4"
+              transition={{ duration: 0.4, delay: 0.24 }}
+              className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 font-bn"
             >
               <Link
-                to="/model-tests?mode=board_exam"
-                className="group relative flex w-full sm:w-auto items-center justify-center space-x-2 rounded-full bg-primary-600 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold text-white shadow-lg shadow-primary-500/25 transition-all hover:bg-primary-500 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
+                to={currentHero.primaryBtn.link}
+                className="flex items-center justify-center gap-2 rounded-xl bg-white text-slate-950 hover:bg-slate-100 px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-black shadow-xl shadow-white/10 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Landmark className="relative z-10 h-5 w-5" />
-                <span className="relative z-10 font-bn">বোর্ড পরীক্ষা দাও</span>
-                <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <currentHero.primaryBtn.icon className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 shrink-0" />
+                <span>{currentHero.primaryBtn.text}</span>
+                <ArrowRight className="h-4 w-4 ml-1 shrink-0" />
               </Link>
+
               <Link
-                to="/tutor"
-                className="group flex w-full sm:w-auto items-center justify-center space-x-2 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold text-slate-900 dark:text-white shadow-sm transition-all hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-[0.98]"
+                to={currentHero.secondaryBtn.link}
+                className="flex items-center justify-center gap-2 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white border border-white/20 backdrop-blur-md px-5 sm:px-7 py-3.5 sm:py-4 text-sm sm:text-base font-bold shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                <BrainCircuit className="h-4 w-4 text-primary-600 dark:text-primary-400 transition-transform group-hover:scale-110" />
-                <span className="font-bn">এআই শিক্ষককে প্রশ্ন করো</span>
+                <currentHero.secondaryBtn.icon className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-400 shrink-0" />
+                <span>{currentHero.secondaryBtn.text}</span>
               </Link>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-              className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300"
-            >
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                <span>100% Free</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800">
-                <Landmark className="h-4 w-4 text-blue-500" />
-                <span>বোর্ড প্রশ্নব্যাংক (২০১৮-২০২৪)</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800">
-                <BookOpen className="h-4 w-4 text-indigo-500" />
-                <span>সকল এসএসসি বিষয়</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800">
-                <BrainCircuit className="h-4 w-4 text-purple-500" />
-                <span>খাঁটি বাংলা টিউটর</span>
-              </div>
-            </motion.div>
+            {/* Trust Pills under Buttons */}
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-semibold text-slate-300">
+              {currentHero.metaPills.map((pill, pIdx) => (
+                <div
+                  key={pIdx}
+                  className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-2.5 sm:px-3 py-1 rounded-full backdrop-blur-xs"
+                >
+                  <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-400 shrink-0" />
+                  <span>{pill}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Left & Right Slider Arrow Navigation (Hidden on mobile to never block text) */}
+        <button
+          onClick={prevSlide}
+          aria-label="Previous Slide"
+          className="hidden md:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full bg-slate-950/70 hover:bg-slate-950 text-white border border-white/20 backdrop-blur-md items-center justify-center transition-all hover:scale-110 shadow-lg"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+
+        <button
+          onClick={nextSlide}
+          aria-label="Next Slide"
+          className="hidden md:flex absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full bg-slate-950/70 hover:bg-slate-950 text-white border border-white/20 backdrop-blur-md items-center justify-center transition-all hover:scale-110 shadow-lg"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        {/* Bottom Pagination Controls (Responsive on all screen sizes) */}
+        <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-2 bg-slate-950/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+          <button
+            onClick={prevSlide}
+            aria-label="Previous Slide"
+            className="md:hidden text-white/70 hover:text-white p-1"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+
+          {heroSlides.map((slide, idx) => (
+            <button
+              key={slide.id}
+              onClick={() => setCurrentSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                currentSlide === idx
+                  ? "w-6 sm:w-8 bg-emerald-400 shadow-md"
+                  : "w-2 bg-white/40 hover:bg-white/70"
+              }`}
+            />
+          ))}
+
+          <button
+            onClick={nextSlide}
+            aria-label="Next Slide"
+            className="md:hidden text-white/70 hover:text-white p-1"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </section>
+
+      {/* QUICK STATS & DIRECTORY HIGHLIGHT STRIP */}
+      <section className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-6 font-bn">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div className="p-3 border-r border-slate-200 dark:border-slate-800 last:border-r-0">
+              <div className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white">10টি</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold mt-0.5">শিক্ষা বোর্ড প্রশ্নব্যাংক</div>
+            </div>
+            <div className="p-3 border-r border-slate-200 dark:border-slate-800 last:border-r-0">
+              <div className="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-emerald-400">7 বছর</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold mt-0.5">আসল প্রশ্ন (2018–2024)</div>
+            </div>
+            <div className="p-3 border-r border-slate-200 dark:border-slate-800 last:border-r-0">
+              <div className="text-2xl sm:text-3xl font-black text-slate-950 dark:text-white">100%</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold mt-0.5">এনসিটিবি কারিকুলাম মানসম্মত</div>
+            </div>
+            <div className="p-3">
+              <div className="text-2xl sm:text-3xl font-black text-primary-600 dark:text-primary-400">0 টাকা</div>
+              <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold mt-0.5">সম্পূর্ণ জাতীয় ডিজিটাল সেবা</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Board Exam Launcher Section */}
-      <section className="py-14 sm:py-20 bg-slate-100/70 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+      {/* 10 OFFICIAL EDUCATION BOARDS DIRECTORY */}
+      <section className="py-16 sm:py-24 bg-slate-100/70 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 font-bn">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 mb-2 font-bn">
-                <Landmark className="h-3.5 w-3.5" />
-                <span>বিগত বছরের আসল বোর্ড প্রশ্নপত্র</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-bn">
-                জনপ্রিয় বোর্ড পরীক্ষার প্রশ্নপত্র
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-primary-100 dark:bg-primary-950 text-primary-800 dark:text-primary-300 border border-primary-200 dark:border-primary-800 mb-2">
+                <Building2 className="h-3.5 w-3.5" />
+                <span>জাতীয় শিক্ষা বোর্ড ডিরেক্টরি</span>
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white">
+                10টি শিক্ষা বোর্ডের আসল প্রশ্নপত্র সংগ্রহশালা
               </h2>
-              <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-1 font-bn">
-                সরাসরি ক্লিক করে পছন্দের বোর্ডের ফুল এক্সাম পেপার শুরু করো।
+              <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-2xl">
+                আপনার নিজ শিক্ষা বোর্ড নির্বাচন করে বিগত 2018 থেকে 2024 সালের অনুষ্ঠিত পরীক্ষার সম্পূর্ণ প্রশ্নপত্র ও টেস্ট পেপার সংগ্রহ করুন।
               </p>
             </div>
+
             <Link
-              to="/model-tests?mode=board_exam"
-              className="inline-flex items-center text-sm font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 transition-colors font-bn self-start sm:self-auto"
+              to="/model-tests?mode=test_paper"
+              className="inline-flex items-center gap-1 text-sm font-extrabold text-primary-700 dark:text-primary-400 hover:text-primary-800 self-start md:self-auto"
             >
-              <span>সকল বোর্ড প্রশ্ন দেখো</span>
-              <ChevronRight className="h-4 w-4 ml-1" />
+              <span>সকল বোর্ড পেপার ভল্ট</span>
+              <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {popularBoardExams.map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
-              >
-                <Link
-                  to={`/model-tests?mode=board_exam&board=${item.boardId}&year=${item.year}&subject=${item.subjectId}`}
-                  className="group block p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary-400 dark:hover:border-primary-600 shadow-sm hover:shadow-md transition-all active:scale-[0.99]"
+          {/* Boards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
+            {officialBoards.map((board) => {
+              const IconComponent = board.icon;
+
+              return (
+                <div
+                  key={board.id}
+                  className={`p-5 rounded-2xl border transition-all duration-200 flex flex-col justify-between ${
+                    board.isSuper
+                      ? "bg-gradient-to-br from-slate-900 via-primary-950 to-slate-950 text-white border-primary-500/40 shadow-md sm:col-span-2 lg:col-span-1 xl:col-span-2"
+                      : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-primary-400 dark:hover:border-primary-600 shadow-2xs hover:shadow-sm"
+                  }`}
                 >
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span
+                        className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase font-sans ${
+                          board.isSuper
+                            ? "bg-amber-400 text-slate-950"
+                            : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+                        }`}
+                      >
+                        {board.code}
+                      </span>
+                      <span
+                        className={`text-[11px] font-bold ${
+                          board.isSuper ? "text-amber-300" : "text-emerald-700 dark:text-emerald-400"
+                        }`}
+                      >
+                        {board.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex items-start space-x-3 mb-2">
+                      <div
+                        className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${
+                          board.isSuper
+                            ? "bg-primary-600 text-white"
+                            : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                        }`}
+                      >
+                        <IconComponent className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3
+                          className={`font-black text-base sm:text-lg leading-snug ${
+                            board.isSuper ? "text-white" : "text-slate-950 dark:text-white"
+                          }`}
+                        >
+                          {board.name}
+                        </h3>
+                        <p
+                          className={`text-xs mt-0.5 line-clamp-1 ${
+                            board.isSuper ? "text-slate-300" : "text-slate-500 dark:text-slate-400"
+                          }`}
+                        >
+                          {board.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2 text-xs font-bold">
+                    <Link
+                      to={`/model-tests?mode=test_paper&board=${board.id}`}
+                      className={`flex-1 py-2 px-2 sm:px-2.5 rounded-lg text-center transition-colors flex items-center justify-center gap-1 min-w-0 ${
+                        board.isSuper
+                          ? "bg-white text-slate-950 hover:bg-slate-100 font-extrabold"
+                          : "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200"
+                      }`}
+                    >
+                      <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                      <span className="truncate">টেস্ট পেপার ও PDF</span>
+                    </Link>
+
+                    <Link
+                      to={`/model-tests?mode=board_exam&board=${board.id}`}
+                      className={`py-2 px-2.5 sm:px-3 rounded-lg text-center transition-colors flex items-center justify-center gap-1 shrink-0 ${
+                        board.isSuper
+                          ? "bg-emerald-600 hover:bg-emerald-500 text-white"
+                          : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xs"
+                      }`}
+                      title="অনলাইন পরীক্ষা"
+                    >
+                      <Play className="h-3 w-3 fill-current shrink-0" />
+                      <span>পরীক্ষা</span>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* NATIONAL TEST PAPER & SUBJECT VAULT */}
+      <section className="py-14 sm:py-20 lg:py-24 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 font-bn">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 mb-2">
+              <BookCheck className="h-3.5 w-3.5" />
+              <span>এনসিটিবি অনুমোদিত বিষয়সমূহ</span>
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-950 dark:text-white">
+              বিষয়ভিত্তিক টেস্ট পেপার ও প্রশ্নব্যাংক ভল্ট
+            </h2>
+            <p className="mt-2 text-xs sm:text-base text-slate-600 dark:text-slate-400">
+              অফিশিয়াল বিষয় কোড অনুযায়ী প্রতিটি বিষয়ের বহুনির্বাচনি ও সৃজনশীল পূর্ণাঙ্গ প্রশ্নপত্র।
+            </p>
+
+            {/* Responsive Stream Filter Switcher */}
+            <div className="flex items-center justify-center p-1 bg-slate-100 dark:bg-slate-900 rounded-2xl max-w-md mx-auto mt-6 border border-slate-200 dark:border-slate-800">
+              <button
+                onClick={() => setActiveStream("science")}
+                className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  activeStream === "science"
+                    ? "bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <span className="sm:hidden">বিজ্ঞান</span>
+                <span className="hidden sm:inline">বিজ্ঞান বিভাগ</span>
+              </button>
+              <button
+                onClick={() => setActiveStream("humanities")}
+                className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  activeStream === "humanities"
+                    ? "bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <span className="sm:hidden">মানবিক</span>
+                <span className="hidden sm:inline">মানবিক বিভাগ</span>
+              </button>
+              <button
+                onClick={() => setActiveStream("commerce")}
+                className={`flex-1 py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  activeStream === "commerce"
+                    ? "bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-xs"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                }`}
+              >
+                <span className="sm:hidden">ব্যবসায়</span>
+                <span className="hidden sm:inline">ব্যবসায় শিক্ষা</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Subject Dossiers Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            {filteredSubjects.map((sub) => (
+              <div
+                key={sub.id}
+                className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-600 transition-all flex flex-col justify-between"
+              >
+                <div>
                   <div className="flex justify-between items-start mb-3">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                      {item.badge}
+                    <span className="font-mono text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+                      কোড: {sub.code}
                     </span>
-                    <span className="text-xs font-bold text-primary-600 dark:text-primary-400 font-mono">
-                      SSC {item.year}
+                    <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                      পূর্ণমান: {sub.fullMarks.total}
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-base sm:text-lg text-slate-900 dark:text-white font-bn group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    {item.subject}
+                  <h3 className="font-black text-base sm:text-lg text-slate-950 dark:text-white mb-1">
+                    {sub.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-bn mt-1">
-                    {item.board}
-                  </p>
-
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-primary-600 dark:text-primary-400 font-bn">
-                    <span>পরীক্ষা শুরু করো &rarr;</span>
-                    <span className="text-slate-400 font-normal">১০টি MCQ • ১৫ মিনিট</span>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 space-y-0.5">
+                    <div>MCQ: {sub.fullMarks.mcq} নম্বর ({sub.duration.mcq})</div>
+                    {sub.fullMarks.cq > 0 && <div>CQ: {sub.fullMarks.cq} নম্বর ({sub.duration.cq})</div>}
                   </div>
-                </Link>
-              </motion.div>
+                </div>
+
+                <div className="mt-5 pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 text-xs font-bold">
+                  <Link
+                    to={`/model-tests?mode=test_paper&subject=${sub.id}`}
+                    className="flex-1 py-2 px-2.5 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 text-center flex items-center justify-center gap-1 transition-colors min-w-0"
+                  >
+                    <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                    <span className="truncate">টেস্ট পেপার ও PDF</span>
+                  </Link>
+
+                  <Link
+                    to={`/subjects/${sub.id}`}
+                    className="py-2 px-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 transition-colors shrink-0"
+                    title="অধ্যায়ভিত্তিক নোট"
+                  >
+                    নোট
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Platform Highlights */}
-      <section className="bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 py-12 lg:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-8 md:grid-cols-4 md:gap-x-8">
-            <div className="flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 mb-3">
-                <Gift className="h-6 w-6" />
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1">
-                100% Free
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                Full access, no hidden costs
-              </p>
-            </div>
+      {/* PEDAGOGICAL ARCHITECTURE & RESEARCH STANDARDS */}
+      <section className="py-16 sm:py-24 bg-slate-900 text-white border-b border-slate-800 relative overflow-hidden font-bn">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.1),transparent_50%)] pointer-events-none"></div>
 
-            <div className="flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 mb-3">
-                <BrainCircuit className="h-6 w-6" />
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1 font-bn">
-                দেশীয় শিক্ষক স্টাইল এআই
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-bn">
-                বাস্তব উদাহরণ দিয়ে সহজবোধ্য ব্যাখ্যা
-              </p>
-            </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-primary-300 border border-white/10 mb-3">
+              <BrainCircuit className="h-3.5 w-3.5" />
+              <span>জাতীয় আধুনিক শিক্ষণ পদ্ধতি</span>
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black">
+              বোর্ড পরীক্ষার সম্পূর্ণ প্রস্তুতির 4টি স্তম্ভ
+            </h2>
+            <p className="mt-3 text-slate-300 text-base sm:text-lg">
+              মুখস্থবিদ্যা নয়, বাস্তব জীবনের দারুণ উদাহরণ আর নির্ভুল অনুশীলনের মাধ্যমে নিশ্চিত করো এ-প্লাস।
+            </p>
+          </div>
 
-            <div className="flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 mb-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <div className="h-12 w-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center mb-4">
                 <Landmark className="h-6 w-6" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1 font-bn">
-                বোর্ড প্রশ্নব্যাংক
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-bn">
-                বিগত ২০১৮-২০২৪ এর আসল প্রশ্ন
+              <h3 className="font-bold text-lg text-white mb-2">1. হলের আসল পেপার নকশা</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                অফিসিয়াল 2-কলাম প্রশ্নপত্র, বিষয় কোড এবং বিশেষ দ্রষ্টব্য সহ হুবহু বোর্ডের পরীক্ষার কাগজের অনুরূপ।
               </p>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 mb-3">
-                <Library className="h-6 w-6" />
+            <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <div className="h-12 w-12 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center mb-4">
+                <Layers className="h-6 w-6" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1 font-bn">
-                অধ্যায়ভিত্তিক গাইড
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-bn">
-                সকল বিষয়ের সাজানো নোটস
+              <h3 className="font-bold text-lg text-white mb-2">2. বোর্ড রিপিটিশন গবেষণা</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                বিগত 7 বছরের প্রশ্নগুলোর মধ্যে কোনগুলো বিভিন্ন বোর্ডে বারবার কমন এসেছে তা যাচাই করে সেরা সংকলন।
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <div className="h-12 w-12 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center mb-4">
+                <BookCheck className="h-6 w-6" />
+              </div>
+              <h3 className="font-bold text-lg text-white mb-2">3. বোল্ড উত্তর ও CQ মানবণ্টন</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                MCQ-এর সঠিক উত্তর স্পষ্ট বোল্ড করা এবং সৃজনশীল অংশের ক, খ, গ, ঘ এর পূর্ণাঙ্গ শিক্ষক-সুলভ সঠিক মডেল সমাধান।
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800">
+              <div className="h-12 w-12 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center mb-4">
+                <Download className="h-6 w-6" />
+              </div>
+              <h3 className="font-bold text-lg text-white mb-2">4. অফিশিয়াল A4 PDF এক্সপোর্ট</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                ssc-tutor-ai.vercel.app জলছাপযুক্ত অফিশিয়াল A4 সাইজের মাল্টি-পেজ PDF এক ক্লিকে ডাউনলোড ও প্রিন্ট।
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="bg-slate-50 dark:bg-slate-900 py-16 sm:py-24">
+      {/* INSTITUTIONAL TESTIMONIALS */}
+      <section className="py-16 sm:py-24 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 font-bn">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-sm sm:text-base font-bold leading-7 text-primary-600 dark:text-primary-400 uppercase tracking-wider font-bn">
-              অল-ইন-ওয়ান এসএসসি একাডেমি
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700 mb-2">
+              <Users className="h-3.5 w-3.5 text-primary-600" />
+              <span>বিভাগীয় শিক্ষার্থী ও শিক্ষক মতামত</span>
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white">
+              সারাদেশের শিক্ষার্থীদের অভিজ্ঞতা
             </h2>
-            <p className="mt-2 text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white font-bn">
-              এসএসসি প্রস্তুতির জন্য যা কিছু প্রয়োজন
-            </p>
           </div>
-          <div className="mx-auto mt-12 sm:mt-16 max-w-2xl lg:max-w-none">
-            <dl className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <div className="flex flex-col rounded-3xl bg-white dark:bg-slate-950 p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 transition-all hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700">
-                <dt className="flex items-center gap-x-3 text-base sm:text-lg font-bold text-slate-900 dark:text-white font-bn">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-sm shrink-0">
-                    <BrainCircuit className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </div>
-                  আন্তরিক এআই শিক্ষক
-                </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 font-bn">
-                  <p className="flex-auto">
-                    বইয়ের কঠিন ভাষা নয়, একজন অভিজ্ঞ প্রাইভেট টিচারের মতো রিকশার জড়তা, ক্রিকেটের ভরবেগ বা রান্নার তাপগতিবিদ্যার সহজ উদাহরণ দিয়ে বোঝানো।
-                  </p>
-                </dd>
-              </div>
 
-              <div className="flex flex-col rounded-3xl bg-white dark:bg-slate-950 p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 transition-all hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700">
-                <dt className="flex items-center gap-x-3 text-base sm:text-lg font-bold text-slate-900 dark:text-white font-bn">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-sm shrink-0">
-                    <Landmark className="h-5 w-5 sm:h-6 sm:w-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t, idx) => (
+              <div
+                key={idx}
+                className="p-6 sm:p-7 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center space-x-1 text-amber-500 mb-3">
+                    {Array.from({ length: t.rating }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-amber-500" />
+                    ))}
                   </div>
-                  আসল বোর্ড প্রশ্ন পরীক্ষা
-                </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 font-bn">
-                  <p className="flex-auto">
-                    ঢাকা, চট্টগ্রাম, রাজশাহী, যশোরসহ সকল শিক্ষা বোর্ডের বিগত ২০১৮-২০২৪ সালের আসল প্রশ্ন দিয়ে সময় মেপে টেস্ট পেপারের মতো এক্সাম দেওয়ার সুযোগ।
+                  <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed italic">
+                    "{t.quote}"
                   </p>
-                </dd>
-              </div>
+                </div>
 
-              <div className="flex flex-col rounded-3xl bg-white dark:bg-slate-950 p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-800 transition-all hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700">
-                <dt className="flex items-center gap-x-3 text-base sm:text-lg font-bold text-slate-900 dark:text-white font-bn">
-                  <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-sm shrink-0">
-                    <BookOpen className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </div>
-                  বিজ্ঞান, মানবিক ও বাণিজ্য
-                </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 font-bn">
-                  <p className="flex-auto">
-                    সকল গ্রুপের প্রতিটি বিষয়ের জন্য সম্পূর্ণ অধ্যায়ভিত্তিক গাইড, টেস্ট প্রশ্ন এবং তাৎক্ষণিক সমাধান।
+                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <h4 className="font-bold text-slate-950 dark:text-white text-base">
+                    {t.name}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {t.role} • {t.institution}
                   </p>
-                </dd>
+                </div>
               </div>
-            </dl>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* COMPREHENSIVE FAQ */}
+      <section className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 font-bn">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary-100 dark:bg-primary-950 text-primary-800 dark:text-primary-300 border border-primary-200 dark:border-primary-800 mb-2">
+              <HelpCircle className="h-3.5 w-3.5" />
+              <span>সহায়তা ও সাধারণ জিজ্ঞাসা</span>
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 dark:text-white">
+              সচরাচর জিজ্ঞাসিত প্রশ্নাবলি (FAQ)
+            </h2>
+          </div>
+
+          <div className="space-y-3.5">
+            {institutionalFaqs.map((faq, idx) => {
+              const isOpen = activeFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  className="rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 overflow-hidden shadow-2xs"
+                >
+                  <button
+                    onClick={() => toggleFaq(idx)}
+                    className="w-full p-5 text-left font-bold text-base sm:text-lg text-slate-950 dark:text-white flex items-center justify-between gap-4"
+                  >
+                    <span>{faq.q}</span>
+                    <span className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0">
+                      {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </span>
+                  </button>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <div className="px-5 pb-5 pt-1 text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* GRAND CALL TO ACTION */}
+      <section className="py-16 sm:py-24 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 text-white text-center font-bn relative overflow-hidden">
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-emerald-300 border border-white/10 text-xs font-bold mb-4">
+            <Scale className="h-4 w-4" />
+            <span>বাংলাদেশ জাতীয় মাধ্যমিক শিক্ষা উদ্যোগ • সম্পূর্ণ মুক্ত ও উন্মুক্ত</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight mb-4">
+            পরীক্ষার হলে সর্বোচ্চ আত্মবিশ্বাসের সাথে অংশ নিন
+          </h2>
+
+          <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+            বিগত ৭ বছরের আসল টেস্ট পেপার, বোল্ড করা উত্তর ও এআই শিক্ষকের সহায়তা সম্পূর্ণ ফ্রিতে এক ক্লিকে শুরু করুন।
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/model-tests?mode=test_paper"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-white text-slate-950 hover:bg-slate-100 px-8 py-4 text-base font-black shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <FileText className="h-5 w-5 text-emerald-600" />
+              <span>টেস্ট পেপার সলভ ও পরীক্ষা</span>
+            </Link>
+
+            <Link
+              to="/tutor"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/10 text-white px-8 py-4 text-base font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <BrainCircuit className="h-5 w-5 text-emerald-400" />
+              <span>এআই শিক্ষক ভাইয়ার ক্লাসরুম</span>
+            </Link>
           </div>
         </div>
       </section>

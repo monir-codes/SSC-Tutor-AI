@@ -98,8 +98,8 @@ export function SubjectPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-10 sm:py-12 transition-colors">
       <SEO 
-        title={`SSC ${subject.name} | Chapter-wise Notes, Practice & AI Tutor | SSC Tutor AI`} 
-        description={`Study ${subject.name} for SSC. Chapter-wise interactive guide, examples, board questions, and AI explanations.`}
+        title={`SSC ${subject.name} | টেস্ট পেপার ও প্রশ্ন সমাধান | SSC Tutor AI`} 
+        description={`এসএসসি ${subject.name} বিষয়ের অধ্যায়ভিত্তিক নোট, বিগত 7 বছরের বোর্ড প্রশ্নব্যাংক, মডেল টেস্ট এবং সার্বক্ষণিক এআই শিক্ষক সহায়তা।`} 
         href={url}
         jsonLd={jsonLd}
       />
